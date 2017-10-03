@@ -57,22 +57,22 @@ namespace ic {
 
   int HTTVBFTriggerAnalysis::PreAnalysis() {
      
-   L1pass = 0;
-   L1fail = 0;
-   L1failSecond = 0;
-   L1size0 = 0;
-   L1size1 = 0;
-   HLTsize0 = 0;
-   Calosize0 = 0; 
-   CaloL1matched = 0;
-   CaloL1tot = 0; 
-   CaloL1 = true;
+  L1pass = 0;
+  L1fail = 0;
+  L1failSecond = 0;
+  L1size0 = 0;
+  L1size1 = 0;
+  HLTsize0 = 0;
+  Calosize0 = 0; 
+  CaloL1matched = 0;
+  CaloL1tot = 0; 
+  CaloL1 = true;
 
-   PFTausize0 = 0;
-   matchedVBF0 = 0;
+  PFTausize0 = 0;
+  matchedVBF0 = 0;
 
-   if(fs_){  
-      outtree_ = fs_->make<TTree>("HLT_trigger_ntuple","HLT_trigger_ntuple");
+  if(fs_){  
+    outtree_ = fs_->make<TTree>("HLT_trigger_ntuple","HLT_trigger_ntuple");
     outtree_->Branch("event"       , &event_       );
     
     // TWO JETS 
@@ -80,8 +80,6 @@ namespace ic {
     outtree_->Branch("hlt_jpt_2"       , &hlt_jpt_2_       );
     outtree_->Branch("hlt_jpt_3"       , &hlt_jpt_3_       );
     outtree_->Branch("hlt_jpt_4"       , &hlt_jpt_4_       );
-    outtree_->Branch("calo_jpt_1"       , &calo_jpt_1_       );
-    outtree_->Branch("calo_jpt_2"       , &calo_jpt_2_       );
 
     outtree_->Branch("HLTjetssize"      , &HLTjetssize_     );
 
@@ -108,25 +106,8 @@ namespace ic {
     //outtree_->Branch("cleanTau_pt_2"        , &cleanTau_pt_2_      );
     outtree_->Branch("hlt_mjj"       , &hlt_mjj_       );
 
-
-    // THREE JETS
-    outtree_->Branch("hlt_three_jpt_1"       , &hlt_three_jpt_1_       );
-    outtree_->Branch("hlt_three_jpt_2"       , &hlt_three_jpt_2_       );
-    outtree_->Branch("hlt_three_jpt_3"       , &hlt_three_jpt_3_       );
-    outtree_->Branch("hlt_three_jpt_4"       , &hlt_three_jpt_4_       );
-//    outtree_->Branch("calo_jpt_1"       , &calo_jpt_1_       );
-  //  outtree_->Branch("calo_jpt_2"       , &calo_jpt_2_       );
-
-    outtree_->Branch("hlt_three_jeta_1"       , &hlt_three_jeta_1_       );
-    outtree_->Branch("hlt_three_jeta_2"       , &hlt_three_jeta_2_       );
-    outtree_->Branch("hlt_three_jeta_3"       , &hlt_three_jeta_3_       );
-    outtree_->Branch("hlt_three_jeta_4"       , &hlt_three_jeta_4_       );
-
-    outtree_->Branch("hlt_three_mjj"       , &hlt_three_mjj_       );
-
     // OTHERS
     outtree_->Branch("L1_jpt_1"       ,  &L1_jpt_1_);
-    //outtree_->Branch("HLTVBFPassThrough" ,  &HLTVBFPassThrough_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35" ,  &HLTDoubleMediumIsoPFTau35_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_2" ,  &HLTDoubleMediumIsoPFTau35_2_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_tau", &HLTDoubleMediumIsoPFTau35_tau_);
@@ -164,12 +145,8 @@ namespace ic {
 
   int HTTVBFTriggerAnalysis::Execute(TreeEvent *event) {
     
-   //std::vector<PFJet *> jetsobjs = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
-   //std::vector<Tau *> tausobjs = event->GetPtrVec<Tau>("taus");
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
-   //std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerVBFLoose");	
    std::vector<TriggerObject *>  L1jets;
-   std::vector<TriggerObject *>  Calojets;
    std::vector<TriggerObject *>  HLTjets;
    std::vector<TriggerObject *> PFTau;
    std::vector<TriggerObject *> matched_vbf_objs;
@@ -186,8 +163,6 @@ namespace ic {
    hlt_jeta_2_=-9999;
    hlt_jeta_3_=-9999;
    hlt_jeta_4_=-9999;
-   calo_jpt_1_=-9999;
-   calo_jpt_2_=-9999;
    
    tau_lo_pt_=-9999;
    tau_pt_2_ = -9999;
@@ -208,37 +183,15 @@ namespace ic {
    HLTDoubleMediumIsoPFTau35_=-9999;
 
 
-   hlt_three_jpt_1_=-9999;
-   hlt_three_jpt_2_=-9999;
-   hlt_three_jpt_3_=-9999;
-   hlt_three_jpt_4_=-9999;
-   hlt_three_jeta_1_=-9999;
-   hlt_three_jeta_2_=-9999;
-   hlt_three_jeta_3_=-9999;
-   hlt_three_jeta_4_=-9999;
-   hlt_three_mjj_=-9999;
-   tau_lo_threej_pt_ =-9999;
-   tau_pt_threej_2_ =-9999;
-
    PFTausize_=-9999;
    HLTjetssize_=-9999;
 
-    for (unsigned i = 0; i < VBFobjs.size(); ++i)
-	{ 
-   bool a = IsFilterMatchedWithName(VBFobjs[i], "hltL1VBFDiJetOR");
-   bool b = IsFilterMatchedWithName(VBFobjs[i], "'hltL1TCaloJetsMatching','TwoJets'");
-   //bool b = IsFilterMatchedWithName(VBFobjs[i], "hltDoubleJet20");
-   //bool c = IsFilterMatchedWithName(VBFobjs[i], "hltPFDoubleJetLooseIDOpen");
-   //bool c = IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFThreePFJetsOpenCrossCleanedFromLooseIsoPFTau20");
-   bool c = IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20");
-   //bool d = IsFilterMatchedWithName(VBFobjs[i], "hltSinglePFTau20TrackPt1TightChargedIsolationAndTightOOSCPhotonsReg");
-   bool d = IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg");
-   
-	if (a) 	L1jets.push_back(VBFobjs[i]);	
-	if (b)	Calojets.push_back(VBFobjs[i]);
-	if (c)  HLTjets.push_back(VBFobjs[i]);
-    if (d)  PFTau.push_back(VBFobjs[i]);
-}
+    // Get the objects at HLT from the appropriate filters
+    for (unsigned i = 0; i < VBFobjs.size(); ++i){ 
+  	  if (IsFilterMatchedWithName(VBFobjs[i], "hltL1VBFDiJetOR")) L1jets.push_back(VBFobjs[i]);	
+	  if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
+	  if (IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) PFTau.push_back(VBFobjs[i]);	
+    }
 
 
 //    HLTjetssize_ = HLTjets.size();
@@ -254,27 +207,10 @@ namespace ic {
 //        }
 //    }
 
-// for ThreeJets path
-    //for (unsigned i = 0; i < VBFThreeobjs.size(); ++i)
-	//{ 
-    //bool three = IsFilterMatchedWithName(VBFThreeobjs[i], "hltMatchedVBFThreePFJetsOpenCrossCleanedFromLooseIsoPFTau20");
-    //bool three_tau = IsFilterMatchedWithName(VBFThreeobjs[i], "hltSinglePFTau20TrackPt1LooseChargedIsolationReg");
-    //if (three) ThreeHLTjets.push_back(VBFThreeobjs[i]);
-    //if (three_tau) ThreePFTau.push_back(VBFThreeobjs[i]);
-    //}
 
-//std::cout<<"A"<<std::endl;
 std::sort(HLTjets.begin(), HLTjets.end(), PtComparatorTriggerObj());
-std::sort(Calojets.begin(), Calojets.end(), PtComparatorTriggerObj());
 std::sort(L1jets.begin(), L1jets.end(), PtComparatorTriggerObj());
 std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
-//std::sort(ThreeHLTjets.begin(), ThreeHLTjets.end(), PtComparatorTriggerObj());
-// Add mjj
-
-
-
-
-
 
 //L1jets and PFjets match test
 
@@ -308,7 +244,6 @@ if (L1jets.size()!=0)
 L1pass++;
 
 if (L1jets.size()==0) L1size0++;
-if (Calojets.size()==0) Calosize0++;
 if (HLTjets.size()==0) HLTsize0++;
 if (PFTau.size()==0) PFTausize0++;
 //if (matched_vbf_objs.size()==0) matchedVBF0++;
@@ -337,21 +272,6 @@ for (unsigned j = 0; j < HLTjets.size(); ++j)
 }
 
 
-//if ((HLTjets[0]->vector()+HLTjets[1]->vector()).M()>mjj)
-//{
-//  threeMjj = (HLTjets[0]->vector()+HLTjets[1]->vector()).M();
-//}
-
-
-/*for (unsigned i = 0; i < Calojets.size(); ++i)
-{
-
-if ()
-CaloL1tot++;
-
-}*/
-//if (HLTjets.size()>1)
-//std::cout<<HLTjets[0]->vector().Pt()<<" " <<HLTjets[1]->vector().Pt()<<std::endl;
 if (HLTjets.size()>0)
 	{
     hlt_jpt_1_ = HLTjets[0]->vector().Pt();
@@ -373,18 +293,6 @@ if (HLTjets.size()>3)
     hlt_jpt_4_ = HLTjets[3]->vector().Pt(); 
     hlt_jeta_4_ = HLTjets[3]->vector().Eta();	
 	}
-//std::cout<<Calojets.size()<<std::endl;
-if (Calojets.size()>0)
-        {
-    calo_jpt_1_ = Calojets[0]->vector().Pt();
-    //calo_jeta_1_ = Calojets[0]->vector().Eta();
-
-        }
-if (Calojets.size()>1)
-        {
-    calo_jpt_2_ = Calojets[1]->vector().Pt();
-    //calo_jeta_2_ = Calojets[1]->vector().Eta();
-        }
 
 if (L1jets.size()>0)
 {
@@ -396,42 +304,6 @@ if (L1jets.size()>0)
 
 
 
-  //if (hlt_jpt_1_ > 0 && hlt_jpt_2_ > 0 && hlt_jpt_2_ < 115) std::cout<<"jet < 115 GeV"<<std::endl;
-
-  // THREE JETS
-
-if (ThreeHLTjets.size()>0)
-	{
-    hlt_three_jpt_1_ = ThreeHLTjets[0]->vector().Pt();
-    hlt_three_jeta_1_ = ThreeHLTjets[0]->vector().Eta();
-
-	}
-if (ThreeHLTjets.size()>1)
-	{
-    hlt_three_jpt_2_ = ThreeHLTjets[1]->vector().Pt();
-    hlt_three_jeta_2_ = ThreeHLTjets[1]->vector().Eta();
-	}
-if (ThreeHLTjets.size()>2)
-	{
-    hlt_three_jpt_3_ = ThreeHLTjets[2]->vector().Pt();
-    hlt_three_jeta_3_ = ThreeHLTjets[2]->vector().Eta();	
-	}
-if (ThreeHLTjets.size()>3)
-	{
-    hlt_three_jpt_4_ = ThreeHLTjets[3]->vector().Pt(); 
-    hlt_three_jeta_4_ = ThreeHLTjets[3]->vector().Eta();	
-	}
-
-double threeMjj = -9999;
-
-if (ThreeHLTjets.size()>2){    
-  if ((ThreeHLTjets[0]->vector()+ThreeHLTjets[1]->vector()).M()>threeMjj)
-  {
-    threeMjj = (ThreeHLTjets[0]->vector()+ThreeHLTjets[1]->vector()).M();
-  }
-}
-
-    hlt_three_mjj_ = threeMjj;
     // For testing HLT online jets/tau matching
 //    std::vector<TriggerObject *> const& vbf_objs = event->GetPtrVec<TriggerObject>("triggerVBF");
 //
@@ -470,16 +342,6 @@ if (ThreeHLTjets.size()>2){
   
 
 
-//  trg_VBF_three = hlt_three_jpt_1_>40&&hlt_three_jpt_2_>40&&hlt_three_mjj_>650&&tau_pt_2_>20;
-//  event->Add("trg_VBF_three",trg_VBF_three);
-
-
-  //if (PFTau.size()>0) {
-  //  tau_lo_threej_pt_ = ThreePFTau[0]->vector().Pt();
-  //}
-  //if (PFTau.size()>1) {
-  //  tau_pt_threej_2_ = ThreePFTau[1]->vector().Pt();
-  //}
 //  if (cleanTau.size()>0) {
 //    cleanTau_lo_pt_ = cleanTau[0]->vector().Pt();
 //  }
@@ -649,7 +511,6 @@ if (ThreeHLTjets.size()>2){
   int HTTVBFTriggerAnalysis::PostAnalysis() {
  
 std::cout<<"L1jets size 0 = "<<1.0*L1size0/L1size1<<std::endl;
-std::cout<<"HLT "<<1.0*(HLTsize0)/L1size1 << " CALO size 0 = "<<1.0*(Calosize0)/L1size1<<std::endl;
 std::cout<<"L1jets size !=0 but L1jets[0]->vector().Pt()<80: "<<(L1fail/L1pass)<<std::endl;
 std::cout<<"L1jets size !=0 but L1jets[1]->vector().Pt()<30: "<<(L1failSecond/L1pass)<<std::endl;
 std::cout<<L1fail<<" "<<L1pass<<std::endl;

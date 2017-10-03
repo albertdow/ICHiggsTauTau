@@ -89,19 +89,6 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
 
   bool trg_VBF;
 
-  // THREE JETS
-  double hlt_three_jpt_1_;
-  double hlt_three_jpt_2_;
-  double hlt_three_jpt_3_;
-  double hlt_three_jpt_4_;
-  double hlt_three_jeta_1_;
-  double hlt_three_jeta_2_;
-  double hlt_three_jeta_3_;
-  double hlt_three_jeta_4_;
-  double hlt_three_mjj_;
-  double tau_lo_threej_pt_;
-  double tau_pt_threej_2_;
-
   int PFTausize_; 
   int HLTjetssize_;
 
@@ -123,8 +110,6 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double hlt_jpt_2_;
   double hlt_jpt_3_;
   double hlt_jpt_4_;
-  double calo_jpt_1_;
-  double calo_jpt_2_;
   double hlt_jeta_1_;
   double hlt_jeta_2_;
   double hlt_jeta_3_;
