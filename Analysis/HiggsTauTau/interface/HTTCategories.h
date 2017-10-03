@@ -1014,6 +1014,8 @@ class HTTCategories : public ModuleBase {
   double wt_alphasdown_;
   double wt_alphasup_;
 
+  bool trg_VBF;
+
  public:
   HTTCategories(std::string const& name);
   virtual ~HTTCategories();

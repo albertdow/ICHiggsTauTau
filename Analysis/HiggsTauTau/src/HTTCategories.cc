@@ -94,6 +94,8 @@ namespace ic {
         outtree_->Branch("wt_nlo_pt",         &wt_nlo_pt_);
         outtree_->Branch("nlo_pt",            &nlo_pt_);
       }
+      // for custom HLT efficiency studies
+      outtree_->Branch("trg_VBF",&trg_VBF);
       
       // fake-factor weights
       if (do_ff_weights_ && (channel_ == channel::et || channel_ == channel::mt || channel_ == channel::tt)){
@@ -1985,6 +1987,9 @@ namespace ic {
     if(event->Exists("subleading_lepton_match_pt")) subleading_lepton_match_pt_ = event->Get<double>("subleading_lepton_match_pt");
     if(event->Exists("leading_lepton_match_DR")) leading_lepton_match_DR_ = event->Get<double>("leading_lepton_match_DR");
     if(event->Exists("subleading_lepton_match_DR")) subleading_lepton_match_DR_ = event->Get<double>("subleading_lepton_match_DR");*/
+
+    // for trigger study
+    if(event->Exists("trg_VBF")) trg_VBF = event->Get<bool>("trg_VBF");
    
     wt_ggh_pt_up_ = 1.0;
     wt_ggh_pt_down_ = 1.0;

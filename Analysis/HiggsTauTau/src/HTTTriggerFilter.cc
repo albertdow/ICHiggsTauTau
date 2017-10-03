@@ -134,7 +134,7 @@ namespace ic {
           if (run >= 278820 /*&& run <= xxxx*/ && (name.find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v") != name.npos || name.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") != name.npos)) path_found = true; 
         }
         if (channel_ == channel::tt){
-          if (run >= 250985 /*&& run <= xxxxx*/ && (name.find("HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v") != name.npos || name.find("HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v") != name.npos)) path_found=true;
+          if (run >= 250985 /*&& run <= xxxxx*/ && (name.find("HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v") != name.npos || name.find("HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v") != name.npos)) path_found=true;
           //if (run >= 250985 /*&& run <= xxxxx*/ && (name.find("HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v") != name.npos)) path_found=true;
         }
         if (channel_ == channel::mtmet) {
@@ -423,7 +423,7 @@ namespace ic {
           leg1_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
           leg2_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
         }
-        if(run >= 271036 /*&& run <= xxxxx*/){
+        if(run >= 271036 && run <= 302572){
           trig_obj_label = "triggerObjectsDoubleMediumTau35";
           leg1_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
           leg2_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
@@ -432,6 +432,11 @@ namespace ic {
             alt_leg1_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
             alt_leg2_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
           }
+        }
+        if(run >= 302573 /*&& run <= xxxxx*/){  
+          trig_obj_label = "triggerObjectsDoubleMediumChargedIsoPFTau35";
+          leg1_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
+          leg2_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
         }
       }
       if (channel_ == channel::mtmet) {
@@ -699,9 +704,9 @@ namespace ic {
          extra_leg2_filter           = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
          leg2_filter                 = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
        } else if (mc_ == mc::summer16_80X){
-         trig_obj_label = "triggerObjectsDoubleMediumTau35";
-         leg1_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
-         leg2_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
+         trig_obj_label = "triggerObjectsDoubleMediumChargedIsoPFTau35";
+         leg1_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
+         leg2_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
          alt_trig_obj_label = "triggerObjectsDoubleMediumCombinedIsoTau35Reg";
          alt_leg1_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
          alt_leg2_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";

@@ -582,7 +582,7 @@ void HTTSequence::BuildSequence(){
   if (era_type == era::data_2015&&output_name.find("2015D")!=output_name.npos)  data_json= "input/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt";
   if (era_type == era::data_2016){
     data_json= "input/json/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt";
-    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt";
+    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"; // custom changed for 2017
   }
 
 
@@ -1068,16 +1068,16 @@ if(do_met_filters){
     }));
 }
 
-BuildModule(GenericModule("BadMuonFilters")
-  .set_function([=](ic::TreeEvent *event){
-     EventInfo *eventInfo = event->GetPtr<EventInfo>("eventInfo");
-     std::vector<std::string> bad_muon_filters = {"Flag_badMuons","Flag_duplicateMuons"};
-     bool pass_filters = true;
-     for(unsigned i=0;i<bad_muon_filters.size();++i){
-      pass_filters = pass_filters&& eventInfo->filter_result(bad_muon_filters.at(i));
-     }
-     return !pass_filters;
-  }));
+//BuildModule(GenericModule("BadMuonFilters")
+//  .set_function([=](ic::TreeEvent *event){
+//     EventInfo *eventInfo = event->GetPtr<EventInfo>("eventInfo");
+//     std::vector<std::string> bad_muon_filters = {"Flag_badMuons","Flag_duplicateMuons"};
+//     bool pass_filters = true;
+//     for(unsigned i=0;i<bad_muon_filters.size();++i){
+//      pass_filters = pass_filters&& eventInfo->filter_result(bad_muon_filters.at(i));
+//     }
+//     return !pass_filters;
+//  }));
 
 
 
