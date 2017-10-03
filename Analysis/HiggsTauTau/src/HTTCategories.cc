@@ -94,8 +94,6 @@ namespace ic {
         outtree_->Branch("wt_nlo_pt",         &wt_nlo_pt_);
         outtree_->Branch("nlo_pt",            &nlo_pt_);
       }
-      // for custom HLT efficiency studies
-      outtree_->Branch("trg_VBF",&trg_VBF);
       
       // fake-factor weights
       if (do_ff_weights_ && (channel_ == channel::et || channel_ == channel::mt || channel_ == channel::tt)){
@@ -711,6 +709,8 @@ namespace ic {
       outtree_->Branch("trg_muonelectron",    &trg_muonelectron_);
       outtree_->Branch("trg_singletau_1",    &trg_singletau_1_);
       outtree_->Branch("trg_singletau_2",    &trg_singletau_2_);
+      // for custom HLT efficiency studies
+      outtree_->Branch("trg_VBF",&trg_VBF);
       
       //outtree_->Branch("HLT_paths",    &HLT_paths_);
 
@@ -1389,6 +1389,8 @@ namespace ic {
     if (event->Exists("trg_muonelectron"))   trg_muonelectron_   = event->Get<bool>("trg_muonelectron");
     if (event->Exists("trg_singletau_1"))    trg_singletau_1_      = event->Get<bool>("trg_singletau_1");
     if (event->Exists("trg_singletau_2"))    trg_singletau_2_      = event->Get<bool>("trg_singletau_2");
+    // for trigger study
+    if(event->Exists("trg_VBF")) trg_VBF = event->Get<bool>("trg_VBF");
     
 
     // Get the objects we need from the event
@@ -1988,8 +1990,6 @@ namespace ic {
     if(event->Exists("leading_lepton_match_DR")) leading_lepton_match_DR_ = event->Get<double>("leading_lepton_match_DR");
     if(event->Exists("subleading_lepton_match_DR")) subleading_lepton_match_DR_ = event->Get<double>("subleading_lepton_match_DR");*/
 
-    // for trigger study
-    if(event->Exists("trg_VBF")) trg_VBF = event->Get<bool>("trg_VBF");
    
     wt_ggh_pt_up_ = 1.0;
     wt_ggh_pt_down_ = 1.0;

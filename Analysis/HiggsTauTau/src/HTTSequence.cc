@@ -56,6 +56,7 @@
 #include "HiggsTauTau/interface/HTTGenMatchSelector.h"
 #include "HiggsTauTau/interface/HTTFakeFactorWeights.h"
 #include "HiggsTauTau/interface/HTTGenAnalysis.h"
+#include "HiggsTauTau/interface/HTTVBFTriggerAnalysis.h"
 
 // Generic modules
 #include "Modules/interface/SimpleFilter.h"
@@ -1907,6 +1908,25 @@ BuildModule(HTTCategories("HTTCategories")
     .set_do_qcd_scale_wts(do_qcd_scale_wts_)
     .set_do_pdf_wts(js["do_pdf_wts"].asBool()));
 
+  // --------------------------------------------------------------------------
+  // VBF Trigger Studies Sequence
+  // --------------------------------------------------------------------------
+  
+  BuildModule(HTTVBFTriggerAnalysis("HTTVBFTriggerAnalysis")
+          .set_fs(fs.get())
+          .set_channel_str(channel_str)
+          .set_min_jet_pt(30.)
+          .set_max_jet_eta(4.7)
+          .set_min_e_pt(0)
+          .set_min_mu_pt(0)
+          .set_min_tau1_pt(0)
+          .set_min_tau2_pt(0)
+          .set_max_e_eta(1000)
+          .set_max_mu_eta(1000)
+          .set_max_tau_eta(1000)
+          .set_do_theory_uncert(false)
+          );
+
  } else {
 BuildModule(WMuNuCategories("WMuNuCategories")
     .set_fs(fs.get())
@@ -1924,6 +1944,9 @@ BuildModule(WMuNuCategories("WMuNuCategories")
 }
 }
 //}
+
+
+
 // --------------------------------------------------------------------------
 // TT Pair Sequence
 // --------------------------------------------------------------------------
