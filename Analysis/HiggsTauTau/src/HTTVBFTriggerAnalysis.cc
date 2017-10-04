@@ -16,8 +16,9 @@ bool CaloL1;
 
 double PFTausize0;
 double matchedVBF0;
-
-
+std::string jet_leg1_filter;
+std::string jet_leg2_filter;
+std::string trig_jet_obj_label; 
 
 struct PtComparator{
     bool operator() (ic::Candidate a, ic::Candidate b) {
@@ -130,6 +131,20 @@ namespace ic {
     outtree_->Branch("HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",           &VBFttHLTPath1_);
     outtree_->Branch("HLT_VBF_DoubleMediumChargedIsoPFTau20_Trk1_eta2p1_Reg_v",           &VBFttHLTPath2_);
     outtree_->Branch("HLT_VBF_DoubleTightChargedIsoPFTau20_Trk1_eta2p1_Reg_v",           &VBFttHLTPath3_);
+
+    outtree_->Branch("trg_doubletau", &trg_doubletau);
+
+    // offline variables from other tree
+    outtree_->Branch("jpt_1",             &jpt_1_);
+    outtree_->Branch("jpt_2",             &jpt_2_);
+    outtree_->Branch("mjj",               &mjj_);
+    outtree_->Branch("jdeta",             &jdeta_);
+    //outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1);
+    //outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2);
+    //outtree_->Branch("antiele_1",         &antiele_1_);
+    //outtree_->Branch("antimu_1",          &antimu_1_);
+    //outtree_->Branch("antiele_2",         &antiele_2_);
+    //outtree_->Branch("antimu_2",          &antimu_2_);
     }
 
 
@@ -335,11 +350,14 @@ if (L1jets.size()>0)
   event->Add("trgTau2",tau_pt_2_);
 
 
+    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
+
 
   trg_VBF = hlt_jpt_1_>115&&hlt_jpt_2_>40&&hlt_mjj_>650&&tau_pt_2_>20;
   event->Add("trg_VBF",trg_VBF);
 
   
+  if(event->Exists("trg_doubletau")) trg_doubletau = event->Get<bool>("trg_doubletau");
 
 
 //  if (cleanTau.size()>0) {
@@ -352,7 +370,7 @@ if (L1jets.size()>0)
 
     // For testing HLT online/offline jets matching
 //    std::vector<TriggerObject *> const& vbf_objs = event->GetPtrVec<TriggerObject>("triggerVBF");
-    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
+//    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
 
     for (unsigned i = 0; i < jets.size(); ++i)
     {
@@ -442,6 +460,23 @@ if (L1jets.size()>0)
     event->Add("offlineJets_deta", offline_jet_deta);
     event->Add("offlineJets_mjj", offline_mjj);
 
+
+  // define trg_VBF
+//  trig_jet_obj_label = "triggerObjectsVBFDoubleLooseChargedIsoPFTau20";
+//  jet_leg1_filter = "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20";
+//  jet_leg2_filter = "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20";
+//
+//  bool passed_VBF = false;
+//  for(unsigned i = 0; i < jets.size(); ++i){
+//    bool jet_leg1_match = IsFilterMatchedWithIndex(jets[i], VBFobjs, jet_leg1_filter, 0.5).first;
+//    bool jet_leg2_match = IsFilterMatchedWithIndex(jets[i], VBFobjs, jet_leg2_filter, 0.5).first;
+//       
+//    if (jet_leg1_match && jet_leg2_match){
+//      passed_VBF = true;  
+//    } 
+//  }
+//  event->Add("trg_VBF", passed_VBF);
+
 //    std::vector<TriggerObject *> matching_vbf_objs;
 //
 //    for (unsigned i = 0; i < jets.size(); ++i)
@@ -500,6 +535,20 @@ if (L1jets.size()>0)
 //  VBFttHLTPath1_  = event->Get<bool>("HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
 //  VBFttHLTPath2_  = event->Get<bool>("HLT_VBF_DoubleMediumChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
 //  VBFttHLTPath3_  = event->Get<bool>("HLT_VBF_DoubleTightChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
+
+
+  // offline variables from other tree ("ntuple")
+    if(event->Exists("jpt_1")) jpt_1_ = event->Get<double>("jpt_1");
+    if(event->Exists("jpt_2")) jpt_2_ = event->Get<double>("jpt_2");
+    if(event->Exists("mjj")) mjj_ = event->Get<double>("mjj");
+    if(event->Exists("jdeta")) jdeta_ = event->Get<double>("jdeta");
+
+    //if(event->Exists("mva_olddm_medium_1")) lbyMediumIsolationMVArun2DBoldDMwLT_1 = event->Get<bool>("mva_olddm_medium_1");
+    //if(event->Exists("mva_olddm_medium_2")) lbyMediumIsolationMVArun2DBoldDMwLT_2 = event->Get<bool>("mva_olddm_medium_2");
+    //if(event->Exists("antiele_1")) antiele_1_ = event->Get<bool>("antiele_1");
+    //if(event->Exists("antimu_1")) antimu_1_ = event->Get<bool>("antimu_1");
+    //if(event->Exists("antiele_2")) antiele_2_ = event->Get<bool>("antiele_2");
+    //if(event->Exists("antimu_2")) antimu_2_ = event->Get<bool>("antimu_2");
 
 
   if(fs_) outtree_->Fill();

@@ -12,6 +12,14 @@
 #include "boost/bind.hpp"
 #include "boost/format.hpp"
 
+ bool IsFilterMatchedWithName1(ic::TriggerObject *objs, std::string const& filter){
+      std::size_t hash = CityHash64(filter);
+      
+      std::vector<std::size_t> const& labels = objs->filters();
+      if (std::find(labels.begin(),labels.end(), hash) == labels.end())  return false;
+      return true;
+  }
+
 namespace ic {
 
   HTTTriggerFilter::HTTTriggerFilter(std::string const& name) : ModuleBase(name), channel_(channel::zee), mc_(mc::summer12_53X), era_(era::data_2015), strategy_(strategy::mssmsummer16){
@@ -986,7 +994,7 @@ namespace ic {
       }
     }
     event->Add("trg_doubletau", passed_doubletau);
-    
+
     bool passed_singletau_1 = false;
     bool passed_singletau_2 = false;
     if (do_singletau_ && (channel_ == channel::tt || channel_ == channel::mt || channel_ == channel::et || channel_ == channel::zmm || channel_ == channel::zee)){

@@ -88,6 +88,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool VBFttHLTPath3_;
 
   bool trg_VBF;
+  bool trg_doubletau;
 
   int PFTausize_; 
   int HLTjetssize_;
@@ -115,6 +116,18 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double hlt_jeta_3_;
   double hlt_jeta_4_;
   double hlt_mjj_;
+
+  double jpt_1_;
+  double jpt_2_;
+  double mjj_;       // Defined if n_jets >= 2
+  double jdeta_;
+  bool lbyMediumIsolationMVArun2DBoldDMwLT_1=0;
+  bool lbyMediumIsolationMVArun2DBoldDMwLT_2=0;
+  bool antiele_1_;
+  bool antimu_1_;
+  bool antiele_2_;
+  bool antimu_2_;
+
   
  public:
   HTTVBFTriggerAnalysis(std::string const& name);
