@@ -139,12 +139,13 @@ namespace ic {
     outtree_->Branch("jpt_2",             &jpt_2_);
     outtree_->Branch("mjj",               &mjj_);
     outtree_->Branch("jdeta",             &jdeta_);
-    //outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1);
-    //outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2);
-    //outtree_->Branch("antiele_1",         &antiele_1_);
-    //outtree_->Branch("antimu_1",          &antimu_1_);
-    //outtree_->Branch("antiele_2",         &antiele_2_);
-    //outtree_->Branch("antimu_2",          &antimu_2_);
+    outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1);
+    outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2);
+    outtree_->Branch("antiele_1",         &antiele_1_);
+    outtree_->Branch("antimu_1",          &antimu_1_);
+    outtree_->Branch("antiele_2",         &antiele_2_);
+    outtree_->Branch("antimu_2",          &antimu_2_);
+    outtree_->Branch("pt_tt",             &pt_tt_);
     }
 
 
@@ -543,13 +544,14 @@ if (L1jets.size()>0)
     if(event->Exists("mjj")) mjj_ = event->Get<double>("mjj");
     if(event->Exists("jdeta")) jdeta_ = event->Get<double>("jdeta");
 
-    //if(event->Exists("mva_olddm_medium_1")) lbyMediumIsolationMVArun2DBoldDMwLT_1 = event->Get<bool>("mva_olddm_medium_1");
-    //if(event->Exists("mva_olddm_medium_2")) lbyMediumIsolationMVArun2DBoldDMwLT_2 = event->Get<bool>("mva_olddm_medium_2");
-    //if(event->Exists("antiele_1")) antiele_1_ = event->Get<bool>("antiele_1");
-    //if(event->Exists("antimu_1")) antimu_1_ = event->Get<bool>("antimu_1");
-    //if(event->Exists("antiele_2")) antiele_2_ = event->Get<bool>("antiele_2");
-    //if(event->Exists("antimu_2")) antimu_2_ = event->Get<bool>("antimu_2");
+    if(event->Exists("mva_olddm_medium_1")) lbyMediumIsolationMVArun2DBoldDMwLT_1 = event->Get<bool>("mva_olddm_medium_1");
+    if(event->Exists("mva_olddm_medium_2")) lbyMediumIsolationMVArun2DBoldDMwLT_2 = event->Get<bool>("mva_olddm_medium_2");
+    if(event->Exists("antiele_1")) antiele_1_ = event->Get<bool>("antiele_1");
+    if(event->Exists("antimu_1")) antimu_1_ = event->Get<bool>("antimu_1");
+    if(event->Exists("antiele_2")) antiele_2_ = event->Get<bool>("antiele_2");
+    if(event->Exists("antimu_2")) antimu_2_ = event->Get<bool>("antimu_2");
 
+    if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
 
   if(fs_) outtree_->Fill();
     

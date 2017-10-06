@@ -121,12 +121,13 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double jpt_2_;
   double mjj_;       // Defined if n_jets >= 2
   double jdeta_;
-  bool lbyMediumIsolationMVArun2DBoldDMwLT_1=0;
+  bool lbyMediumIsolationMVArun2DBoldDMwLT_1;
   bool lbyMediumIsolationMVArun2DBoldDMwLT_2=0;
   bool antiele_1_;
   bool antimu_1_;
   bool antiele_2_;
   bool antimu_2_;
+  double pt_tt_;
 
   
  public:
