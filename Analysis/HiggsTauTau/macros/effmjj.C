@@ -20,7 +20,7 @@
         pEff = new TEfficiency(*h_num,*h_den);
         pEff->Draw("AP");
         gPad->Update();
-        pEff->SetTitle("my efficiency;Jet variable;#epsilon");
+        pEff->SetTitle("my efficiency;mjj (GeV);#epsilon");
     }
         TCanvas c2("c2", "c2", 600, 600);
         h_num->Draw("hist");        

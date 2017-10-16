@@ -109,6 +109,10 @@ namespace ic {
 
     // OTHERS
     outtree_->Branch("L1_jpt_1"       ,  &L1_jpt_1_);
+    outtree_->Branch("L1_jpt_2"       ,  &L1_jpt_2_);
+    outtree_->Branch("L1_jeta_1"       ,  &L1_jeta_1_);
+    outtree_->Branch("L1_jeta_2"       ,  &L1_jeta_2_);
+//    outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35" ,  &HLTDoubleMediumIsoPFTau35_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_2" ,  &HLTDoubleMediumIsoPFTau35_2_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_tau", &HLTDoubleMediumIsoPFTau35_tau_);
@@ -186,6 +190,10 @@ namespace ic {
    cleanTau_pt_2_ = -9999;
    hlt_mjj_=-9999;
    L1_jpt_1_=-9999;
+   L1_jpt_2_=-9999;
+   L1_jeta_1_=-9999;
+   L1_jeta_2_=-9999;
+   //L1_mjj_=-9999;
 
    matched_vbf_jpt_1_=-9999;
    matched_vbf_jpt_2_=-9999;
@@ -230,25 +238,24 @@ std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
 
 //L1jets and PFjets match test
 
-//unsigned int Match =0;
-//for (unsigned i = 0; i < HLTjets.size(); ++i)
-//{
-//  for (unsigned j = 0; j < 1; ++j)
-//  {
-//    std::pair<TriggerObject *, TriggerObject *> L1PF (HLTjets[i],L1jets[j]);
-//    bool a = DRLessThan(L1PF,0.5);
-//    if (a) 
-//    {
-//	  Match+=1;
-//   	  h1->Fill(HLTjets[i]->vector().Pt());
-//	  break;
-//    } 
-//  }
-//}
+unsigned int Match =0;
+for (unsigned i = 0; i < HLTjets.size()-1; ++i)
+  for (unsigned j = i+1; j < HLTjets.size(); ++j)
+  {
+    std::pair<TriggerObject *, TriggerObject *> L1PF (HLTjets[i],L1jets[j]);
+    bool a = DRLessThan(L1PF,0.5);
+    if (a) 
+    {
+	  Match+=1;
+   	  //h1->Fill(HLTjets[i]->vector().Pt());
+	  break;
+    } 
+}
 
-//if (Match!=HLTjets.size()){
-//  std::cout<<"Matching problem: Matched :"<<Match<<" / "<<HLTjets.size()<<std::endl;
-//}
+
+if (Match!=HLTjets.size()){
+  std::cout<<"Matching problem: Matched :"<<Match<<" / "<<HLTjets.size()<<std::endl;
+}
 
 
 if (L1jets.size()!=0)
@@ -310,14 +317,32 @@ if (HLTjets.size()>3)
     hlt_jeta_4_ = HLTjets[3]->vector().Eta();	
 	}
 
+//for (unsigned i = 0; i < L1jets.size(); ++i) L1Jets_=L1jets[i]->vector().Pt();
+
 if (L1jets.size()>0)
 {
     L1_jpt_1_=L1jets[0]->vector().Pt();
+    L1_jeta_1_=L1jets[0]->vector().Eta();
 }
  
+if (L1jets.size()>1)
+{
+    L1_jpt_2_=L1jets[1]->vector().Pt();
+    L1_jeta_2_=L1jets[1]->vector().Eta();
+
+}
   hlt_mjj_ = mjj;
 
 
+//for (unsigned i = 0; i < L1jets.size()-1; ++i)
+//for (unsigned j = i+1; j < L1jets.size(); ++j)
+//{
+//
+//  if ((L1jets.size()>1)) 
+//  {
+//    L1_mjj_ = (L1jets[i]->vector()+L1jets[j]->vector()).M();
+//  }  
+//}
 
 
     // For testing HLT online jets/tau matching

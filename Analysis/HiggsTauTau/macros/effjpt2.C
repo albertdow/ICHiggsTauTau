@@ -1,13 +1,13 @@
 {
     // book the historams
     //TH1::SetDefaultSumw2(true);
-    double xbins[13]={0,20,40,50,60,70,80,90,100,120,140,160,200};
-    TH1D* h_num = new TH1D("h_num", "Numerator Count;Jet variable;Numerator Count"    , 12, xbins);
-    TH1D* h_den = new TH1D("h_den", "Denominator Count;Jet variable;Denominator Count", 12, xbins);
+    double xbins[10]={0,20,40,60,80,100,120,140,160,200};
+    TH1D* h_num = new TH1D("h_num", "Numerator Count;Jet variable;Numerator Count"    , 9, xbins);
+    TH1D* h_den = new TH1D("h_den", "Denominator Count;Jet variable;Denominator Count", 9, xbins);
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>800 & jpt_1>180";
+    TCut offline = "mjj>2000 & jpt_1>200";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
@@ -20,7 +20,7 @@
         pEff = new TEfficiency(*h_num,*h_den);
         pEff->Draw("AP");
         gPad->Update();
-        pEff->SetTitle("my efficiency;Jet variable;#epsilon");
+        pEff->SetTitle("my efficiency;Subleading Jet pT (GeV);#epsilon");
     }
         TCanvas c2("c2", "c2", 600, 600);
         h_num->Draw("hist");        
