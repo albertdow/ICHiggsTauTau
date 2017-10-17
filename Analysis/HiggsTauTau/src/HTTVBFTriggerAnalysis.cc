@@ -238,24 +238,24 @@ std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
 
 //L1jets and PFjets match test
 
-unsigned int Match =0;
-for (unsigned i = 0; i < HLTjets.size()-1; ++i)
-  for (unsigned j = i+1; j < HLTjets.size(); ++j)
-  {
-    std::pair<TriggerObject *, TriggerObject *> L1PF (HLTjets[i],L1jets[j]);
-    bool a = DRLessThan(L1PF,0.5);
-    if (a) 
-    {
-	  Match+=1;
-   	  //h1->Fill(HLTjets[i]->vector().Pt());
-	  break;
-    } 
-}
+//unsigned int Match =0;
+//for (unsigned i = 0; i < HLTjets.size()-1; ++i)
+//  for (unsigned j = i+1; j < HLTjets.size(); ++j)
+//  {
+//    std::pair<TriggerObject *, TriggerObject *> L1PF (HLTjets[i],L1jets[j]);
+//    bool a = DRLessThan(L1PF,0.5);
+//    if (a) 
+//    {
+//	  Match+=1;
+//   	  //h1->Fill(HLTjets[i]->vector().Pt());
+//	  break;
+//    } 
+//}
 
 
-if (Match!=HLTjets.size()){
-  std::cout<<"Matching problem: Matched :"<<Match<<" / "<<HLTjets.size()<<std::endl;
-}
+//if (Match!=HLTjets.size()){
+//  std::cout<<"Matching problem: Matched :"<<Match<<" / "<<HLTjets.size()<<std::endl;
+//}
 
 
 if (L1jets.size()!=0)

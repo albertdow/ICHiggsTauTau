@@ -1,13 +1,13 @@
 {
     // book the historams
     //TH1::SetDefaultSumw2(true);
-    double xbins[12]={0,400,500,600,700,800,900,1000,1200,1400,1800,2200};
-    TH1D* h_num = new TH1D("h_num", "Numerator Count;Jet variable;Numerator Count"    , 11, xbins);
-    TH1D* h_den = new TH1D("h_den", "Denominator Count;Jet variable;Denominator Count", 11, xbins);
+    double xbins[15]={0,100,200,300,400,500,600,700,800,900,1000,1200,1400,1800,2200};
+    TH1D* h_num = new TH1D("h_num", "Numerator Count;Jet variable;Numerator Count"    , 14, xbins);
+    TH1D* h_den = new TH1D("h_den", "Denominator Count;Jet variable;Denominator Count", 14, xbins);
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "jpt_1>200 & jpt_2>100";
+    TCut offline = "jpt_1>150 & jpt_2>50";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 

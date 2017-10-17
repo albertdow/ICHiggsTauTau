@@ -988,19 +988,19 @@ BuildModule(SimpleFilter<CompositeCandidate>("PairFilter")
      BuildModule(httPairSelector);
    }
    
-   if(js["store_hltpaths"].asBool()){
+   //if(js["store_hltpaths"].asBool()){
 
-     if(is_data || js["trg_in_mc"].asBool()){  
-         
-       BuildModule(HTTTriggerFilter2("HTTTriggerFilter2")
-           .set_channel(channel)
-           .set_mc(mc_type)
-           .set_era(era_type)
-           .set_is_data(is_data)
-           .set_pair_label("ditau"));
+     //if(is_data || js["trg_in_mc"].asBool()){  
+     //    
+     //  BuildModule(HTTTriggerFilter2("HTTTriggerFilter2")
+     //      .set_channel(channel)
+     //      .set_mc(mc_type)
+     //      .set_era(era_type)
+     //      .set_is_data(is_data)
+     //      .set_pair_label("ditau"));
 
-     }
-   } else {
+     //}
+   //} else {
    if(channel != channel::tpzmm &&channel !=channel::tpzee && !js["qcd_study"].asBool()){  
      if((is_data || js["trg_in_mc"].asBool()) && (strategy_type==strategy::mssmsummer16 && !js["filter_trg"].asBool())&& (channel==channel::em || channel==channel::tt || js["do_leptonplustau"].asBool()||js["do_singlelepton"].asBool())){
        if(!is_embedded || (is_embedded && strategy_type==strategy::paper2013 && era_type==era::data_2012_rereco)){
@@ -1016,7 +1016,7 @@ BuildModule(SimpleFilter<CompositeCandidate>("PairFilter")
                .set_do_singletau(js["do_singletau"].asBool())
                .set_do_filter(false)
                .set_pair_label("ditau"));
-       }
+   //    }
      }
    }
  }

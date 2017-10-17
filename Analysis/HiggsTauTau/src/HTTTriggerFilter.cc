@@ -715,9 +715,9 @@ namespace ic {
          trig_obj_label = "triggerObjectsDoubleMediumChargedIsoPFTau35";
          leg1_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
          leg2_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
-         alt_trig_obj_label = "triggerObjectsDoubleMediumCombinedIsoTau35Reg";
-         alt_leg1_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
-         alt_leg2_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
+         //alt_trig_obj_label = "triggerObjectsDoubleMediumCombinedIsoTau35Reg";
+         //alt_leg1_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
+         //alt_leg2_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
       }
     }
       /*
