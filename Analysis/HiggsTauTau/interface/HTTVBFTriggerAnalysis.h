@@ -67,6 +67,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double L1_jpt_2_;
   double L1_jeta_1_;
   double L1_jeta_2_;
+  double L1_mjj_;
   double tau_lo_pt_;
   double tau_pt_2_;
   double cleanTau_lo_pt_;

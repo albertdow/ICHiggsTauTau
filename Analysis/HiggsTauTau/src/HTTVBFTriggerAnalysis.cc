@@ -112,7 +112,7 @@ namespace ic {
     outtree_->Branch("L1_jpt_2"       ,  &L1_jpt_2_);
     outtree_->Branch("L1_jeta_1"       ,  &L1_jeta_1_);
     outtree_->Branch("L1_jeta_2"       ,  &L1_jeta_2_);
-//    outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
+    outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35" ,  &HLTDoubleMediumIsoPFTau35_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_2" ,  &HLTDoubleMediumIsoPFTau35_2_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_tau", &HLTDoubleMediumIsoPFTau35_tau_);
@@ -193,7 +193,7 @@ namespace ic {
    L1_jpt_2_=-9999;
    L1_jeta_1_=-9999;
    L1_jeta_2_=-9999;
-   //L1_mjj_=-9999;
+   L1_mjj_=-9999;
 
    matched_vbf_jpt_1_=-9999;
    matched_vbf_jpt_2_=-9999;
@@ -334,15 +334,15 @@ if (L1jets.size()>1)
   hlt_mjj_ = mjj;
 
 
-//for (unsigned i = 0; i < L1jets.size()-1; ++i)
-//for (unsigned j = i+1; j < L1jets.size(); ++j)
-//{
-//
-//  if ((L1jets.size()>1)) 
-//  {
-//    L1_mjj_ = (L1jets[i]->vector()+L1jets[j]->vector()).M();
-//  }  
-//}
+for (unsigned i = 0; i < L1jets.size()-1; ++i)
+for (unsigned j = i+1; j < L1jets.size(); ++j)
+{
+
+  if ((L1jets.size()>1)) 
+  {
+    L1_mjj_ = (L1jets[i]->vector()+L1jets[j]->vector()).M();
+  }  
+}
 
 
     // For testing HLT online jets/tau matching
