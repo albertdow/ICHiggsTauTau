@@ -11,6 +11,7 @@
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
+    //TCut L1 = "VBFL1Passed";
 
     // fill the histograms with TTree::Draw
     HLT_trigger_ntuple->Draw("jpt_1>>h_num", VBF && DiTau && offline);
