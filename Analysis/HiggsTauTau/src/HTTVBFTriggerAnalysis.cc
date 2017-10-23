@@ -219,6 +219,7 @@ namespace ic {
           L1jets.push_back(VBFobjs[i]);
       }
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
+	  //if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFOnePFJet2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) PFTau.push_back(VBFobjs[i]);	
     }
  
