@@ -7,7 +7,7 @@
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>700 & jpt_2>50";
+    TCut offline = "mjj>700 & jpt_2>50 & jdeta>3.5 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
