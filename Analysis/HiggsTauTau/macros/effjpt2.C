@@ -57,7 +57,7 @@ TEfficiency* DrawEffs(TString filename)
         pEff = new TEfficiency(*h_num,*h_den);
         //pEff->Draw("same");
         //gPad->Update();
-        pEff->SetTitle("my efficiency;Leading Jet pT (GeV);#epsilon");
+        pEff->SetTitle(";Subleading Jet pT (GeV);Efficiency");
     }
     //TCanvas c2("c2", "c2", 600, 600);
     //h_num->Draw("hist");        
@@ -98,6 +98,12 @@ void effjpt2(){
     eff2->Fit(myErf2);
     myErf2->SetLineColor(kRed);
     myErf2->Draw("same");
+
+    TLegend* leg = new TLegend(0.7,0.2,0.85,0.3);
+    leg->SetBorderSize(0);
+    leg->AddEntry(myErf1,"Data");
+    leg->AddEntry(myErf2,"MC");
+    leg->Draw();
 
     c1->SaveAs("effsjpt2.pdf");
 }
