@@ -68,7 +68,6 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double L1_jeta_1_;
   double L1_jeta_2_;
   double L1_mjj_;
-  bool VBFL1Passed;
   double tau_lo_pt_;
   double tau_pt_2_;
   double cleanTau_lo_pt_;
@@ -82,6 +81,11 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
 //  double matched_vbf_jeta_3_;
 //  double matched_vbf_jeta_4_;
 
+  double matched_offline_jpt_1_;
+  double matched_offline_jpt_2_;
+  double matched_offline_jeta_1_;
+  double matched_offline_jeta_2_;
+  double matched_offline_mjj_;
 //  double HLTVBFPassThrough_;
   double HLTDoubleMediumIsoPFTau35_;
   double HLTDoubleMediumIsoPFTau35_2_;
@@ -98,6 +102,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   int PFTausize_; 
   int HLTjetssize_;
 
+  bool VBFL1Passed;
   double pt_1_;
   double pt_2_;
   double eta_1_;

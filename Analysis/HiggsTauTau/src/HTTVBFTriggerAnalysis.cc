@@ -90,15 +90,21 @@ namespace ic {
     outtree_->Branch("hlt_jeta_4"       , &hlt_jeta_4_       );
 
     outtree_->Branch("matchedPFJets" , &matchedPFJets_ );
-    //outtree_->Branch("matched_vbf_jpt_1" , &matched_vbf_jpt_1_ );
-    //outtree_->Branch("matched_vbf_jpt_2" , &matched_vbf_jpt_2_ );
+    outtree_->Branch("matched_vbf_jpt_1" , &matched_vbf_jpt_1_ );
+    outtree_->Branch("matched_vbf_jpt_2" , &matched_vbf_jpt_2_ );
     //  outtree_->Branch("matched_vbf_jpt_3" , &matched_vbf_jpt_3_ );
     //  outtree_->Branch("matched_vbf_jpt_4" , &matched_vbf_jpt_4_ );
 
-    //outtree_->Branch("matched_vbf_jeta_1" , &matched_vbf_jeta_1_ );
-    //outtree_->Branch("matched_vbf_jeta_2" , &matched_vbf_jeta_2_ );
+    outtree_->Branch("matched_vbf_jeta_1" , &matched_vbf_jeta_1_ );
+    outtree_->Branch("matched_vbf_jeta_2" , &matched_vbf_jeta_2_ );
     //  outtree_->Branch("matched_vbf_jeta_3" , &matched_vbf_jeta_3_ );
     //  outtree_->Branch("matched_vbf_jeta_4" , &matched_vbf_jeta_4_ );
+
+    outtree_->Branch("matched_offline_jpt_1", &matched_offline_jpt_1_);
+    outtree_->Branch("matched_offline_jpt_2", &matched_offline_jpt_2_);
+    outtree_->Branch("matched_offline_jeta_1", &matched_offline_jeta_1_);
+    outtree_->Branch("matched_offline_jeta_2", &matched_offline_jeta_2_);
+    outtree_->Branch("matched_offline_mjj", &matched_offline_mjj_);
 
     outtree_->Branch("PFTausize"        , &PFTausize_      );
     outtree_->Branch("tau_lo_pt"        , &tau_lo_pt_      );
@@ -404,6 +410,7 @@ if (L1jets.size()>1)
     // For testing HLT online/offline jets matching
 //    std::vector<TriggerObject *> const& vbf_objs = event->GetPtrVec<TriggerObject>("triggerVBF");
 //    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
+    std::vector<PFJet *> matched_offline_objs;
 
     for (unsigned i = 0; i < jets.size(); ++i)
     {
@@ -411,20 +418,31 @@ if (L1jets.size()>1)
       if (IsFilterMatchedWithIndex(jets[i], VBFobjs, "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20", 0.5).first == true)
       {
       	matched_vbf_objs.push_back(VBFobjs[index]);
+        matched_offline_objs.push_back(jets[i]);
         h1->Fill((jets[i]->vector().Pt()-VBFobjs[index]->vector().Pt())/jets[i]->vector().Pt());
       }
       else 
           break;
     }
 //
-//        if (matched_vbf_objs.size()>0){
-//            matched_vbf_jpt_1_ = matched_vbf_objs[0]->vector().Pt();
-//            matched_vbf_jeta_1_ = matched_vbf_objs[0]->vector().Eta();
-//        }
-//        if (matched_vbf_objs.size()>1){
-//            matched_vbf_jpt_2_ = matched_vbf_objs[1]->vector().Pt();
-//            matched_vbf_jeta_2_ = matched_vbf_objs[1]->vector().Eta();
-//        }
+        if (matched_offline_objs.size()>0){
+            matched_offline_jpt_1_ = matched_offline_objs[0]->vector().Pt();
+            matched_offline_jeta_1_ = matched_offline_objs[0]->vector().Eta();
+        }
+        if (matched_offline_objs.size()>1){
+            matched_offline_jpt_2_ = matched_offline_objs[1]->vector().Pt();
+            matched_offline_jeta_2_ = matched_offline_objs[1]->vector().Eta();
+            matched_offline_mjj_ = (matched_offline_objs[0]->vector()+matched_offline_objs[1]->vector()).M();
+        }
+
+        if (matched_vbf_objs.size()>0){
+            matched_vbf_jpt_1_ = matched_vbf_objs[0]->vector().Pt();
+            matched_vbf_jeta_1_ = matched_vbf_objs[0]->vector().Eta();
+        }
+        if (matched_vbf_objs.size()>1){
+            matched_vbf_jpt_2_ = matched_vbf_objs[1]->vector().Pt();
+            matched_vbf_jeta_2_ = matched_vbf_objs[1]->vector().Eta();
+        }
         //if (matched_vbf_objs.size()>2){
         //    matched_vbf_jpt_3_ = matched_vbf_objs[2]->vector().Pt();
         //    matched_vbf_jeta_3_ = matched_vbf_objs[0]->vector().Eta();
