@@ -66,7 +66,7 @@ namespace ic {
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
 
-  if(fs_) outtree_->Fill();
+    if(fs_) outtree_->Fill();
     
 
     return 0;
