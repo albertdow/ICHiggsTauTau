@@ -290,22 +290,22 @@ L1size1++;
 
 //Insert mjj for HLT and Calo jets 
 
-double mjj = -9999;
 
-for (unsigned i = 0; i < HLTjets.size(); ++i)
-for (unsigned j = 0; j < HLTjets.size(); ++j)
-{
+//for (unsigned i = 0; i < HLTjets.size(); ++i)
+//for (unsigned j = 0; j < HLTjets.size(); ++j)
+//{
+//
+//    if ((HLTjets.size()>1)||(i!=j)) 
+//    {
+//        if ((HLTjets[i]->vector()+HLTjets[j]->vector()).M()>mjj)
+//        {
+//		    mjj = (HLTjets[i]->vector()+HLTjets[j]->vector()).M();
+//        }
+//
+//    }
+//
+//}
 
-    if ((HLTjets.size()>1)||(i!=j)) 
-    {
-        if ((HLTjets[i]->vector()+HLTjets[j]->vector()).M()>mjj)
-        {
-		    mjj = (HLTjets[i]->vector()+HLTjets[j]->vector()).M();
-        }
-
-    }
-
-}
 
 
 if (HLTjets.size()>0)
@@ -318,6 +318,8 @@ if (HLTjets.size()>1)
 	{
     hlt_jpt_2_ = HLTjets[1]->vector().Pt();
     hlt_jeta_2_ = HLTjets[1]->vector().Eta();
+    hlt_mjj_ = (HLTjets[0]->vector() + HLTjets[1]->vector()).M();
+    //std::cout<<"HLT Mjj: "<<hlt_mjj_<<std::endl;
 	}
 if (HLTjets.size()>2)
 	{
@@ -344,7 +346,6 @@ if (L1jets.size()>1)
     L1_jeta_2_=L1jets[1]->vector().Eta();
 
 }
-  hlt_mjj_ = mjj;
 
 
 //for (unsigned i = 0; i < L1jets.size()-1; ++i)
@@ -428,11 +429,14 @@ if (L1jets.size()>1)
         if (matched_offline_objs.size()>0){
             matched_offline_jpt_1_ = matched_offline_objs[0]->vector().Pt();
             matched_offline_jeta_1_ = matched_offline_objs[0]->vector().Eta();
+            //std::cout<<"matched offline jpt 1: "<<matched_offline_jpt_1_<<std::endl;
         }
         if (matched_offline_objs.size()>1){
             matched_offline_jpt_2_ = matched_offline_objs[1]->vector().Pt();
             matched_offline_jeta_2_ = matched_offline_objs[1]->vector().Eta();
             matched_offline_mjj_ = (matched_offline_objs[0]->vector()+matched_offline_objs[1]->vector()).M();
+            //std::cout<<"matched offline jpt 2: "<<matched_offline_jpt_2_<<std::endl;
+            //std::cout<<"matched offline mjj: "<<matched_offline_mjj_<<std::endl;
         }
 
         if (matched_vbf_objs.size()>0){
