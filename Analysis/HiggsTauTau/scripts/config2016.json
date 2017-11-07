@@ -47,7 +47,7 @@
     "muons"         : "muons",
     "taus"          : "taus",
     "jets"          : "ak4PFJetsCHS",
-    "met"           : "pfMET",
+    "met"           : "pfMetFromSlimmed",
     "genTaus"       : "genParticles",
     "genJets"       : "genJets",
     "do_iso_eff"    : false,

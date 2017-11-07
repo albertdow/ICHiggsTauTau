@@ -31,7 +31,7 @@ namespace ic {
     outtree_->Branch("jpt_2",             &jpt_2_);
     outtree_->Branch("mjj",               &mjj_);
     outtree_->Branch("jdeta",             &jdeta_);
-    outtree_->Branch("njets",             &njets_);
+    outtree_->Branch("njets",             &n_jets_);
 
     outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1);
     outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2);
@@ -55,7 +55,7 @@ namespace ic {
     if(event->Exists("jpt_2")) jpt_2_ = event->Get<double>("jpt_2");
     if(event->Exists("mjj")) mjj_ = event->Get<double>("mjj");
     if(event->Exists("jdeta")) jdeta_ = event->Get<double>("jdeta");
-    if(event->Exists("njets")) njets_ = event->Get<double>("njets");
+    if(event->Exists("njets")) n_jets_ = event->Get<unsigned>("njets");
 
     if(event->Exists("mva_olddm_medium_1")) lbyMediumIsolationMVArun2DBoldDMwLT_1 = event->Get<bool>("mva_olddm_medium_1");
     if(event->Exists("mva_olddm_medium_2")) lbyMediumIsolationMVArun2DBoldDMwLT_2 = event->Get<bool>("mva_olddm_medium_2");

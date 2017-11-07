@@ -47,7 +47,7 @@ class HTTMLStudies : public ModuleBase {
   double jpt_2_;
   double mjj_;       // Defined if n_jets >= 2
   double jdeta_;
-  double njets_;
+  double n_jets_;
   
   bool lbyMediumIsolationMVArun2DBoldDMwLT_1;
   bool lbyMediumIsolationMVArun2DBoldDMwLT_2=0;

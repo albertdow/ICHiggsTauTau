@@ -3585,6 +3585,22 @@ namespace ic {
       convergence_bb_ = -9999; 
       mbb_h_ = -9999;
     }
+
+    // adding these variables to event to use in MLntuple
+    event->Add("jpt_1",jpt_1_.var_double);
+    event->Add("jpt_2",jpt_2_.var_double);
+    event->Add("mjj",mjj_.var_double);
+    event->Add("jdeta",jdeta_.var_double);
+    event->Add("njets",n_jets_);
+
+    event->Add("mva_olddm_medium_1",lbyMediumIsolationMVArun2DBoldDMwLT_1);
+    event->Add("mva_olddm_medium_2",lbyMediumIsolationMVArun2DBoldDMwLT_2);
+    event->Add("antiele_1", antiele_1_);
+    event->Add("antimu_1", antimu_1_);
+    event->Add("antiele_2",antiele_2_);
+    event->Add("antimu_2", antimu_2_);
+    
+    event->Add("pt_tt", pt_tt_.var_double);
     
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
