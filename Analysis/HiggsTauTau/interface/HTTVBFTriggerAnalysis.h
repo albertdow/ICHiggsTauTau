@@ -80,6 +80,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double matched_vbf_jeta_2_;
 //  double matched_vbf_jeta_3_;
 //  double matched_vbf_jeta_4_;
+  double matched_vbf_mjj_;
 
   double matched_offline_jpt_1_;
   double matched_offline_jpt_2_;
@@ -102,7 +103,8 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   int PFTausize_; 
   int HLTjetssize_;
 
-  bool VBFL1Passed;
+  bool L1Pass_;
+
   double pt_1_;
   double pt_2_;
   double eta_1_;
@@ -139,6 +141,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool antimu_2_;
   double pt_tt_;
 
+  bool two_jets_;
   
  public:
   HTTVBFTriggerAnalysis(std::string const& name);
@@ -153,6 +156,12 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   TCanvas *c1;
   TH1D *h2;
   TCanvas *c2;
+  TH1D *h3;
+  TCanvas *c3;
+  TH1D *h4;
+  TCanvas *c4;
+  TH1D *h5;
+  TCanvas *c5;
 
 };
 

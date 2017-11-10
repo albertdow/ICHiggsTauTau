@@ -97,6 +97,7 @@ namespace ic {
 
     outtree_->Branch("matched_vbf_jeta_1" , &matched_vbf_jeta_1_ );
     outtree_->Branch("matched_vbf_jeta_2" , &matched_vbf_jeta_2_ );
+    outtree_->Branch("matched_vbf_mjj",     &matched_vbf_mjj_);
     //  outtree_->Branch("matched_vbf_jeta_3" , &matched_vbf_jeta_3_ );
     //  outtree_->Branch("matched_vbf_jeta_4" , &matched_vbf_jeta_4_ );
 
@@ -157,7 +158,10 @@ namespace ic {
     outtree_->Branch("antimu_2",          &antimu_2_);
     outtree_->Branch("pt_tt",             &pt_tt_);
 
-    outtree_->Branch("VBFL1Passed",       &VBFL1Passed);
+    outtree_->Branch("two_jets",          &two_jets_);
+
+    outtree_->Branch("L1Pass",       &L1Pass_);
+
     }
 
 
@@ -166,7 +170,15 @@ namespace ic {
    
     h2 = new TH1D("h2","(offline Taus.Pt()-HLT PFTaus.Pt())/offline Taus.Pt()",50,-1.5,1.5);
     c2 = new TCanvas("c2","c2",800,1000);
+
+    h3 = new TH1D("h3","(Offline Lead Jet.Pt()-HLT Lead PFJet.Pt())/Offline Lead Jet.Pt()",50,-1.5,1.5);
+    c3 = new TCanvas("c3","c3",800,1000);
+   
+    h4 = new TH1D("h4","(offline sublead jet.Pt()-HLT sublead jet.Pt())/offline sublead jet.Pt()",50,-1.5,1.5);
+    c4 = new TCanvas("c4","c4",800,1000);
     
+    h5 = new TH1D("h5","(offline mjj.Pt()-HLT mjj.Pt())/offline mjj.Pt()",50,-1.5,1.5);
+    c5 = new TCanvas("c5","c5",800,1000);
     return 0;
   }
 
@@ -191,6 +203,7 @@ namespace ic {
    hlt_jeta_2_=-9999;
    hlt_jeta_3_=-9999;
    hlt_jeta_4_=-9999;
+
    
    tau_lo_pt_=-9999;
    tau_pt_2_ = -9999;
@@ -217,11 +230,12 @@ namespace ic {
 
    PFTausize_=-9999;
    HLTjetssize_=-9999;
-   unsigned int VBFL1count=0;
+   
+   L1Pass_=false;
     // Get the objects at HLT from the appropriate filters
     for (unsigned i = 0; i < VBFobjs.size(); ++i){ 
   	  if (IsFilterMatchedWithName(VBFobjs[i], "hltL1VBFDiJetOR")){ 
-          VBFL1count++;
+          L1Pass_=true;
           L1jets.push_back(VBFobjs[i]);
       }
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
@@ -229,8 +243,8 @@ namespace ic {
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) PFTau.push_back(VBFobjs[i]);	
     }
  
-    VBFL1Passed=(VBFL1count>0);
-    event->Add("VBFL1Passed",VBFL1Passed);
+    event->Add("L1Pass",L1Pass_);
+
 //    HLTjetssize_ = HLTjets.size();
 //    h1->Fill(HLTjetssize_);   
 
@@ -312,6 +326,7 @@ if (HLTjets.size()>0)
 	{
     hlt_jpt_1_ = HLTjets[0]->vector().Pt();
     hlt_jeta_1_ = HLTjets[0]->vector().Eta();
+    //std::cout<<"HLT jpt_1: "<<hlt_jpt_1_<<std::endl;
 
 	}
 if (HLTjets.size()>1)
@@ -319,6 +334,7 @@ if (HLTjets.size()>1)
     hlt_jpt_2_ = HLTjets[1]->vector().Pt();
     hlt_jeta_2_ = HLTjets[1]->vector().Eta();
     hlt_mjj_ = (HLTjets[0]->vector() + HLTjets[1]->vector()).M();
+    //std::cout<<"HLT jpt_2: "<<hlt_jpt_2_<<std::endl;
     //std::cout<<"HLT Mjj: "<<hlt_mjj_<<std::endl;
 	}
 if (HLTjets.size()>2)
@@ -413,6 +429,9 @@ if (L1jets.size()>1)
 //    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
     std::vector<PFJet *> matched_offline_objs;
 
+    two_jets_=false;
+    if (jets.size()>=2) two_jets_=true;
+
     for (unsigned i = 0; i < jets.size(); ++i)
     {
       int index = IsFilterMatchedWithIndex(jets[i], VBFobjs, "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20", 0.5).second;
@@ -436,7 +455,7 @@ if (L1jets.size()>1)
             matched_offline_jeta_2_ = matched_offline_objs[1]->vector().Eta();
             matched_offline_mjj_ = (matched_offline_objs[0]->vector()+matched_offline_objs[1]->vector()).M();
             //std::cout<<"matched offline jpt 2: "<<matched_offline_jpt_2_<<std::endl;
-            //std::cout<<"matched offline mjj: "<<matched_offline_mjj_<<std::endl;
+            //std::cout<<"matched offline mjj: "<<matched_offline_mjj_<<"next event"<<std::endl;
         }
 
         if (matched_vbf_objs.size()>0){
@@ -446,6 +465,7 @@ if (L1jets.size()>1)
         if (matched_vbf_objs.size()>1){
             matched_vbf_jpt_2_ = matched_vbf_objs[1]->vector().Pt();
             matched_vbf_jeta_2_ = matched_vbf_objs[1]->vector().Eta();
+            matched_vbf_mjj_ = (matched_vbf_objs[0]->vector()+matched_vbf_objs[1]->vector()).M();
         }
         //if (matched_vbf_objs.size()>2){
         //    matched_vbf_jpt_3_ = matched_vbf_objs[2]->vector().Pt();
@@ -456,6 +476,10 @@ if (L1jets.size()>1)
         //    matched_vbf_jeta_4_ = matched_vbf_objs[0]->vector().Eta();
         //}
 
+        h3->Fill((matched_offline_jpt_1_-matched_vbf_jpt_1_)/matched_offline_jpt_1_);
+        h4->Fill((matched_offline_jpt_2_-matched_vbf_jpt_2_)/matched_offline_jpt_2_);
+        h5->Fill((matched_offline_mjj_-matched_vbf_mjj_)/matched_offline_mjj_);
+        
   
 
 //  std::vector<TriggerObject *> const& pass_through_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDiJetVBFPassThrough");

@@ -10,15 +10,16 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>800 & jpt_2>60 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
+    TCut offline = "mjj>800 & jpt_2>60";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
+    TCut TwoJets = "two_jets";
     //TCut L1 = "VBFL1Passed";
 
     // fill the histograms with TTree::Draw
     HLT_trigger_ntuple->Draw("jpt_1>>h_num", VBF && DiTau && offline);
-    HLT_trigger_ntuple->Draw("jpt_1>>h_den", DiTau && offline);
+    HLT_trigger_ntuple->Draw("jpt_1>>h_den", DiTau && TwoJets && offline);
 
     if(TEfficiency::CheckConsistency(*h_num,*h_den)){
         pEff = new TEfficiency(*h_num,*h_den);
@@ -42,7 +43,8 @@ auto effErf = [](double* x, double* p) {
 void effjpt1(){
     TCanvas* c1 = new TCanvas();
     TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TauTriggerStudy_TauD-E_302026-304508_tt_0.root"));
-    TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TauTriggerStudy_17Oct17_VBFHToTauTau_tt_0.root"));
+    //TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TauTriggerStudy_17Oct17_VBFHToTauTau_tt_0.root"));
+    TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/8Nov17_TEST_TauTriggerStudy_17Oct17_VBFHToTauTau_tt_0.root"));
     eff1->SetLineColor(kBlue);
     eff2->SetLineColor(kRed);
     eff2->Draw();
@@ -72,5 +74,5 @@ void effjpt1(){
     leg->AddEntry(myErf2,"MC");
     leg->Draw();
     
-    c1->SaveAs("effsjpt1.pdf");
+    c1->SaveAs("effsjpt1offlinetaus.pdf");
 }
