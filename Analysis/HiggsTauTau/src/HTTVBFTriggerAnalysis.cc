@@ -119,7 +119,7 @@ namespace ic {
     outtree_->Branch("L1_jpt_2"       ,  &L1_jpt_2_);
     outtree_->Branch("L1_jeta_1"       ,  &L1_jeta_1_);
     outtree_->Branch("L1_jeta_2"       ,  &L1_jeta_2_);
-    //outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
+    outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35" ,  &HLTDoubleMediumIsoPFTau35_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_2" ,  &HLTDoubleMediumIsoPFTau35_2_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_tau", &HLTDoubleMediumIsoPFTau35_tau_);
@@ -360,6 +360,7 @@ if (L1jets.size()>1)
 {
     L1_jpt_2_=L1jets[1]->vector().Pt();
     L1_jeta_2_=L1jets[1]->vector().Eta();
+    L1_mjj_=(L1jets[0]->vector()+L1jets[1]->vector()).M();
 
 }
 

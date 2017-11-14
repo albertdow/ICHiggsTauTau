@@ -42,7 +42,7 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>400 & jpt_1>150 & jpt_2>60 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
+    TCut offline = "mjj>500 & jpt_1>200 & jpt_2>80 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
@@ -104,5 +104,5 @@ void effmjj(){
     leg->AddEntry(myErf2,"MC");
     leg->Draw();
     
-    c1->SaveAs("effsmjj.pdf");
+    c1->SaveAs("effsmjj13Nov.pdf");
 }
