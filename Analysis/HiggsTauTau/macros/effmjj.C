@@ -42,7 +42,7 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>500 & jpt_1>200 & jpt_2>80 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
+    TCut offline = "mjj>500 & jpt_1>200 & jpt_2>80 & offlineTaus_2>70 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
