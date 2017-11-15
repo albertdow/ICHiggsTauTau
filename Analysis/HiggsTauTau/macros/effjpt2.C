@@ -105,5 +105,5 @@ void effjpt2(){
     leg->AddEntry(myErf2,"MC");
     leg->Draw();
 
-    c1->SaveAs("effsjpt2.pdf");
+    c1->SaveAs("effsjpt2TEST.pdf");
 }

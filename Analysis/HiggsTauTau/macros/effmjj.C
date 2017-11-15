@@ -42,7 +42,7 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>500 & jpt_1>200 & jpt_2>80 & offlineTaus_2>70 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
+    TCut offline = "mjj>400 & jpt_1>140 & jpt_2>60 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
@@ -77,19 +77,21 @@ void effmjj(){
     TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TauTriggerStudy_17Oct17_VBFHToTauTau_tt_0.root"));
     eff1->SetLineColor(kBlue);
     eff2->SetLineColor(kRed);
-    eff2->Draw();
-    eff1->Draw("same");
+    //eff2->Draw();
+    //eff1->Draw("same");
+    eff1->Draw();
+    eff2->Draw("same");
 
-    TF1* myErf1 = new TF1("myErf1", effErf,400., 2200., 3);
+    TF1* myErf1 = new TF1("myErf1", effErf,500., 2200., 3);
     myErf1->SetParameter(0, 800.);
-    myErf1->SetParameter(1, 100.);
+    myErf1->SetParameter(1, 50.);
     myErf1->SetParameter(2, 1.);
 
     eff1->Fit(myErf1);
     myErf1->SetLineColor(kBlue);
     myErf1->Draw("same");
     
-    TF1* myErf2 = new TF1("myErf2", effErf, 400., 2200., 3);
+    TF1* myErf2 = new TF1("myErf2", effErf, 500., 2200., 3);
     myErf2->SetParameter(0, 800.);
     myErf2->SetParameter(1, 100.);
     myErf2->SetParameter(2, 1.);
