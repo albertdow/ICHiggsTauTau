@@ -70,6 +70,10 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double L1_mjj_;
   double tau_lo_pt_;
   double tau_pt_2_;
+  double tau_eta_1_;
+  double tau_eta_2_;
+  double tau_phi_1_;
+  double tau_phi_2_;
   double cleanTau_lo_pt_;
   double cleanTau_pt_2_;
   double matched_vbf_jpt_1_;
@@ -127,7 +131,17 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double hlt_jeta_2_;
   double hlt_jeta_3_;
   double hlt_jeta_4_;
+  double hlt_jphi_1_;
+  double hlt_jphi_2_;
   double hlt_mjj_;
+
+  double hlt_jpt_1_fail_;
+  double hlt_jpt_2_fail_;
+  double hlt_jeta_1_fail_;
+  double hlt_jeta_2_fail_;
+  double hlt_jphi_1_fail_;
+  double hlt_jphi_2_fail_;
+  double hlt_mjj_fail_;
 
   double jpt_1_;
   double jpt_2_;

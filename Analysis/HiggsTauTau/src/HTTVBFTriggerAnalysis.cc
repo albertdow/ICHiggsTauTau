@@ -89,6 +89,17 @@ namespace ic {
     outtree_->Branch("hlt_jeta_3"       , &hlt_jeta_3_       );
     outtree_->Branch("hlt_jeta_4"       , &hlt_jeta_4_       );
 
+    outtree_->Branch("hlt_jphi_1"       , &hlt_jphi_1_       );
+    outtree_->Branch("hlt_jphi_2"       , &hlt_jphi_2_       );
+
+    outtree_->Branch("hlt_jpt_1_fail"       , &hlt_jpt_1_fail_       );
+    outtree_->Branch("hlt_jpt_2_fail"       , &hlt_jpt_2_fail_       );
+    outtree_->Branch("hlt_jeta_1_fail"       , &hlt_jeta_1_fail_       );
+    outtree_->Branch("hlt_jeta_2_fail"       , &hlt_jeta_2_fail_       );
+    outtree_->Branch("hlt_jphi_1_fail"       , &hlt_jphi_1_fail_       );
+    outtree_->Branch("hlt_jphi_2_fail"       , &hlt_jphi_2_fail_       );
+    outtree_->Branch("hlt_mjj_fail"       , &hlt_mjj_fail_       );
+
     outtree_->Branch("matchedPFJets" , &matchedPFJets_ );
     outtree_->Branch("matched_vbf_jpt_1" , &matched_vbf_jpt_1_ );
     outtree_->Branch("matched_vbf_jpt_2" , &matched_vbf_jpt_2_ );
@@ -110,6 +121,10 @@ namespace ic {
     outtree_->Branch("PFTausize"        , &PFTausize_      );
     outtree_->Branch("tau_lo_pt"        , &tau_lo_pt_      );
     outtree_->Branch("tau_pt_2"        , &tau_pt_2_      );
+    outtree_->Branch("tau_eta_1"        , &tau_eta_1_      );
+    outtree_->Branch("tau_eta_2"        , &tau_eta_2_      );
+    outtree_->Branch("tau_phi_1"        , &tau_phi_1_      );
+    outtree_->Branch("tau_phi_2"        , &tau_phi_2_      );
     //outtree_->Branch("cleanTau_lo_pt"        , &cleanTau_lo_pt_      );
     //outtree_->Branch("cleanTau_pt_2"        , &cleanTau_pt_2_      );
     outtree_->Branch("hlt_mjj"       , &hlt_mjj_       );
@@ -185,6 +200,7 @@ namespace ic {
 
   int HTTVBFTriggerAnalysis::Execute(TreeEvent *event) {
     
+    std::cout<<"EVENT "<<std::endl;
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
    std::vector<TriggerObject *>  L1jets;
    std::vector<TriggerObject *>  HLTjets;
@@ -207,6 +223,11 @@ namespace ic {
    
    tau_lo_pt_=-9999;
    tau_pt_2_ = -9999;
+   tau_eta_1_=-9999;
+   tau_eta_2_ = -9999;
+   tau_phi_1_=-9999;
+   tau_phi_2_ = -9999;
+
    cleanTau_lo_pt_ = -9999;
    cleanTau_pt_2_ = -9999;
    hlt_mjj_=-9999;
@@ -398,9 +419,13 @@ if (L1jets.size()>1)
 
   if (PFTau.size()>0) {
     tau_lo_pt_ = PFTau[0]->vector().Pt();
+    tau_eta_1_ = PFTau[0]->vector().Eta();
+    tau_phi_1_ = PFTau[0]->vector().Phi();
   }
   if (PFTau.size()>1) {
     tau_pt_2_ = PFTau[1]->vector().Pt();
+    tau_eta_2_ = PFTau[1]->vector().Eta();
+    tau_phi_2_ = PFTau[1]->vector().Phi();
   }
 
 
@@ -611,11 +636,44 @@ if (L1jets.size()>1)
   event->Add("offlineTaus_2",offline_tau_2);
   event->Add("offlineTaus_m", &offline_tau_m);
 
-//  ttHLTPath1_  = event->Get<bool>("HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v");
-//  VBFttHLTPath1_  = event->Get<bool>("HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
+  //ttHLTPath1_  = event->Get<bool>("HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v");
+  //VBFttHLTPath1_  = event->Get<bool>("HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v7");
 //  VBFttHLTPath2_  = event->Get<bool>("HLT_VBF_DoubleMediumChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
 //  VBFttHLTPath3_  = event->Get<bool>("HLT_VBF_DoubleTightChargedIsoPFTau20_Trk1_eta2p1_Reg_v");
 
+  // testing events that fail
+
+  
+  if (HLTjets.size()>0 && (hlt_jpt_1_<115 || hlt_jpt_2_<40 || hlt_mjj_<650 || tau_pt_2_<20))
+  	{
+      hlt_jpt_1_fail_ = HLTjets[0]->vector().Pt();
+      hlt_jeta_1_fail_ = HLTjets[0]->vector().Eta();
+      hlt_jphi_1_fail_ = HLTjets[0]->vector().Phi();
+      std::cout<<"failed hlt_jpt_1: "<<hlt_jpt_1_fail_<<std::endl;
+      std::cout<<"failed hlt_jeta_1: "<<hlt_jeta_1_fail_<<std::endl;
+      std::cout<<"failed hlt_jphi_1: "<<hlt_jphi_1_fail_<<std::endl;
+  
+  	}
+  if (HLTjets.size()>1)
+  	{
+      hlt_jpt_2_fail_ = HLTjets[1]->vector().Pt();
+      hlt_jeta_2_fail_ = HLTjets[1]->vector().Eta();
+      hlt_jphi_2_fail_ = HLTjets[1]->vector().Phi();
+      hlt_mjj_fail_ = (HLTjets[0]->vector() + HLTjets[1]->vector()).M();
+      std::cout<<"failed hlt_jpt_2: "<<hlt_jpt_2_fail_<<std::endl;
+      std::cout<<"failed hlt_jeta_2: "<<hlt_jeta_2_fail_<<std::endl;
+      std::cout<<"failed hlt_jphi_2: "<<hlt_jphi_2_fail_<<std::endl;
+      std::cout<<"failed Mjj: "<<hlt_mjj_fail_<<std::endl;
+
+      std::cout<<"failed tau pt1: "<<tau_lo_pt_<<std::endl;
+      std::cout<<"failed tau eta1: "<<tau_eta_1_<<std::endl;
+      std::cout<<"failed tau phi1: "<<tau_phi_1_<<std::endl;
+      std::cout<<"failed tau pt2: "<<tau_pt_2_<<std::endl;
+      std::cout<<"failed tau eta2: "<<tau_eta_2_<<std::endl;
+      std::cout<<"failed tau phi2: "<<tau_phi_2_<<std::endl;
+
+  	}
+  
 
   // offline variables from other tree ("ntuple")
     if(event->Exists("jpt_1")) jpt_1_ = event->Get<double>("jpt_1");
@@ -631,6 +689,7 @@ if (L1jets.size()>1)
     if(event->Exists("antimu_2")) antimu_2_ = event->Get<bool>("antimu_2");
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
+
 
   if(fs_) outtree_->Fill();
     

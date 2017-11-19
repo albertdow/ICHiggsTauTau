@@ -42,7 +42,7 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "mjj>400 & jpt_1>140 & jpt_2>60 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5 & antiele_1 & antiele_2 & antimu_1 & antimu_2";
+    TCut offline = "mjj>700 & jpt_1>150 & jpt_2>60 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
@@ -84,7 +84,7 @@ void effmjj(){
 
     TF1* myErf1 = new TF1("myErf1", effErf,500., 2200., 3);
     myErf1->SetParameter(0, 800.);
-    myErf1->SetParameter(1, 50.);
+    myErf1->SetParameter(1, 100.);
     myErf1->SetParameter(2, 1.);
 
     eff1->Fit(myErf1);
