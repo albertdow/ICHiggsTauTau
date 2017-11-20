@@ -202,6 +202,7 @@ namespace ic {
     
     std::cout<<"EVENT "<<std::endl;
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
+   //std::vector<TriggerObject *> const& ThreeVBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
    std::vector<TriggerObject *>  L1jets;
    std::vector<TriggerObject *>  HLTjets;
    std::vector<TriggerObject *> PFTau;
