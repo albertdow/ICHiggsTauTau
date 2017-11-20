@@ -45,9 +45,25 @@ class HTTMLStudies : public ModuleBase {
 
   double jpt_1_;
   double jpt_2_;
+  double jeta_1_;
+  double jeta_2_;
+  float jphi_1_;
+  float jphi_2_;
+  float jdphi_;
   double mjj_;       // Defined if n_jets >= 2
   double jdeta_;
   double n_jets_;
+
+  double pt_1_;
+  double pt_2_;
+  double eta_1_;
+  double eta_2_;
+  double eta_tt_;
+  double phi_1_;
+  double phi_2_;
+  double dphi_;
+  double mt_1_;
+  double mt_2_;
   
   bool lbyMediumIsolationMVArun2DBoldDMwLT_1;
   bool lbyMediumIsolationMVArun2DBoldDMwLT_2=0;
@@ -58,6 +74,8 @@ class HTTMLStudies : public ModuleBase {
 
   double pt_tt_;
 
+  double zfeld_;
+  double dphi_jjtt_;
   
  public:
   HTTMLStudies(std::string const& name);

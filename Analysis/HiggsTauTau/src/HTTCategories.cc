@@ -680,6 +680,7 @@ namespace ic {
       outtree_->Branch("pt_1",              &pt_1_.var_double);
       outtree_->Branch("eta_1",             &eta_1_.var_double);
       outtree_->Branch("eta_2",             &eta_2_.var_double);
+      outtree_->Branch("eta_tt",            &eta_tt_); // for ML studies
       outtree_->Branch("mjj_lowpt",         &mjj_lowpt_);
       outtree_->Branch("gen_match_1", &gen_match_1_);
       outtree_->Branch("gen_match_2", &gen_match_2_);
@@ -2315,6 +2316,9 @@ namespace ic {
     phi_1_ = lep1->phi();
     phi_2_ = lep2->phi();
     dphi_ = std::fabs(ROOT::Math::VectorUtil::DeltaPhi(lep1->vector(),lep2->vector()));
+    // For Zeppenfeld variable for ML studies
+    eta_tt_ = -9999;
+    eta_tt_ = (lep1->vector()+lep2->vector()).Eta();  
     E_1_ = lep1->energy();
     E_2_ = lep2->energy();
     m_1_ = lep1->M();
@@ -3587,12 +3591,33 @@ namespace ic {
     }
 
     // adding these variables to event to use in MLntuple
+    // jet variables
     event->Add("jpt_1",jpt_1_.var_double);
     event->Add("jpt_2",jpt_2_.var_double);
+    event->Add("jeta_1",jeta_1_.var_double);
+    event->Add("jeta_2",jeta_2_.var_double);
+    event->Add("jphi_1",jphi_1_);
+    event->Add("jphi_2",jphi_2_);
     event->Add("mjj",mjj_.var_double);
     event->Add("jdeta",jdeta_.var_double);
+    event->Add("jdphi",jdphi_);
     event->Add("njets",n_jets_);
 
+    // lepton variables
+    event->Add("pt_1",pt_1_.var_double);
+    event->Add("pt_2",pt_2_.var_double);
+    event->Add("eta_1",eta_1_.var_double);
+    event->Add("eta_2",eta_2_.var_double);
+    event->Add("eta_tt",eta_tt_);
+    event->Add("phi_1",phi_1_.var_double);
+    event->Add("phi_2",phi_2_.var_double);
+    event->Add("dphi_",dphi_);
+    event->Add("mt_1",mt_1_.var_double);
+    event->Add("mt_2",mt_2_.var_double);
+
+    event->Add("pt_tt", pt_tt_.var_double);
+
+    // discrimators but not needed probably
     event->Add("mva_olddm_medium_1",lbyMediumIsolationMVArun2DBoldDMwLT_1);
     event->Add("mva_olddm_medium_2",lbyMediumIsolationMVArun2DBoldDMwLT_2);
     event->Add("antiele_1", antiele_1_);
@@ -3600,7 +3625,6 @@ namespace ic {
     event->Add("antiele_2",antiele_2_);
     event->Add("antimu_2", antimu_2_);
     
-    event->Add("pt_tt", pt_tt_.var_double);
     
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
