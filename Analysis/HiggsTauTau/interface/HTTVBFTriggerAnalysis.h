@@ -58,6 +58,14 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double PFJets_;
   double matchedPFJets_;
   
+  
+  double xclean_jpt_1_;
+  double xclean_jpt_2_;
+  double xclean_jeta_1_;
+  double xclean_jeta_2_;
+  double xclean_mjj_;
+  
+
   double offline_tau_1;
   double offline_tau_2;
   double offline_tau_m;
@@ -65,8 +73,10 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool passed_;
   double L1_jpt_1_;
   double L1_jpt_2_;
+  double L1_jpt_3_;
   double L1_jeta_1_;
   double L1_jeta_2_;
+  double L1_jeta_3_;
   double L1_mjj_;
   double tau_lo_pt_;
   double tau_pt_2_;
@@ -102,6 +112,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool VBFttHLTPath3_;
 
   bool trg_VBF;
+  bool trg_VBFThree;
   bool trg_doubletau;
 
   int PFTausize_; 
@@ -142,6 +153,16 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double hlt_jphi_1_fail_;
   double hlt_jphi_2_fail_;
   double hlt_mjj_fail_;
+  double hlt3_jpt_1_;
+  double hlt3_jpt_2_;
+  double hlt3_jpt_3_;
+  double hlt3_jeta_1_;
+  double hlt3_jeta_2_;
+  double hlt3_jeta_3_;
+  double hlt3_mjj_;
+  double tau3_lo_pt_;
+  double tau3_pt_2_;
+
 
   double jpt_1_;
   double jpt_2_;

@@ -583,7 +583,7 @@ void HTTSequence::BuildSequence(){
   if (era_type == era::data_2015&&output_name.find("2015D")!=output_name.npos)  data_json= "input/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt";
   if (era_type == era::data_2016){
     data_json= "input/json/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt";
-    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_294927-302663_13TeV_PromptReco_Collisions17_JSON.txt"; // custom changed for 2017
+    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_294927-306460_13TeV_PromptReco_Collisions17_JSON.txt"; // custom changed for 2017
   }
 
 
@@ -2222,8 +2222,8 @@ void HTTSequence::BuildEMPairs() {
         return  e->pt()                 > elec_pt    &&
                 fabs(e->eta())          < elec_eta   &&
                 fabs(e->dxy_vertex())   < elec_dxy   &&
-                fabs(e->dz_vertex())    < elec_dz    &&
-                ElecID(e) ;
+                fabs(e->dz_vertex())    < elec_dz   ; //&&
+                //ElecID(e) ;
 
       }));
 
@@ -3034,7 +3034,7 @@ void HTTSequence::BuildExtraElecVeto(){
                 fabs(e->eta())          < veto_elec_eta   &&
                 fabs(e->dxy_vertex())   < veto_elec_dxy   &&
                 fabs(e->dz_vertex())    < veto_elec_dz    &&
-                ElectronHTTIdSpring16(e, true)           &&
+                //ElectronHTTIdSpring16(e, true)           &&
                 PF03IsolationVal(e, 0.5,0) < 0.3;
       });
   }

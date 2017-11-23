@@ -1,7 +1,7 @@
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/HTTVBFTriggerAnalysis.h"
 #include "UserCode/ICHiggsTauTau/Analysis/Utilities/interface/FnPredicates.h"
 #include "Utilities/interface/FnRootTools.h"
-
+#include "DataFormats/Math/interface/deltaR.h"
 
 double L1pass;
 double L1fail;
@@ -129,18 +129,33 @@ namespace ic {
     //outtree_->Branch("cleanTau_pt_2"        , &cleanTau_pt_2_      );
     outtree_->Branch("hlt_mjj"       , &hlt_mjj_       );
 
+    // THREE JETS
+    outtree_->Branch("hlt3_jpt_1"        , &hlt3_jpt_1_       );
+    outtree_->Branch("hlt3_jpt_2"        , &hlt3_jpt_2_       );
+    outtree_->Branch("hlt3_jpt_3"        , &hlt3_jpt_3_       );
+    outtree_->Branch("hlt3_jeta_1"       , &hlt3_jeta_1_       );
+    outtree_->Branch("hlt3_jeta_2"       , &hlt3_jeta_2_       );
+    outtree_->Branch("hlt3_jeta_3"       , &hlt3_jeta_3_       );
+    outtree_->Branch("hlt3_mjj"          , &hlt3_mjj_       );
+
+    outtree_->Branch("tau3_lo_pt"        , &tau3_lo_pt_      );
+    outtree_->Branch("tau3_pt_2"        , &tau3_pt_2_      );
     // OTHERS
     outtree_->Branch("L1_jpt_1"       ,  &L1_jpt_1_);
     outtree_->Branch("L1_jpt_2"       ,  &L1_jpt_2_);
+    outtree_->Branch("L1_jpt_3"       ,  &L1_jpt_3_);
     outtree_->Branch("L1_jeta_1"       ,  &L1_jeta_1_);
     outtree_->Branch("L1_jeta_2"       ,  &L1_jeta_2_);
     outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
+    outtree_->Branch("L1_jeta_3"       ,  &L1_jeta_3_);
+    //outtree_->Branch("L1_mjj"       ,  &L1_mjj_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35" ,  &HLTDoubleMediumIsoPFTau35_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_2" ,  &HLTDoubleMediumIsoPFTau35_2_);
     outtree_->Branch("HLTDoubleMediumIsoPFTau35_tau", &HLTDoubleMediumIsoPFTau35_tau_);
 
 //    outtree_->Branch("trg_doubletau"       ,  &trg_doubletau);
     outtree_->Branch("trg_VBF"       ,  &trg_VBF);
+    outtree_->Branch("trg_VBFThree"       ,  &trg_VBFThree);
     outtree_->Branch("offlineJets_1"    , &offline_jet_1);
     outtree_->Branch("offlineJets_2"    , &offline_jet_2);
     outtree_->Branch("offlineJets_eta_1", &offline_jet_eta_1);
@@ -177,6 +192,12 @@ namespace ic {
 
     outtree_->Branch("L1Pass",       &L1Pass_);
 
+    outtree_->Branch("xclean_jpt_1",             &xclean_jpt_1_);
+    outtree_->Branch("xclean_jpt_2",             &xclean_jpt_2_);
+    outtree_->Branch("xclean_jeta_1",             &xclean_jeta_1_);
+    outtree_->Branch("xclean_jeta_2",             &xclean_jeta_2_);
+    outtree_->Branch("xclean_mjj",                      &xclean_mjj_);
+
     }
 
 
@@ -200,9 +221,9 @@ namespace ic {
 
   int HTTVBFTriggerAnalysis::Execute(TreeEvent *event) {
     
-    std::cout<<"EVENT "<<std::endl;
+    //std::cout<<"EVENT "<<std::endl;
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
-   //std::vector<TriggerObject *> const& ThreeVBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
+   //std::vector<TriggerObject *> const& VBFThreeobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
    std::vector<TriggerObject *>  L1jets;
    std::vector<TriggerObject *>  HLTjets;
    std::vector<TriggerObject *> PFTau;
@@ -222,6 +243,18 @@ namespace ic {
    hlt_jeta_4_=-9999;
 
    
+   
+   hlt3_jpt_1_=-9999;
+   hlt3_jpt_2_=-9999;
+   hlt3_jpt_3_=-9999;
+   hlt3_jeta_1_=-9999;
+   hlt3_jeta_2_=-9999;
+   hlt3_jeta_3_=-9999;
+   hlt3_mjj_=-9999;
+
+   tau3_lo_pt_=-9999;
+   tau3_pt_2_ = -9999;
+
    tau_lo_pt_=-9999;
    tau_pt_2_ = -9999;
    tau_eta_1_=-9999;
@@ -229,13 +262,21 @@ namespace ic {
    tau_phi_1_=-9999;
    tau_phi_2_ = -9999;
 
+   xclean_jpt_1_=-9999;
+   xclean_jpt_2_=-9999;
+   xclean_jeta_1_=-9999;
+   xclean_jeta_2_=-9999;
+   xclean_mjj_=-9999;
+
    cleanTau_lo_pt_ = -9999;
    cleanTau_pt_2_ = -9999;
    hlt_mjj_=-9999;
    L1_jpt_1_=-9999;
    L1_jpt_2_=-9999;
+   L1_jpt_3_=-9999;
    L1_jeta_1_=-9999;
    L1_jeta_2_=-9999;
+   L1_jeta_3_=-9999;
    //L1_mjj_=-9999;
 
    matched_vbf_jpt_1_=-9999;
@@ -261,12 +302,20 @@ namespace ic {
           L1jets.push_back(VBFobjs[i]);
       }
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
+	  //if (IsFilterMatchedWithName(VBFobjs[i], "hltTwoMatchedVBFPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
 	  //if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFOnePFJet2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) PFTau.push_back(VBFobjs[i]);	
     }
  
     event->Add("L1Pass",L1Pass_);
 
+    //for (unsigned i = 0; i < VBFThreeobjs.size(); ++i){ 
+	//  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltMatchedVBFThreePFJets3CrossCleanedFromDoubleLooseChargedIsoPFTau20")) ThreeHLTjets.push_back(VBFThreeobjs[i]);	
+    //  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) ThreePFTau.push_back(VBFThreeobjs[i]);	
+    //}
+
+    //VBFL1Passed=(VBFL1count>0);
+    //event->Add("VBFL1Passed",VBFL1Passed);
 //    HLTjetssize_ = HLTjets.size();
 //    h1->Fill(HLTjetssize_);   
 
@@ -282,8 +331,10 @@ namespace ic {
 
 
 std::sort(HLTjets.begin(), HLTjets.end(), PtComparatorTriggerObj());
+//std::sort(ThreeHLTjets.begin(), ThreeHLTjets.end(), PtComparatorTriggerObj());
 std::sort(L1jets.begin(), L1jets.end(), PtComparatorTriggerObj());
 std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
+//std::sort(ThreePFTau.begin(), ThreePFTau.end(), PtComparatorTriggerObj());
 
 //L1jets and PFjets match test
 
@@ -370,6 +421,25 @@ if (HLTjets.size()>3)
     hlt_jeta_4_ = HLTjets[3]->vector().Eta();	
 	}
 
+// THREE JETS
+
+//if (ThreeHLTjets.size()>0)
+//	{
+//    hlt3_jpt_1_ = ThreeHLTjets[0]->vector().Pt();
+//    hlt3_jeta_1_ = ThreeHLTjets[0]->vector().Eta();
+//	}
+//if (ThreeHLTjets.size()>1)
+//	{
+//    hlt3_jpt_2_ = ThreeHLTjets[1]->vector().Pt();
+//    hlt3_jeta_2_ = ThreeHLTjets[1]->vector().Eta();
+//	}
+//if (ThreeHLTjets.size()>2)
+//	{
+//    hlt3_jpt_3_ = ThreeHLTjets[2]->vector().Pt();
+//    hlt3_jeta_3_ = ThreeHLTjets[2]->vector().Eta();	
+//    hlt3_mjj_ = (ThreeHLTjets[1]->vector()+ThreeHLTjets[2]->vector()).M();
+//	}
+
 //for (unsigned i = 0; i < L1jets.size(); ++i) L1Jets_=L1jets[i]->vector().Pt();
 
 if (L1jets.size()>0)
@@ -384,6 +454,11 @@ if (L1jets.size()>1)
     L1_jeta_2_=L1jets[1]->vector().Eta();
     L1_mjj_=(L1jets[0]->vector()+L1jets[1]->vector()).M();
 
+}
+if (L1jets.size()>2)
+{
+    L1_jpt_3_=L1jets[2]->vector().Pt();
+    L1_jeta_3_=L1jets[2]->vector().Eta();
 }
 
 
@@ -429,6 +504,12 @@ if (L1jets.size()>1)
     tau_phi_2_ = PFTau[1]->vector().Phi();
   }
 
+  //if (ThreePFTau.size()>0) {
+  //  tau3_lo_pt_ = ThreePFTau[0]->vector().Pt();
+  //}
+  //if (ThreePFTau.size()>1) {
+  //  tau3_pt_2_ = ThreePFTau[1]->vector().Pt();
+  //}
 
   event->Add("trgTau2",tau_pt_2_);
 
@@ -439,6 +520,8 @@ if (L1jets.size()>1)
   trg_VBF = hlt_jpt_1_>115&&hlt_jpt_2_>40&&hlt_mjj_>650&&tau_pt_2_>20;
   event->Add("trg_VBF",trg_VBF);
 
+  //trg_VBFThree = hlt3_jpt_1_>115 && hlt3_jpt_2_<115 && hlt3_jpt_2_>40 && hlt3_jpt_3_>40 && hlt3_mjj_>650 && tau3_pt_2_>20;
+  //event->Add("trg_VBFThree",trg_VBFThree);
   
   if(event->Exists("trg_doubletau")) trg_doubletau = event->Get<bool>("trg_doubletau");
 
@@ -512,17 +595,17 @@ if (L1jets.size()>1)
 //  std::vector<TriggerObject *> const& pass_through_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDiJetVBFPassThrough");
 //  HLTVBFPassThrough_ = pass_through_objs[0]->vector().Pt(); 
 
- std::vector<TriggerObject *> const& double_tau_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleMediumChargedIsoPFTau35");
- if (double_tau_objs.size()>0) HLTDoubleMediumIsoPFTau35_ = double_tau_objs[0]->vector().Pt(); 
- if (double_tau_objs.size()>1) HLTDoubleMediumIsoPFTau35_2_ = double_tau_objs[1]->vector().Pt(); 
-  
-   for (unsigned i = 0; i < double_tau_objs.size(); ++i)
-   { 
- bool e = IsFilterMatchedWithName(double_tau_objs[i], "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg");
-  
- if (e) 	DiTaus.push_back(double_tau_objs[i]);	
-   }
- std::sort(DiTaus.begin(), DiTaus.end(), PtComparatorTriggerObj());
+ //std::vector<TriggerObject *> const& double_tau_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleMediumChargedIsoPFTau35");
+ //if (double_tau_objs.size()>0) HLTDoubleMediumIsoPFTau35_ = double_tau_objs[0]->vector().Pt(); 
+ //if (double_tau_objs.size()>1) HLTDoubleMediumIsoPFTau35_2_ = double_tau_objs[1]->vector().Pt(); 
+ // 
+ //  for (unsigned i = 0; i < double_tau_objs.size(); ++i)
+ //  { 
+ //bool e = IsFilterMatchedWithName(double_tau_objs[i], "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg");
+ // 
+ //if (e) 	DiTaus.push_back(double_tau_objs[i]);	
+ //  }
+ //std::sort(DiTaus.begin(), DiTaus.end(), PtComparatorTriggerObj());
 
 // if (DiTaus.size()>0&&DiTaus.size()<2) std::cout<<"Size equal to 1"<<std::endl;
 // if (DiTaus.size()>1&&DiTaus[1]->vector().Pt()<35) std::cout<<"Pt of 2nd tau"<<DiTaus[1]->vector().Pt()<<std::endl;
@@ -625,6 +708,36 @@ if (L1jets.size()>1)
     }
 //
 
+double matchingR2_ = 0.25;
+std::vector<PFJet *> cleanedPFJets;
+
+
+//    // For testing offline tau offline jets matching
+     for (unsigned iJet = 0; iJet < jets.size(); ++iJet){
+       bool isMatched = false;  
+       for(unsigned iTau = 0; iTau < taus.size(); iTau++){  
+         if(reco::deltaR2(taus[iTau]->vector(), jets[iJet]->vector()) < matchingR2_){
+           isMatched = true;
+           break;
+         }
+       }
+       if(isMatched == false) cleanedPFJets.push_back(jets[iJet]);
+     }
+
+  if (cleanedPFJets.size()>0){
+    xclean_jpt_1_ = cleanedPFJets[0]->vector().Pt();
+    xclean_jeta_1_ = cleanedPFJets[0]->vector().Eta();
+  }
+  if (cleanedPFJets.size()>1){
+    xclean_jpt_2_ = cleanedPFJets[1]->vector().Pt();
+    xclean_jeta_2_ = cleanedPFJets[1]->vector().Eta();
+    xclean_mjj_ = (cleanedPFJets[0]->vector()+cleanedPFJets[1]->vector()).M();
+  }
+  
+
+      
+
+
   if (taus.size()>0) {
     offline_tau_1 = taus[0]->vector().Pt();
   }
@@ -650,9 +763,9 @@ if (L1jets.size()>1)
       hlt_jpt_1_fail_ = HLTjets[0]->vector().Pt();
       hlt_jeta_1_fail_ = HLTjets[0]->vector().Eta();
       hlt_jphi_1_fail_ = HLTjets[0]->vector().Phi();
-      std::cout<<"failed hlt_jpt_1: "<<hlt_jpt_1_fail_<<std::endl;
-      std::cout<<"failed hlt_jeta_1: "<<hlt_jeta_1_fail_<<std::endl;
-      std::cout<<"failed hlt_jphi_1: "<<hlt_jphi_1_fail_<<std::endl;
+      //std::cout<<"failed hlt_jpt_1: "<<hlt_jpt_1_fail_<<std::endl;
+      //std::cout<<"failed hlt_jeta_1: "<<hlt_jeta_1_fail_<<std::endl;
+      //std::cout<<"failed hlt_jphi_1: "<<hlt_jphi_1_fail_<<std::endl;
   
   	}
   if (HLTjets.size()>1)
@@ -661,17 +774,17 @@ if (L1jets.size()>1)
       hlt_jeta_2_fail_ = HLTjets[1]->vector().Eta();
       hlt_jphi_2_fail_ = HLTjets[1]->vector().Phi();
       hlt_mjj_fail_ = (HLTjets[0]->vector() + HLTjets[1]->vector()).M();
-      std::cout<<"failed hlt_jpt_2: "<<hlt_jpt_2_fail_<<std::endl;
-      std::cout<<"failed hlt_jeta_2: "<<hlt_jeta_2_fail_<<std::endl;
-      std::cout<<"failed hlt_jphi_2: "<<hlt_jphi_2_fail_<<std::endl;
-      std::cout<<"failed Mjj: "<<hlt_mjj_fail_<<std::endl;
+      //std::cout<<"failed hlt_jpt_2: "<<hlt_jpt_2_fail_<<std::endl;
+      //std::cout<<"failed hlt_jeta_2: "<<hlt_jeta_2_fail_<<std::endl;
+      //std::cout<<"failed hlt_jphi_2: "<<hlt_jphi_2_fail_<<std::endl;
+      //std::cout<<"failed Mjj: "<<hlt_mjj_fail_<<std::endl;
 
-      std::cout<<"failed tau pt1: "<<tau_lo_pt_<<std::endl;
-      std::cout<<"failed tau eta1: "<<tau_eta_1_<<std::endl;
-      std::cout<<"failed tau phi1: "<<tau_phi_1_<<std::endl;
-      std::cout<<"failed tau pt2: "<<tau_pt_2_<<std::endl;
-      std::cout<<"failed tau eta2: "<<tau_eta_2_<<std::endl;
-      std::cout<<"failed tau phi2: "<<tau_phi_2_<<std::endl;
+      //std::cout<<"failed tau pt1: "<<tau_lo_pt_<<std::endl;
+      //std::cout<<"failed tau eta1: "<<tau_eta_1_<<std::endl;
+      //std::cout<<"failed tau phi1: "<<tau_phi_1_<<std::endl;
+      //std::cout<<"failed tau pt2: "<<tau_pt_2_<<std::endl;
+      //std::cout<<"failed tau eta2: "<<tau_eta_2_<<std::endl;
+      //std::cout<<"failed tau phi2: "<<tau_phi_2_<<std::endl;
 
   	}
   
@@ -700,10 +813,10 @@ if (L1jets.size()>1)
  
   int HTTVBFTriggerAnalysis::PostAnalysis() {
  
-std::cout<<"L1jets size 0 = "<<1.0*L1size0/L1size1<<std::endl;
-std::cout<<"L1jets size !=0 but L1jets[0]->vector().Pt()<80: "<<(L1fail/L1pass)<<std::endl;
-std::cout<<"L1jets size !=0 but L1jets[1]->vector().Pt()<30: "<<(L1failSecond/L1pass)<<std::endl;
-std::cout<<L1fail<<" "<<L1pass<<std::endl;
+//std::cout<<"L1jets size 0 = "<<1.0*L1size0/L1size1<<std::endl;
+//std::cout<<"L1jets size !=0 but L1jets[0]->vector().Pt()<80: "<<(L1fail/L1pass)<<std::endl;
+//std::cout<<"L1jets size !=0 but L1jets[1]->vector().Pt()<30: "<<(L1failSecond/L1pass)<<std::endl;
+//std::cout<<L1fail<<" "<<L1pass<<std::endl;
 
 //    std::cout<<h1->GetEntries()<<std::endl;
 //    h1->Draw();
