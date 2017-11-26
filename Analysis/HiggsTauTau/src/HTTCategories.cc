@@ -11,6 +11,8 @@
 #include "boost/format.hpp"
 #include "TMath.h"
 #include "TLorentzVector.h"
+// for trigger studies
+#include "DataFormats/Math/interface/deltaR.h"
 
 namespace ic {
 
@@ -709,8 +711,15 @@ namespace ic {
       outtree_->Branch("trg_muonelectron",    &trg_muonelectron_);
       outtree_->Branch("trg_singletau_1",    &trg_singletau_1_);
       outtree_->Branch("trg_singletau_2",    &trg_singletau_2_);
-      // for custom HLT efficiency studies
+      // for custom trigger efficiency studies
       outtree_->Branch("trg_VBF",&trg_VBF);
+      outtree_->Branch("xclean_jpt_1",             &xclean_jpt_1_);
+      outtree_->Branch("xclean_jpt_2",             &xclean_jpt_2_);
+      outtree_->Branch("xclean_jpt_3",             &xclean_jpt_3_);
+      outtree_->Branch("xclean_jeta_1",             &xclean_jeta_1_);
+      outtree_->Branch("xclean_jeta_2",             &xclean_jeta_2_);
+      outtree_->Branch("xclean_jeta_3",             &xclean_jeta_3_);
+      outtree_->Branch("xclean_mjj",                      &xclean_mjj_);
       
       //outtree_->Branch("HLT_paths",    &HLT_paths_);
 
@@ -3292,6 +3301,116 @@ namespace ic {
       n_jetsingap20_ = 9999;
     }
 
+//    // BEGIN: adding this for the trigger studies to use jets > 30 GeV in calculations of variables rather than lowpt_jets > 20 GeV
+//    if (n_jets_ >= 1) {
+//      jpt_1_ = jets[0]->pt();
+//      jeta_1_ = jets[0]->eta();
+//      jphi_1_ = jets[0]->phi();
+//      jrawf_1_ = jets[0]->uncorrected_energy()/jets[0]->energy();//* (jets[0]->pt() / jets[0]->energy());
+//      jptunc_1_ = 0.0;
+//      jmva_1_ = jets[0]->pu_id_mva_value();
+//      jlrm_1_ = jets[0]->linear_radial_moment();
+//      jctm_1_ = jets[0]->charged_multiplicity_nopu();
+//      std::vector<ic::Tau *> taus = event->GetPtrVec<Tau>("taus");
+//      std::vector<ic::Jet *> leadjet = { jets[0] };
+//      std::vector<std::pair<ic::Jet *, ic::Tau *>> matches = MatchByDR(leadjet, taus, 0.5, true, true);
+//      if (matches.size() == 1) {
+//        j1_dm_ = matches[0].second->decay_mode();
+//      } else {
+//        j1_dm_ = -1;
+//      }
+//    } else {
+//      jpt_1_ = -9999;
+//      jeta_1_ = -9999;
+//      jphi_1_ = -9999;
+//      jrawf_1_ = -9999;
+//      jptunc_1_ = -9999;
+//      jmva_1_ = -9999;
+//      jlrm_1_ = -9999;
+//      jctm_1_ = -9999;
+//    }
+//
+//
+//    if (n_jets_ >= 2) {
+//      jpt_2_ = jets[1]->pt();
+//      jeta_2_ = jets[1]->eta();
+//      jphi_2_ = jets[1]->phi();
+//      jrawf_2_ = jets[1]->uncorrected_energy()/jets[1]->energy();// * (jets[1]->pt() / jets[1]->energy());
+//      jptunc_2_ = 0.0;
+//      jmva_2_ = jets[1]->pu_id_mva_value();
+//      jlrm_2_ = jets[1]->linear_radial_moment();
+//      jctm_2_ = jets[1]->charged_multiplicity_nopu();
+//      mjj_ = (jets[0]->vector() + jets[1]->vector()).M();
+//      jdeta_ = fabs(jets[0]->eta() - jets[1]->eta());
+//      jdphi_ =  std::fabs(ROOT::Math::VectorUtil::DeltaPhi(jets[0]->vector(), jets[1]->vector()));
+//      double eta_high = (jets[0]->eta() > jets[1]->eta()) ? jets[0]->eta() : jets[1]->eta();
+//      double eta_low = (jets[0]->eta() > jets[1]->eta()) ? jets[1]->eta() : jets[0]->eta();
+//      n_jetsingap_ = 0;
+//      n_jetsingap20_ = 0;
+//
+//      // For testing offline tau offline jets matching
+//      double matchingR2_ = 0.25;
+//      std::vector<PFJet *> cleanedPFJets;
+//      std::vector<ic::Tau *> taus = event->GetPtrVec<Tau>("taus");
+//
+//      for (unsigned iJet = 0; iJet < 2; ++iJet){
+//        bool isMatched = false;  
+//        for(unsigned iTau = 0; iTau < taus.size(); iTau++){  
+//          if(reco::deltaR2(taus[iTau]->vector(), jets[iJet]->vector()) < matchingR2_){
+//            isMatched = true;
+//            break;
+//          }
+//        }
+//        if(isMatched == false) cleanedPFJets.push_back(jets[iJet]);
+//      }
+//      if(jets.size() > 2) cleanedPFJets.push_back(jets[2]);
+//
+//      if (cleanedPFJets.size()>0){
+//        xclean_jpt_1_ = cleanedPFJets[0]->vector().Pt();
+//        xclean_jeta_1_ = cleanedPFJets[0]->vector().Eta();
+//      }
+//      if (cleanedPFJets.size()>1){
+//        xclean_jpt_2_ = cleanedPFJets[1]->vector().Pt();
+//        xclean_jeta_2_ = cleanedPFJets[1]->vector().Eta();
+//        xclean_mjj_ = (cleanedPFJets[0]->vector()+cleanedPFJets[1]->vector()).M();
+//      }
+//      if (cleanedPFJets.size()>2){
+//        xclean_jpt_3_ = cleanedPFJets[2]->vector().Pt();
+//        xclean_jeta_3_ = cleanedPFJets[2]->vector().Eta();
+//        xclean_mjj_ = (cleanedPFJets[2]->vector()+cleanedPFJets[1]->vector()).M();
+//      }
+//      // MATCHING END
+// 
+//      if (n_jets_ > 2) {
+//        for (unsigned i = 2; i < jets.size(); ++i) {
+//         if (jets[i]->pt() > 30.0 &&  jets[i]->eta() > eta_low && jets[i]->eta() < eta_high) ++n_jetsingap_;
+//         if (jets[i]->pt() > 20.0 &&  jets[i]->eta() > eta_low && jets[i]->eta() < eta_high) ++n_jetsingap20_;
+//        }
+//      }
+//    } else {
+//      xclean_jpt_1_ = -9999;
+//      xclean_jeta_1_ = -9999;
+//      xclean_jpt_2_ = -9999;
+//      xclean_jeta_2_ = -9999;
+//      xclean_jpt_3_ = -9999;
+//      xclean_jeta_3_ = -9999;
+//      xclean_mjj_ = -9999;
+//      jpt_2_ = -9999;
+//      jeta_2_ = -9999;
+//      jphi_2_ = -9999;
+//      mjj_ = -9999;
+//      jdeta_ = -9999;
+//      jdphi_ = -9999;
+//      jrawf_2_ = -9999;
+//      jptunc_2_ = -9999;
+//      jmva_2_ = -9999;
+//      jlrm_2_ = -9999;
+//      jctm_2_ = -9999;
+//      n_jetsingap_ = 9999;
+//      n_jetsingap20_ = 9999;
+//    }
+//    // TRIGGER STUDIES END
+
     if (n_lowpt_jets_ >= 2) {
       mjj_lowpt_ = (lowpt_jets[0]->vector() + lowpt_jets[1]->vector()).M();
       jdeta_lowpt_ = fabs(lowpt_jets[0]->eta() - lowpt_jets[1]->eta());
@@ -3592,7 +3711,7 @@ namespace ic {
     }
 
 
-    // adding these variables to event to use in HLT studies ntuple
+    // adding these variables to event to use in trigger studies ntuple
     event->Add("jpt_1",jpt_1_.var_double);
     event->Add("jpt_2",jpt_2_.var_double);
     event->Add("mjj",mjj_.var_double);
@@ -3604,6 +3723,13 @@ namespace ic {
     event->Add("antiele_2",antiele_2_);
     event->Add("antimu_2", antimu_2_);
     event->Add("pt_tt", pt_tt_.var_double);
+    //event->Add(" xclean_jpt_1", xclean_jpt_1_);
+    //event->Add(" xclean_jpt_2", xclean_jpt_2_);
+    //event->Add(" xclean_jpt_3", xclean_jpt_3_);
+    //event->Add(" xclean_jeta_1", xclean_jeta_1_);
+    //event->Add(" xclean_jeta_2", xclean_jeta_2_);
+    //event->Add(" xclean_jeta_3", xclean_jeta_3_);
+    //event->Add("xclean_mjj",xclean_mjj_);
 
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();

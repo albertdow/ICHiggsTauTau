@@ -156,12 +156,12 @@ namespace ic {
 //    outtree_->Branch("trg_doubletau"       ,  &trg_doubletau);
     outtree_->Branch("trg_VBF"       ,  &trg_VBF);
     outtree_->Branch("trg_VBFThree"       ,  &trg_VBFThree);
-    outtree_->Branch("offlineJets_1"    , &offline_jet_1);
-    outtree_->Branch("offlineJets_2"    , &offline_jet_2);
-    outtree_->Branch("offlineJets_eta_1", &offline_jet_eta_1);
-    outtree_->Branch("offlineJets_eta_2", &offline_jet_eta_2);
-    outtree_->Branch("offlineJets_deta", &offline_jet_deta);
-    outtree_->Branch("offlineJets_mjj", &offline_mjj);
+    outtree_->Branch("offline_jpt_1"    , &offline_jpt_1_);
+    outtree_->Branch("offline_jpt_2"    , &offline_jpt_2_);
+    outtree_->Branch("offline_jeta_1", &offline_jeta_1_);
+    outtree_->Branch("offline_jeta_2", &offline_jeta_2_);
+    outtree_->Branch("offline_jdeta", &offline_jdeta_);
+    outtree_->Branch("offline_mjj", &offline_mjj_);
     outtree_->Branch("offlineTaus_1", &offline_tau_1);
     outtree_->Branch("offlineTaus_2", &offline_tau_2);
     outtree_->Branch("offlineTaus_m", &offline_tau_m);
@@ -194,8 +194,10 @@ namespace ic {
 
     outtree_->Branch("xclean_jpt_1",             &xclean_jpt_1_);
     outtree_->Branch("xclean_jpt_2",             &xclean_jpt_2_);
+    outtree_->Branch("xclean_jpt_3",             &xclean_jpt_3_);
     outtree_->Branch("xclean_jeta_1",             &xclean_jeta_1_);
     outtree_->Branch("xclean_jeta_2",             &xclean_jeta_2_);
+    outtree_->Branch("xclean_jeta_3",             &xclean_jeta_3_);
     outtree_->Branch("xclean_mjj",                      &xclean_mjj_);
 
     }
@@ -223,7 +225,7 @@ namespace ic {
     
     //std::cout<<"EVENT "<<std::endl;
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
-   //std::vector<TriggerObject *> const& VBFThreeobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
+   std::vector<TriggerObject *> const& VBFThreeobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
    std::vector<TriggerObject *>  L1jets;
    std::vector<TriggerObject *>  HLTjets;
    std::vector<TriggerObject *> PFTau;
@@ -309,10 +311,10 @@ namespace ic {
  
     event->Add("L1Pass",L1Pass_);
 
-    //for (unsigned i = 0; i < VBFThreeobjs.size(); ++i){ 
-	//  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltMatchedVBFThreePFJets3CrossCleanedFromDoubleLooseChargedIsoPFTau20")) ThreeHLTjets.push_back(VBFThreeobjs[i]);	
-    //  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) ThreePFTau.push_back(VBFThreeobjs[i]);	
-    //}
+    for (unsigned i = 0; i < VBFThreeobjs.size(); ++i){ 
+	  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltMatchedVBFThreePFJets3CrossCleanedFromDoubleLooseChargedIsoPFTau20")) ThreeHLTjets.push_back(VBFThreeobjs[i]);	
+      if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) ThreePFTau.push_back(VBFThreeobjs[i]);	
+    }
 
     //VBFL1Passed=(VBFL1count>0);
     //event->Add("VBFL1Passed",VBFL1Passed);
@@ -331,10 +333,10 @@ namespace ic {
 
 
 std::sort(HLTjets.begin(), HLTjets.end(), PtComparatorTriggerObj());
-//std::sort(ThreeHLTjets.begin(), ThreeHLTjets.end(), PtComparatorTriggerObj());
+std::sort(ThreeHLTjets.begin(), ThreeHLTjets.end(), PtComparatorTriggerObj());
 std::sort(L1jets.begin(), L1jets.end(), PtComparatorTriggerObj());
 std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
-//std::sort(ThreePFTau.begin(), ThreePFTau.end(), PtComparatorTriggerObj());
+std::sort(ThreePFTau.begin(), ThreePFTau.end(), PtComparatorTriggerObj());
 
 //L1jets and PFjets match test
 
@@ -423,22 +425,22 @@ if (HLTjets.size()>3)
 
 // THREE JETS
 
-//if (ThreeHLTjets.size()>0)
-//	{
-//    hlt3_jpt_1_ = ThreeHLTjets[0]->vector().Pt();
-//    hlt3_jeta_1_ = ThreeHLTjets[0]->vector().Eta();
-//	}
-//if (ThreeHLTjets.size()>1)
-//	{
-//    hlt3_jpt_2_ = ThreeHLTjets[1]->vector().Pt();
-//    hlt3_jeta_2_ = ThreeHLTjets[1]->vector().Eta();
-//	}
-//if (ThreeHLTjets.size()>2)
-//	{
-//    hlt3_jpt_3_ = ThreeHLTjets[2]->vector().Pt();
-//    hlt3_jeta_3_ = ThreeHLTjets[2]->vector().Eta();	
-//    hlt3_mjj_ = (ThreeHLTjets[1]->vector()+ThreeHLTjets[2]->vector()).M();
-//	}
+if (ThreeHLTjets.size()>0)
+	{
+    hlt3_jpt_1_ = ThreeHLTjets[0]->vector().Pt();
+    hlt3_jeta_1_ = ThreeHLTjets[0]->vector().Eta();
+	}
+if (ThreeHLTjets.size()>1)
+	{
+    hlt3_jpt_2_ = ThreeHLTjets[1]->vector().Pt();
+    hlt3_jeta_2_ = ThreeHLTjets[1]->vector().Eta();
+	}
+if (ThreeHLTjets.size()>2)
+	{
+    hlt3_jpt_3_ = ThreeHLTjets[2]->vector().Pt();
+    hlt3_jeta_3_ = ThreeHLTjets[2]->vector().Eta();	
+    hlt3_mjj_ = (ThreeHLTjets[1]->vector()+ThreeHLTjets[2]->vector()).M();
+	}
 
 //for (unsigned i = 0; i < L1jets.size(); ++i) L1Jets_=L1jets[i]->vector().Pt();
 
@@ -520,8 +522,8 @@ if (L1jets.size()>2)
   trg_VBF = hlt_jpt_1_>115&&hlt_jpt_2_>40&&hlt_mjj_>650&&tau_pt_2_>20;
   event->Add("trg_VBF",trg_VBF);
 
-  //trg_VBFThree = hlt3_jpt_1_>115 && hlt3_jpt_2_<115 && hlt3_jpt_2_>40 && hlt3_jpt_3_>40 && hlt3_mjj_>650 && tau3_pt_2_>20;
-  //event->Add("trg_VBFThree",trg_VBFThree);
+  trg_VBFThree = hlt3_jpt_1_>115 && hlt3_jpt_2_<115 && hlt3_jpt_2_>40 && hlt3_jpt_3_>40 && hlt3_mjj_>650 && tau3_pt_2_>20;
+  event->Add("trg_VBFThree",trg_VBFThree);
   
   if(event->Exists("trg_doubletau")) trg_doubletau = event->Get<bool>("trg_doubletau");
 
@@ -619,6 +621,7 @@ if (L1jets.size()>2)
     // For testing HLT online/offline jets matching
 //    std::vector<TriggerObject *> const& vbf_objs = event->GetPtrVec<TriggerObject>("triggerVBF");
 //    std::vector<PFJet *> jets = event->GetPtrVec<PFJet>("ak4PFJetsCHS");
+std::vector<PFJet *> max_mjj_jets;
     
     for (unsigned i = 0; i < jets.size(); ++i){
       PFJets_ = jets[i]->vector().Pt();
@@ -629,25 +632,51 @@ if (L1jets.size()>2)
 
   event->Add("PFJets",PFJets_);
   event->Add("matchedPFJets",matchedPFJets_);
+  
+    offline_jpt_1_ = -9999;
+    offline_jeta_1_ = -9999;
+    offline_jpt_2_ = -9999;
+    offline_jeta_2_ = -9999;
+    offline_jdeta_ = -9999;
+    offline_mjj_ = -9999;
 
-  if (jets.size()>0) {
-    offline_jet_1 = jets[0]->vector().Pt();
-    offline_jet_eta_1 = jets[0]->vector().Eta();
-  }
   if (jets.size()>1) {
-    offline_jet_2 = jets[1]->vector().Pt();
-    offline_jet_eta_2 = jets[1]->vector().Eta();
-    offline_jet_deta = fabs(jets[0]->vector().Eta()-jets[1]->vector().Eta());
-    offline_mjj = (jets[0]->vector()+jets[1]->vector()).M();
+    unsigned int i1 = 0;
+    unsigned int j1 = 0;
+    double mjj_test = 0;
+    
+    for (unsigned int i = 0; i < jets.size()-1; i++){
+      for (unsigned int j = i+1; j < jets.size(); j++){
+        double mjj_max = (jets[i]->vector()+jets[j]->vector()).M();
+        
+        if (mjj_max > mjj_test){
+          mjj_max = mjj_test;
+          i1 = i;
+          j1 = j;
+        }
+        
+        if ((jets[i1]->vector().Pt() > 30) && (jets[j1]->vector().Pt() > 30)){
+          max_mjj_jets.push_back(jets[i1]);
+          max_mjj_jets.push_back(jets[j1]);
+          offline_jpt_1_ = jets[i1]->vector().Pt();
+          offline_jeta_1_ = jets[i1]->vector().Eta();
+          offline_jpt_2_ = jets[j1]->vector().Pt();
+          offline_jeta_2_ = jets[j1]->vector().Eta();
+          offline_jdeta_ = fabs(jets[i1]->vector().Eta()-jets[j1]->vector().Eta());
+          offline_mjj_ = (jets[i1]->vector() + jets[j1]->vector()).M();
+        }
+      }
+    }
   }
   
 
-    event->Add("offlineJets_1", offline_jet_1);
-    event->Add("offlineJets_2", offline_jet_2);
-    event->Add("offlineJets_eta_1", offline_jet_eta_1);
-    event->Add("offlineJets_eta_2", offline_jet_eta_2);
-    event->Add("offlineJets_deta", offline_jet_deta);
-    event->Add("offlineJets_mjj", offline_mjj);
+
+    event->Add("offline_jpt_1", offline_jpt_1_);
+    event->Add("offline_jpt_2", offline_jpt_2_);
+    event->Add("offline_jeta_1", offline_jeta_1_);
+    event->Add("offline_jeta_2", offline_jeta_2_);
+    event->Add("offline_jdeta", offline_jdeta_);
+    event->Add("offline_mjj", offline_mjj_);
 
 
   // define trg_VBF
@@ -713,15 +742,15 @@ std::vector<PFJet *> cleanedPFJets;
 
 
 //    // For testing offline tau offline jets matching
-     for (unsigned iJet = 0; iJet < jets.size(); ++iJet){
+     for (unsigned iJet = 0; iJet < max_mjj_jets.size(); ++iJet){
        bool isMatched = false;  
        for(unsigned iTau = 0; iTau < taus.size(); iTau++){  
-         if(reco::deltaR2(taus[iTau]->vector(), jets[iJet]->vector()) < matchingR2_){
+         if(reco::deltaR2(taus[iTau]->vector(), max_mjj_jets[iJet]->vector()) < matchingR2_){
            isMatched = true;
            break;
          }
        }
-       if(isMatched == false) cleanedPFJets.push_back(jets[iJet]);
+       if(isMatched == false) cleanedPFJets.push_back(max_mjj_jets[iJet]);
      }
 
   if (cleanedPFJets.size()>0){
@@ -804,6 +833,13 @@ std::vector<PFJet *> cleanedPFJets;
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
 
+    if(event->Exists("xclean_jpt_1")) xclean_jpt_1_ = event->Get<double>("xclean_jpt_1");
+    if(event->Exists("xclean_jpt_2")) xclean_jpt_2_ = event->Get<double>("xclean_jpt_2");
+    if(event->Exists("xclean_jpt_3")) xclean_jpt_3_ = event->Get<double>("xclean_jpt_3");
+    if(event->Exists("xclean_jeta_1")) xclean_jeta_1_ = event->Get<double>("xclean_jeta_1");
+    if(event->Exists("xclean_jeta_2")) xclean_jeta_2_ = event->Get<double>("xclean_jeta_2");
+    if(event->Exists("xclean_jeta_3")) xclean_jeta_3_ = event->Get<double>("xclean_jeta_3");
+    if(event->Exists("xclean_mjj")) xclean_mjj_ = event->Get<double>("xclean_mjj");
 
   if(fs_) outtree_->Fill();
     

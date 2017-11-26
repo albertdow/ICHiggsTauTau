@@ -49,20 +49,22 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   unsigned count_mt_;
   unsigned count_tt_;
 
-  double offline_jet_1;
-  double offline_jet_2;
-  double offline_jet_eta_1;
-  double offline_jet_eta_2;
-  double offline_jet_deta;
-  double offline_mjj;
+  double offline_jpt_1_;
+  double offline_jpt_2_;
+  double offline_jeta_1_;
+  double offline_jeta_2_;
+  double offline_jdeta_;
+  double offline_mjj_;
   double PFJets_;
   double matchedPFJets_;
   
   
   double xclean_jpt_1_;
   double xclean_jpt_2_;
+  double xclean_jpt_3_;
   double xclean_jeta_1_;
   double xclean_jeta_2_;
+  double xclean_jeta_3_;
   double xclean_mjj_;
   
 

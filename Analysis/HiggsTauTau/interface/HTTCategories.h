@@ -1014,7 +1014,15 @@ class HTTCategories : public ModuleBase {
   double wt_alphasdown_;
   double wt_alphasup_;
 
+  // for trigger studies
   bool trg_VBF;
+  double xclean_jpt_1_;
+  double xclean_jpt_2_;
+  double xclean_jpt_3_;
+  double xclean_jeta_1_;
+  double xclean_jeta_2_;
+  double xclean_jeta_3_;
+  double xclean_mjj_;
 
  public:
   HTTCategories(std::string const& name);

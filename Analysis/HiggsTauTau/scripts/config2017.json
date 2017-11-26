@@ -21,7 +21,7 @@
     "mc"            : "summer16_80X",
     "era"           : "data_2016",
     "strategy"      : "mssmsummer16",
-    "is_data"       : true,
+    "is_data"       : false,
     "is_embedded"   : false,
     "save_output_jsons": false,
     "make_sync_ntuple" : false,
