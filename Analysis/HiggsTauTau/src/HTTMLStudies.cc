@@ -62,6 +62,7 @@ namespace ic {
 
     outtree_->Branch("dphi_jjtt",        &dphi_jjtt_);
     outtree_->Branch("zfeld",        &zfeld_);
+    outtree_->Branch("abs_zfeld",        &abs_zfeld_);
     }
 
     return 0;
@@ -86,11 +87,11 @@ namespace ic {
     // lepton variables
     if(event->Exists("pt_1")) pt_1_ = event->Get<double>("pt_1");
     if(event->Exists("pt_2")) pt_2_ = event->Get<double>("pt_2");
-    if(event->Exists("eta_1")) jeta_1_ = event->Get<double>("eta_1");
-    if(event->Exists("eta_2")) jeta_2_ = event->Get<double>("eta_2");
+    if(event->Exists("eta_1")) eta_1_ = event->Get<double>("eta_1");
+    if(event->Exists("eta_2")) eta_2_ = event->Get<double>("eta_2");
     if(event->Exists("eta_tt")) eta_tt_ = event->Get<double>("eta_tt");
-    if(event->Exists("phi_1")) jphi_1_ = event->Get<double>("phi_1");
-    if(event->Exists("phi_2")) jphi_2_ = event->Get<double>("phi_2");
+    if(event->Exists("phi_1")) phi_1_ = event->Get<double>("phi_1");
+    if(event->Exists("phi_2")) phi_2_ = event->Get<double>("phi_2");
     if(event->Exists("dphi_")) dphi_ = event->Get<double>("dphi_");
     if(event->Exists("mt_1")) mt_1_ = event->Get<double>("mt_1");
     if(event->Exists("mt_2")) mt_2_ = event->Get<double>("mt_2");
@@ -108,12 +109,13 @@ namespace ic {
     
     // adding Zeppenfeld variable
     zfeld_ = -9999;
-    zfeld_ = eta_tt_ + (jeta_1_ + jeta_2_)/2;
+    abs_zfeld_ = -9999;
+    zfeld_ = eta_tt_ - (jeta_1_ + jeta_2_)/2;
+    abs_zfeld_ = std::fabs(zfeld_);
 
     // adding delta phi between jj and tt pairs
     dphi_jjtt_ = -9999;
     dphi_jjtt_ = std::fabs(jdphi_-dphi_);
-
 
     if(fs_) outtree_->Fill();
     

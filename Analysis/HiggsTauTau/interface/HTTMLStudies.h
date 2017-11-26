@@ -75,6 +75,7 @@ class HTTMLStudies : public ModuleBase {
   double pt_tt_;
 
   double zfeld_;
+  double abs_zfeld_;
   double dphi_jjtt_;
   
  public:

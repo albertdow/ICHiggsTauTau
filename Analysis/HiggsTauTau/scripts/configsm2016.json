@@ -68,7 +68,7 @@
     "bjet_regr_correction" : false,
     "kinfit_mode"   : 0,
     "mva_met_mode"  : 0,
-    "do_met_filters" : 0,
+    "do_met_filters" : 1,
     "faked_tau_selector" : 0,
     "hadronic_tau_selector" : 0,
     "run_gen_info"  : false,
