@@ -57,6 +57,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   double offline_mjj_;
   double PFJets_;
   double matchedPFJets_;
+  double cleanedPFJets_pt_;
   
   
   double xclean_jpt_1_;
@@ -113,8 +114,16 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool VBFttHLTPath2_;
   bool VBFttHLTPath3_;
 
-  bool trg_VBF;
-  bool trg_VBFThree;
+  bool trg_VBF = false;
+  bool trg_VBFThree = false;
+  bool trg_VBFMedium = false;
+  bool trg_VBFTight = false;
+
+  bool trg_diTauMedium35 = false;
+  bool trg_diTauTight35 = false;
+  bool trg_diTauMedium40TightID = false;
+  bool trg_diTauTight40TightID = false;
+
   bool trg_doubletau;
 
   int PFTausize_; 
@@ -177,6 +186,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool antiele_2_;
   bool antimu_2_;
   double pt_tt_;
+  double wt_;
 
   bool two_jets_;
   

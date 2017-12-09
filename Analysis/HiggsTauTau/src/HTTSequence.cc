@@ -583,7 +583,7 @@ void HTTSequence::BuildSequence(){
   if (era_type == era::data_2015&&output_name.find("2015D")!=output_name.npos)  data_json= "input/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt";
   if (era_type == era::data_2016){
     data_json= "input/json/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt";
-    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_294927-306460_13TeV_PromptReco_Collisions17_JSON.txt"; // custom changed for 2017
+    if(strategy_type == strategy::mssmsummer16) data_json= "input/json/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt"; // custom changed for 2017
   }
 
 
@@ -660,11 +660,14 @@ void HTTSequence::BuildSequence(){
         httStitching.SetWInputCrossSections(50380,9644.5,3144.5,954.8,485.6);
         httStitching.SetWInputYields(57026058,45367044,29878415,19798117,18751462);
        }
-       if ((output_name.find("DY") != output_name.npos && output_name.find("JetsToLL-LO") != output_name.npos && !(output_name.find("JetsToLL-LO-10-50") != output_name.npos))){
+         // need to change this to do DY GenStitching
+         // requires me to find the number of events
+         // and the xsections for 2017 MC
+       //if ((output_name.find("DY") != output_name.npos && output_name.find("JetsToLL_M-50") != output_name.npos && !(output_name.find("JetsToLL_M-150-LO") != output_name.npos))){
          httStitching.set_do_dy_soup(true);
-         httStitching.SetDYInputCrossSections(4954, 1012.5, 332.8, 101.8,54.8); //Target fractions are xs_n-jet/xs_inclusive
-         httStitching.SetDYInputYields(96658943,62627174, 19970551, 5856110, 4197868);
-       }
+         httStitching.SetDYInputCrossSections(4963, 1012, 334.7, 102.3, 54.52); //Target fractions are xs_n-jet/xs_inclusive
+         httStitching.SetDYInputYields(50645463, 66005667, 45414763, 5218008, 17338269);
+       //}
    
        BuildModule(httStitching); 
     }

@@ -431,7 +431,8 @@ namespace ic {
           leg1_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
           leg2_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
         }
-        if(run >= 271036 && run <= 302026){
+        // customise this for data 2017
+        if(run >= 271036 && run <= 294927){
           trig_obj_label = "triggerObjectsDoubleMediumTau35";
           leg1_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
           leg2_filter = "hltDoublePFTau35TrackPt1MediumIsolationDz02Reg";
@@ -441,7 +442,7 @@ namespace ic {
             alt_leg2_filter = "hltDoublePFTau35TrackPt1MediumCombinedIsolationDz02Reg";
           }
         }
-        if(run >= 302026 /*&& run <= xxxxx*/){  
+        if(run >= 294927 /*&& run <= xxxxx*/){  
           trig_obj_label = "triggerObjectsDoubleMediumChargedIsoPFTau35";
           leg1_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";
           leg2_filter = "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg";

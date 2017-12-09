@@ -3730,6 +3730,8 @@ namespace ic {
     //event->Add(" xclean_jeta_2", xclean_jeta_2_);
     //event->Add(" xclean_jeta_3", xclean_jeta_3_);
     //event->Add("xclean_mjj",xclean_mjj_);
+    
+    event->Add("wt",wt_.var_double);
 
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();

@@ -58,19 +58,6 @@ namespace ic {
 
   int HTTVBFTriggerAnalysis::PreAnalysis() {
      
-  L1pass = 0;
-  L1fail = 0;
-  L1failSecond = 0;
-  L1size0 = 0;
-  L1size1 = 0;
-  HLTsize0 = 0;
-  Calosize0 = 0; 
-  CaloL1matched = 0;
-  CaloL1tot = 0; 
-  CaloL1 = true;
-
-  PFTausize0 = 0;
-  matchedVBF0 = 0;
 
   if(fs_){  
     outtree_ = fs_->make<TTree>("HLT_trigger_ntuple","HLT_trigger_ntuple");
@@ -167,6 +154,7 @@ namespace ic {
     outtree_->Branch("offlineTaus_m", &offline_tau_m);
     outtree_->Branch("PFJets", &PFJets_);
     outtree_->Branch("matchedPFJets", &matchedPFJets_);
+    outtree_->Branch("cleanedPFJets_pt", &cleanedPFJets_pt_);
 
     outtree_->Branch("HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v",           &ttHLTPath1_);
     outtree_->Branch("HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",           &VBFttHLTPath1_);
@@ -174,6 +162,16 @@ namespace ic {
     outtree_->Branch("HLT_VBF_DoubleTightChargedIsoPFTau20_Trk1_eta2p1_Reg_v",           &VBFttHLTPath3_);
 
     outtree_->Branch("trg_doubletau", &trg_doubletau);
+
+
+    
+    outtree_->Branch("trg_VBFMedium", &trg_VBFMedium);
+    outtree_->Branch("trg_VBFTight", &trg_VBFTight);
+
+    outtree_->Branch("trg_diTauMedium35", &trg_diTauMedium35);
+    outtree_->Branch("trg_diTauTight35", &trg_diTauTight35);
+    outtree_->Branch("trg_diTauMedium40", &trg_diTauMedium40TightID);
+    outtree_->Branch("trg_diTauTight40TightID", &trg_diTauTight40TightID);
 
     // offline variables from other tree
     outtree_->Branch("jpt_1",             &jpt_1_);
@@ -187,6 +185,7 @@ namespace ic {
     outtree_->Branch("antiele_2",         &antiele_2_);
     outtree_->Branch("antimu_2",          &antimu_2_);
     outtree_->Branch("pt_tt",             &pt_tt_);
+    outtree_->Branch("wt",                &wt_);
 
     outtree_->Branch("two_jets",          &two_jets_);
 
@@ -225,6 +224,14 @@ namespace ic {
     
     //std::cout<<"EVENT "<<std::endl;
    std::vector<TriggerObject *> const& VBFobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleLooseChargedIsoPFTau20");	
+   std::vector<TriggerObject *> const& VBFMediumObjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleMediumChargedIsoPFTau20");	
+   std::vector<TriggerObject *> const& VBFTightObjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFDoubleTightChargedIsoPFTau20");	
+
+   std::vector<TriggerObject *> const& diTauMedium35_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleMediumChargedIsoPFTau35");
+   std::vector<TriggerObject *> const& diTauTight35_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleTightChargedIsoPFTau35");
+   std::vector<TriggerObject *> const& diTauMedium40TightID_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleMediumChargedIsoPFTau40TightID");
+   std::vector<TriggerObject *> const& diTauTight40TightID_objs = event->GetPtrVec<TriggerObject>("triggerObjectsDoubleTightChargedIsoPFTau40TightID");
+
    //std::vector<TriggerObject *> const& VBFThreeobjs = event->GetPtrVec<TriggerObject>("triggerObjectsVBFThreeDoubleLooseChargedIsoPFTau20");	
    std::vector<TriggerObject *>  L1jets;
    std::vector<TriggerObject *>  HLTjets;
@@ -234,6 +241,20 @@ namespace ic {
    std::vector<TriggerObject *> DiTaus;
    std::vector<TriggerObject *> ThreeHLTjets;
    std::vector<TriggerObject *> ThreePFTau;
+
+   std::vector<TriggerObject *>  MediumL1jets;
+   std::vector<TriggerObject *>  MediumHLTjets;
+   std::vector<TriggerObject *> MediumPFTau;
+
+   std::vector<TriggerObject *>  TightL1jets;
+   std::vector<TriggerObject *>  TightHLTjets;
+   std::vector<TriggerObject *> TightPFTau;
+
+   std::vector<TriggerObject *> diTauMedium35;
+   std::vector<TriggerObject *> diTauTight35;
+   std::vector<TriggerObject *> diTauMedium40TightID;
+   std::vector<TriggerObject *> diTauTight40TightID;
+
 
    hlt_jpt_1_=-9999;
    hlt_jpt_2_=-9999;
@@ -296,11 +317,10 @@ namespace ic {
    PFTausize_=-9999;
    HLTjetssize_=-9999;
    
-   L1Pass_=false;
     // Get the objects at HLT from the appropriate filters
     for (unsigned i = 0; i < VBFobjs.size(); ++i){ 
   	  if (IsFilterMatchedWithName(VBFobjs[i], "hltL1VBFDiJetOR")){ 
-          L1Pass_=true;
+          /* L1Pass_=true; */
           L1jets.push_back(VBFobjs[i]);
       }
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20")) HLTjets.push_back(VBFobjs[i]);	
@@ -309,7 +329,39 @@ namespace ic {
 	  if (IsFilterMatchedWithName(VBFobjs[i], "hltDoublePFTau20TrackPt1LooseChargedIsolationReg")) PFTau.push_back(VBFobjs[i]);	
     }
  
-    event->Add("L1Pass",L1Pass_);
+
+    for (unsigned i = 0; i < VBFMediumObjs.size(); ++i){ 
+  	  if (IsFilterMatchedWithName(VBFMediumObjs[i], "hltL1VBFDiJetOR")){ 
+          MediumL1jets.push_back(VBFMediumObjs[i]);
+      }
+	  if (IsFilterMatchedWithName(VBFMediumObjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleMediumChargedIsoPFTau20")) MediumHLTjets.push_back(VBFMediumObjs[i]);	
+	  if (IsFilterMatchedWithName(VBFMediumObjs[i], "hltDoublePFTau20TrackPt1MediumChargedIsolationReg")) MediumPFTau.push_back(VBFMediumObjs[i]);	
+    }
+
+    for (unsigned i = 0; i < VBFTightObjs.size(); ++i){ 
+  	  if (IsFilterMatchedWithName(VBFTightObjs[i], "hltL1VBFDiJetOR")){ 
+          TightL1jets.push_back(VBFTightObjs[i]);
+      }
+	  if (IsFilterMatchedWithName(VBFTightObjs[i], "hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleTightChargedIsoPFTau20")) TightHLTjets.push_back(VBFTightObjs[i]);	
+	  if (IsFilterMatchedWithName(VBFTightObjs[i], "hltDoublePFTau20TrackPtTightChargedIsolationReg")) TightPFTau.push_back(VBFTightObjs[i]);	
+    }
+
+
+    // Di Tau reference paths
+    for (unsigned i = 0; i < diTauMedium35_objs.size(); ++i){ 
+	  if (IsFilterMatchedWithName(diTauMedium35_objs[i], "hltDoublePFTau35TrackPt1MediumChargedIsolationDz02Reg")) diTauMedium35.push_back(diTauMedium35_objs[i]);	
+    }
+    for (unsigned i = 0; i < diTauTight35_objs.size(); ++i){ 
+	  if (IsFilterMatchedWithName(diTauTight35_objs[i], "hltDoublePFTau35TrackPt1TightChargedIsolationDz02Reg")) diTauTight35.push_back(diTauTight35_objs[i]);	
+    }
+    for (unsigned i = 0; i < diTauMedium40TightID_objs.size(); ++i){ 
+	  if (IsFilterMatchedWithName(diTauMedium40TightID_objs[i], "hltDoublePFTau40TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg")) diTauMedium40TightID.push_back(diTauMedium40TightID_objs[i]);	
+    }
+    for (unsigned i = 0; i < diTauTight40TightID_objs.size(); ++i){ 
+	  if (IsFilterMatchedWithName(diTauTight40TightID_objs[i], "hltDoublePFTau40TrackPt1TightChargedIsolationAndTightOOSCPhotonsDz02Reg")) diTauTight40TightID.push_back(diTauTight40TightID_objs[i]);	
+    }
+
+
 
     //for (unsigned i = 0; i < VBFThreeobjs.size(); ++i){ 
 	//  if (IsFilterMatchedWithName(VBFThreeobjs[i], "hltMatchedVBFThreePFJets3CrossCleanedFromDoubleLooseChargedIsoPFTau20")) ThreeHLTjets.push_back(VBFThreeobjs[i]);	
@@ -335,6 +387,43 @@ namespace ic {
 std::sort(HLTjets.begin(), HLTjets.end(), PtComparatorTriggerObj());
 std::sort(L1jets.begin(), L1jets.end(), PtComparatorTriggerObj());
 std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
+
+std::sort(MediumHLTjets.begin(), MediumHLTjets.end(), PtComparatorTriggerObj());
+std::sort(MediumL1jets.begin(), MediumL1jets.end(), PtComparatorTriggerObj());
+std::sort(MediumPFTau.begin(), MediumPFTau.end(), PtComparatorTriggerObj());
+
+std::sort(TightHLTjets.begin(), TightHLTjets.end(), PtComparatorTriggerObj());
+std::sort(TightL1jets.begin(), TightL1jets.end(), PtComparatorTriggerObj());
+std::sort(TightPFTau.begin(), TightPFTau.end(), PtComparatorTriggerObj());
+
+std::sort(diTauMedium35.begin(), diTauMedium35.end(), PtComparatorTriggerObj());
+std::sort(diTauTight35.begin(), diTauTight35.end(), PtComparatorTriggerObj());
+std::sort(diTauMedium40TightID.begin(), diTauMedium40TightID.end(), PtComparatorTriggerObj());
+std::sort(diTauTight40TightID.begin(), diTauTight40TightID.end(), PtComparatorTriggerObj());
+
+
+// Define di tau reference bools 
+  double diTauMedium35_2_ (-9999);
+  double diTauTight35_2_ (-9999);
+  double diTauMedium40TightID_2_ (-9999);
+  double diTauTight40TightID_2_ (-9999);
+
+  if (diTauMedium35.size()>1) diTauMedium35_2_ = diTauMedium35[1]->vector().Pt();
+  trg_diTauMedium35 = diTauMedium35_2_ > 35;
+  event->Add("trg_diTauMedium35",trg_diTauMedium35);
+
+  if (diTauTight35.size()>1) diTauTight35_2_ = diTauTight35[1]->vector().Pt();
+  trg_diTauTight35 = diTauTight35_2_ > 35;
+  event->Add("trg_diTauTight35",trg_diTauTight35);
+
+  if (diTauMedium40TightID.size()>1) diTauMedium40TightID_2_ = diTauMedium40TightID[1]->vector().Pt();
+  trg_diTauMedium40TightID = diTauMedium40TightID_2_ > 40;
+  event->Add("trg_diTauMedium40TightID",trg_diTauMedium40TightID);
+
+  if (diTauTight40TightID.size()>1) diTauTight40TightID_2_ = diTauTight40TightID[1]->vector().Pt();
+  trg_diTauTight40TightID = diTauTight40TightID_2_ > 40;
+  event->Add("trg_diTauTight40TightID",trg_diTauTight40TightID);
+
 //std::sort(ThreePFTau.begin(), ThreePFTau.end(), PtComparatorTriggerObj());
 //std::sort(ThreeHLTjets.begin(), ThreeHLTjets.end(), PtComparatorTriggerObj());
 
@@ -360,21 +449,21 @@ std::sort(PFTau.begin(), PFTau.end(), PtComparatorTriggerObj());
 //}
 
 
-if (L1jets.size()!=0)
-	{if (L1jets[0]->vector().Pt()<80) L1fail++;
-	if (L1jets.size()>1) 
-		if (L1jets[1]->vector().Pt()<30) L1failSecond++;
-
-	}
-L1pass++;
-
-if (L1jets.size()==0) L1size0++;
-if (HLTjets.size()==0) HLTsize0++;
-if (PFTau.size()==0) PFTausize0++;
+//if (L1jets.size()!=0)
+//	{if (L1jets[0]->vector().Pt()<80) L1fail++;
+//	if (L1jets.size()>1) 
+//		if (L1jets[1]->vector().Pt()<30) L1failSecond++;
+//
+//	}
+//L1pass++;
+//
+//if (L1jets.size()==0) L1size0++;
+//if (HLTjets.size()==0) HLTsize0++;
+//if (PFTau.size()==0) PFTausize0++;
 //if (matched_vbf_objs.size()==0) matchedVBF0++;
 //if (vbf_objs.size()==0) matchedVBF0++;
 
-L1size1++;
+//L1size1++;
 
 
 //Insert mjj for HLT and Calo jets 
@@ -423,6 +512,47 @@ if (HLTjets.size()>3)
     hlt_jeta_4_ = HLTjets[3]->vector().Eta();	
 	}
 
+
+// VBF+MediumTaus20
+//
+double medium_hlt_jpt_1_(-9999);
+double medium_hlt_jpt_2_(-9999);
+double medium_hlt_mjj_(-9999);
+double medium_tau_pt_2_(-9999);
+
+  if (MediumHLTjets.size()>1)
+	{
+    medium_hlt_jpt_1_ = MediumHLTjets[0]->vector().Pt();
+    medium_hlt_jpt_2_ = MediumHLTjets[1]->vector().Pt();
+    medium_hlt_mjj_ = (MediumHLTjets[0]->vector() + MediumHLTjets[1]->vector()).M();
+	}
+
+
+  if (MediumPFTau.size()>1) medium_tau_pt_2_ = MediumPFTau[1]->vector().Pt();
+
+  trg_VBFMedium = (medium_hlt_jpt_1_>115 && medium_hlt_jpt_2_>40 && medium_hlt_mjj_>650 && medium_tau_pt_2_>20);
+  event->Add("trg_VBFMedium",trg_VBFMedium);
+
+// VBF+TightTaus20
+//
+double tight_hlt_jpt_1_(-9999);
+double tight_hlt_jpt_2_(-9999);
+double tight_hlt_mjj_(-9999);
+double tight_tau_pt_2_(-9999);
+
+  if (TightHLTjets.size()>1)
+	{
+    tight_hlt_jpt_1_ = TightHLTjets[0]->vector().Pt();
+    tight_hlt_jpt_2_ = TightHLTjets[1]->vector().Pt();
+    tight_hlt_mjj_ = (TightHLTjets[0]->vector() + TightHLTjets[1]->vector()).M();
+	}
+
+
+  if (TightPFTau.size()>1) tight_tau_pt_2_ = TightPFTau[1]->vector().Pt();
+
+  trg_VBFTight = (tight_hlt_jpt_1_>115 && tight_hlt_jpt_2_>40 && tight_hlt_mjj_>650 && tight_tau_pt_2_>20);
+  event->Add("trg_VBFTight",trg_VBFTight);
+
 // THREE JETS
 //
 //if (ThreeHLTjets.size()>0)
@@ -443,26 +573,67 @@ if (HLTjets.size()>3)
 //	}
 
 //for (unsigned i = 0; i < L1jets.size(); ++i) L1Jets_=L1jets[i]->vector().Pt();
-
-if (L1jets.size()>0)
-{
-    L1_jpt_1_=L1jets[0]->vector().Pt();
-    L1_jeta_1_=L1jets[0]->vector().Eta();
-}
+/* std::cout<<"\nTESTING L1 OBJECTS and LOGIC"<<std::endl; */
+/* if (L1jets.size()>0) { */
+/*     L1_jpt_1_=L1jets[0]->vector().Pt(); */
+/*     L1_jeta_1_=L1jets[0]->vector().Eta(); */
+    /* std::cout<<"L1 jet 1 pt: "<<L1jets[0]->vector().Pt()<<std::endl; */
+/* } */
  
-if (L1jets.size()>1)
-{
-    L1_jpt_2_=L1jets[1]->vector().Pt();
-    L1_jeta_2_=L1jets[1]->vector().Eta();
-    L1_mjj_=(L1jets[0]->vector()+L1jets[1]->vector()).M();
+/* if (L1jets.size()>1){ */
+/*     L1_jpt_2_=L1jets[1]->vector().Pt(); */
+/*     L1_jeta_2_=L1jets[1]->vector().Eta(); */
+/*     L1_mjj_=(L1jets[0]->vector()+L1jets[1]->vector()).M(); */
+    /* std::cout<<"L1 jet 2 pt: "<<L1jets[1]->vector().Pt()<<std::endl; */
+    /* std::cout<<"mjj formed by jet 1 and 2: "<<(L1jets[0]->vector()+L1jets[1]->vector()).M()<<std::endl; */
+/* } */
+/* if (L1jets.size()>2){ */
+/*     L1_jpt_3_=L1jets[2]->vector().Pt(); */
+/*     L1_jeta_3_=L1jets[2]->vector().Eta(); */
+    /* std::cout<<"L1 jet 3 pt: "<<L1jets[2]->vector().Pt()<<std::endl; */
+    /* std::cout<<"mjj formed by jet 1 and 3: "<<(L1jets[0]->vector()+L1jets[2]->vector()).M()<<std::endl; */
+    /* std::cout<<"mjj formed by jet 2 and 3: "<<(L1jets[1]->vector()+L1jets[2]->vector()).M()<<std::endl; */
+/* } */
 
-}
-if (L1jets.size()>2)
-{
-    L1_jpt_3_=L1jets[2]->vector().Pt();
-    L1_jeta_3_=L1jets[2]->vector().Eta();
-}
+  // Getting max mjj pair for L1 jets properly 
+  //
+  L1Pass_=false;
 
+  if (L1jets.size()>1) {
+    unsigned int k1 = 0;
+    unsigned int l1 = 0;
+    double l1_mjj_max = 0;
+    
+    for (unsigned int k = 0; k < L1jets.size()-1; k++){
+      for (unsigned int l = k+1; l < L1jets.size(); l++){
+        double l1_mjj_test = (L1jets[k]->vector()+L1jets[l]->vector()).M();
+
+        
+        if (l1_mjj_test > l1_mjj_max){
+          l1_mjj_max = l1_mjj_test;
+          k1 = k;
+          l1 = l;
+        }
+      } 
+    }
+        if ((L1jets[k1]->vector().Pt() >= 30) && (L1jets[l1]->vector().Pt() >= 30)){
+          L1_jpt_1_ = L1jets[k1]->vector().Pt();
+          L1_jeta_1_ = L1jets[k1]->vector().Eta();
+          L1_jpt_2_ = L1jets[l1]->vector().Pt();
+          L1_jeta_2_ = L1jets[l1]->vector().Eta();
+          L1_mjj_ = (L1jets[k1]->vector() + L1jets[l1]->vector()).M();
+          /* std::cout<<"pt of jets: "<<L1_jpt_1_<<"and "<<L1_jpt_2_<<std::endl; */
+          /* std::cout<<"chosen mjj: "<<L1_mjj_<<std::endl; */
+        
+      
+    }
+  }
+  // Define the L1 pass with proper cuts on the jets
+
+
+  L1Pass_ = L1_mjj_ > 620;
+  event->Add("L1Pass",L1Pass_);
+  
 
 //for (unsigned i = 0; i < L1jets.size()-1; ++i)
 //for (unsigned j = i+1; j < L1jets.size(); ++j)
@@ -773,7 +944,9 @@ std::vector<PFJet *> cleanedPFJets;
     xclean_mjj_ = (cleanedPFJets[0]->vector()+cleanedPFJets[1]->vector()).M();
   }
   
-
+    for (unsigned i = 0; i < cleanedPFJets.size(); ++i){
+      cleanedPFJets_pt_ = jets[i]->vector().Pt();
+    }
       
 
 
@@ -842,6 +1015,7 @@ std::vector<PFJet *> cleanedPFJets;
     if(event->Exists("antimu_2")) antimu_2_ = event->Get<bool>("antimu_2");
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
+    if(event->Exists("wt")) wt_ = event->Get<double>("wt");
 
     if(event->Exists("xclean_jpt_1")) xclean_jpt_1_ = event->Get<double>("xclean_jpt_1");
     if(event->Exists("xclean_jpt_2")) xclean_jpt_2_ = event->Get<double>("xclean_jpt_2");

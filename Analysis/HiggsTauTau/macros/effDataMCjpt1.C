@@ -11,7 +11,7 @@ TEfficiency* DrawEffs(TString filename)
 
     // define selection
     //TCut offline = "xclean_mjj>1000 & xclean_jpt_2>80 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
-    TCut offline = "PFJets.size()=2 & L1Pass & xclean_mjj>1000 & xclean_jpt_2>80 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
+    TCut offline = "cleanedPFJets_pt.size()=2 & L1Pass & xclean_mjj>1000 & xclean_jpt_2>80 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
@@ -42,9 +42,11 @@ void effDataMCjpt1(){
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/VBF_HToTauTau_M-125_tt_0.root"));
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TEST_VBF2and3_92X_VBF_HToTauTau_M-125_tt_0.root"));
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TEST_VBF2and3_withThreeObjs_92X_VBF_HToTauTau_M-125_tt_0.root"));
-    TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/TEST_NEWOFFLINE_20Nov17_IC_18Nov17_MC_VBF2and3_Taus20_Tau40_92X_v2_VBFHToTauTau_tt_0.root"));
+    //TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/TEST_NEWOFFLINE_20Nov17_IC_18Nov17_MC_VBF2and3_Taus20_Tau40_92X_v2_VBFHToTauTau_tt_0.root"));
+    TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/2017Dec07_MC_92X_VBFHToTauTau_tt_0.root"));
     //TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F.root"));
-    TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec04_21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F_tt_0.root"));
+    //TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec04_21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F_tt_0.root"));
+    TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec07_Data_92X/2017Dec07_Data_92X_TauD-F_tt_0.root"));
 
     eff1->SetLineColor(kBlue);
     eff2->SetLineColor(kRed);

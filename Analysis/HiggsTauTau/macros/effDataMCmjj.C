@@ -10,10 +10,11 @@ TEfficiency* DrawEffs(TString filename)
     TEfficiency* pEff = 0;
 
     // define selection
-    TCut offline = "PFJets.size()=2 & L1Pass & offline_mjj>400 & xclean_jpt_1>145 & xclean_jpt_2>55 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
+    TCut offline = "cleanedPFJets_pt.size()=2 & L1Pass & xclean_mjj>400 & xclean_jpt_1>145 & xclean_jpt_2>55 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
 
     TCut VBF = "trg_VBF";
     TCut DiTau = "trg_doubletau"; 
+    //TCut L1 = "L1_jpt_1>=100 & L1_jpt_2>=35 & L1_jpt_3>=35";
 
     // fill the histograms with TTree::Draw
     HLT_trigger_ntuple->Draw("offline_mjj>>h_num", VBF && DiTau && offline);
@@ -43,11 +44,13 @@ void effDataMCmjj(){
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/ModifiedVBF2and3_92X_VBF_HToTauTau_M-125_tt_0.root"));
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TEST_VBF2and3_92X_VBF_HToTauTau_M-125_tt_0.root"));
     //TEfficiency * eff1 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/TEST_VBF2and3_withThreeObjs_92X_VBF_HToTauTau_M-125_tt_0.root"));
-    TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/TEST_NEWOFFLINE_20Nov17_IC_18Nov17_MC_VBF2and3_Taus20_Tau40_92X_v2_VBFHToTauTau_tt_0.root"));
+    //TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/TEST_NEWOFFLINE_20Nov17_IC_18Nov17_MC_VBF2and3_Taus20_Tau40_92X_v2_VBFHToTauTau_tt_0.root"));
+    TEfficiency * eff1 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/2017Dec07_MC_92X_VBFHToTauTau_tt_0.root"));
 
 
     //TEfficiency * eff2 = DrawEffs(TString("/vols/build/cms/akd116/triggerStudies/CMSSW_8_0_25/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/output/21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F.root"));
-    TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec04_21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F_tt_0.root"));
+    //TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec04_21Nov17_Data_VBF_Taus_Cert_294927-306460_TauD-F_tt_0.root"));
+    TEfficiency * eff2 = DrawEffs(TString("/vols/cms/akd116/triggerStudies/2017Dec07_Data_92X/2017Dec07_Data_92X_TauD-F_tt_0.root"));
 
     eff1->SetLineColor(kBlue);
     eff2->SetLineColor(kRed);
@@ -55,8 +58,8 @@ void effDataMCmjj(){
     eff2->Draw("same");
 
     TF1* myErf1 = new TF1("myErf1", effErf,400., 2000., 3);
-    myErf1->SetParameter(0, 700.);
-    myErf1->SetParameter(1, 30.);
+    myErf1->SetParameter(0, 800.);
+    myErf1->SetParameter(1, 200.);
     myErf1->SetParameter(2, 1.);
 
     eff1->Fit(myErf1);
@@ -64,8 +67,8 @@ void effDataMCmjj(){
     myErf1->Draw("same");
     
     TF1* myErf2 = new TF1("myErf2", effErf, 400., 2000., 3);
-    myErf2->SetParameter(0, 700.);
-    myErf2->SetParameter(1, 50.);
+    myErf2->SetParameter(0, 800.);
+    myErf2->SetParameter(1, 400.);
     myErf2->SetParameter(2, 1.);
 
     eff2->Fit(myErf2);
