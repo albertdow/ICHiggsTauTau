@@ -186,6 +186,7 @@ namespace ic {
     outtree_->Branch("antimu_2",          &antimu_2_);
     outtree_->Branch("pt_tt",             &pt_tt_);
     outtree_->Branch("wt",                &wt_);
+    outtree_->Branch("m_vis",                &m_vis_);
 
     outtree_->Branch("two_jets",          &two_jets_);
 
@@ -1016,6 +1017,7 @@ std::vector<PFJet *> cleanedPFJets;
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
     if(event->Exists("wt")) wt_ = event->Get<double>("wt");
+    if(event->Exists("m_vis")) m_vis_ = event->Get<double>("m_vis");
 
     if(event->Exists("xclean_jpt_1")) xclean_jpt_1_ = event->Get<double>("xclean_jpt_1");
     if(event->Exists("xclean_jpt_2")) xclean_jpt_2_ = event->Get<double>("xclean_jpt_2");

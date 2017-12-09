@@ -187,6 +187,7 @@ class HTTVBFTriggerAnalysis : public ModuleBase {
   bool antimu_2_;
   double pt_tt_;
   double wt_;
+  double m_vis_;
 
   bool two_jets_;
   

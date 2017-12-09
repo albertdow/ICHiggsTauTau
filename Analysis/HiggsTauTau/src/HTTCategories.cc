@@ -3723,6 +3723,7 @@ namespace ic {
     event->Add("antiele_2",antiele_2_);
     event->Add("antimu_2", antimu_2_);
     event->Add("pt_tt", pt_tt_.var_double);
+    event->Add("m_vis", m_vis_.var_double);
     //event->Add(" xclean_jpt_1", xclean_jpt_1_);
     //event->Add(" xclean_jpt_2", xclean_jpt_2_);
     //event->Add(" xclean_jpt_3", xclean_jpt_3_);
