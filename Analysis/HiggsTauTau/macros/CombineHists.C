@@ -3,7 +3,7 @@ TH2D* DrawDiTauHist(TString filename){
     TFile* f = TFile::Open(filename);
     TTree* HLT_trigger_ntuple = (TTree*) f->Get("HLT_trigger_ntuple");
     
-    auto h = new TH2D("h","h", 5, 100, 500, 5, 100, 500);
+    auto h = new TH2D("h","h", 100, 0, 2500, 100, 0, 2500);
 
     TCut offline = "jdeta>2.5 & jpt_1>30 & jpt_2>30 & pt_tt>100 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
     TCut diTau = "trg_doubletau";
@@ -12,7 +12,6 @@ TH2D* DrawDiTauHist(TString filename){
 
     return h;
 }
-
 TH2D* DrawVBFHist(TString filename){
 
     TFile* f = TFile::Open(filename);
@@ -27,7 +26,6 @@ TH2D* DrawVBFHist(TString filename){
 
     return h;
 }
-
 void CombineHists(){
 
     THStack* hs = new THStack("hs","");
@@ -50,7 +48,6 @@ void CombineHists(){
     h2->Scale(norm_DY1);
     h2->GetXaxis()->SetTitle("m_{visible} (GeV)");
     h2->GetYaxis()->SetTitle("Events");
-    h2->SetAxisRange(0.,2500.,"X");
     h2->SetTitle("");
     h2->SetFillColor(kBlue);
 
