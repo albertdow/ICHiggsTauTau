@@ -1,9 +1,9 @@
-TH2D* DrawDiTauHist(TString filename){
+TH1D* DrawDiTauHist(TString filename){
 
     TFile* f = TFile::Open(filename);
     TTree* HLT_trigger_ntuple = (TTree*) f->Get("HLT_trigger_ntuple");
     
-    auto h = new TH2D("h","h", 100, 0, 2500, 100, 0, 2500);
+    TH1D* h = new TH1D("h","h", 15, 0, 150);
 
     TCut offline = "jdeta>2.5 & jpt_1>30 & jpt_2>30 & pt_tt>100 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
     TCut diTau = "trg_doubletau";
@@ -12,12 +12,12 @@ TH2D* DrawDiTauHist(TString filename){
 
     return h;
 }
-TH2D* DrawVBFHist(TString filename){
+TH1D* DrawVBFHist(TString filename){
 
     TFile* f = TFile::Open(filename);
     TTree* HLT_trigger_ntuple = (TTree*) f->Get("HLT_trigger_ntuple");
     
-    auto h = new TH2D("h","h", 100, 0, 2500, 100, 0, 2500);
+    TH1D* h = new TH1D("h","h", 15, 0, 150);
 
     TCut offline = "jdeta>2.5 & jpt_1>30 & jpt_2>30 & pt_tt>100 & mva_olddm_medium_1>0.5 & mva_olddm_medium_2>0.5";
     TCut VBF = "trg_VBF";
@@ -28,12 +28,10 @@ TH2D* DrawVBFHist(TString filename){
 }
 void CombineHists(){
 
-    THStack* hs = new THStack("hs","");
-
-    TCanvas* c1 = new TCanvas();
+    TCanvas* c1 = new TCanvas;
     c1->SetLogy();
 
-    TH2D* h1 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/2017Dec07_MC_92X_VBFHToTauTau_tt_0.root"));
+    TH1D* h1 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/2017Dec07_MC_92X_VBFHToTauTau_tt_0.root"));
     Double_t norm_VBF = 0.2371/2933672.;
     h1->Scale(norm_VBF);
     h1->GetXaxis()->SetTitle("m_{visible} (GeV)");
@@ -41,9 +39,8 @@ void CombineHists(){
     h1->SetTitle("");
     h1->SetFillColor(kRed);
 
-    /* hs->Add(h1); */
 
-    TH2D* h2 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY1Jets/2017Dec07_MC_92X_DY1JetsToLL_tt_0.root"));
+    TH1D* h2 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY1Jets/2017Dec07_MC_92X_DY1JetsToLL_tt_0.root"));
     Double_t norm_DY1 = (1012.0/4963.0)*5765.4/66005667.;
     h2->Scale(norm_DY1);
     h2->GetXaxis()->SetTitle("m_{visible} (GeV)");
@@ -51,9 +48,8 @@ void CombineHists(){
     h2->SetTitle("");
     h2->SetFillColor(kBlue);
 
-    hs->Add(h2);
 
-    TH2D* h3 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY2Jets/2017Dec07_MC_92X_DY2JetsToLL_tt_0.root"));
+    TH1D* h3 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY2Jets/2017Dec07_MC_92X_DY2JetsToLL_tt_0.root"));
     Double_t norm_DY2 = (334.7/4963.0)*5765.4/45414763.;
     h3->Scale(norm_DY2);
     h3->GetXaxis()->SetTitle("m_{visible} (GeV)");
@@ -61,9 +57,10 @@ void CombineHists(){
     h3->SetTitle("");
     h3->SetFillColor(kBlack);
 
-    hs->Add(h3);
+    h3->Add(h2);
+/*     /1* hs->Add(h3); *1/ */
 
-    TH2D* h4 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY3Jets/2017Dec07_MC_92X_DY3JetsToLL_tt_0.root"));
+    TH1D* h4 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY3Jets/2017Dec07_MC_92X_DY3JetsToLL_tt_0.root"));
     Double_t norm_DY3 = (102.3/4963.0)*5765.4/5218008.;
     h4->Scale(norm_DY3);
     h4->GetXaxis()->SetTitle("m_{visible} (GeV)");
@@ -71,37 +68,23 @@ void CombineHists(){
     h4->SetTitle("");
     h4->SetFillColor(kGreen);
 
-    hs->Add(h4);
+    h4->Add(h3);
+/*     /1* hs->Add(h4); *1/ */
 
-    TH2D* h5 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY4Jets/2017Dec07_MC_92X_DY4JetsToLL_tt_0.root"));
+    TH1D* h5 = DrawVBFHist(TString("/vols/cms/akd116/triggerStudies/2017Dec07_MC_92X/DY4Jets/2017Dec07_MC_92X_DY4JetsToLL_tt_0.root"));
     Double_t norm_DY4 = (54.52/4963.0)*5765.4/17338269.;
     h5->Scale(norm_DY4);
     h5->GetXaxis()->SetTitle("m_{visible} (GeV)");
     h5->GetYaxis()->SetTitle("Events");
     h5->SetTitle("");
-    h5->SetFillColor(kGreen);
+    h5->SetFillColor(kYellow);
 
-    hs->Add(h5);
-
-    hs->Draw();
-
-    /* TH2D* sum = new TH2D("sum","sum", 5, 100, 2500, 5, 100, 2500); */
-
-
-    /* TList *histos = hs->GetHists(); */
-    /* TIter next(histos); */
-    /* TH2D* hist; */
-    /* while ((hist =(TH2D*)next())) { */
-    /*     cout << "Adding " << hist->GetName() << endl; */
-    /*     sum->Add(hist); */
-    /* } */
-
-    /* sum->Draw(); */
-
+    h5->Add(h4);
     
-    /* hs_final->Add(h1); */
-    /* hs_final->Add(sum); */
-    /* hs_final->Draw("nostack"); */
+    THStack* hs = new THStack;
+    hs->Add(h1);
+    hs->Add(h5);
+    hs->Draw();
 
     TLatex* txt = new TLatex();
     txt->SetTextFont(42);
