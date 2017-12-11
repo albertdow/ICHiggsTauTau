@@ -88,5 +88,5 @@ void effDataMCmjj(){
     
     std::cout<<myErf1->GetParameter(2)<<std::endl; 
     std::cout<<myErf2->GetParameter(2)<<std::endl; 
-    c1->SaveAs("TEST_NEWOFFLINE_effDataMCmjj_xclean_VBF2.pdf");
+    c1->SaveAs("TurnOn_mjj.pdf");
 }

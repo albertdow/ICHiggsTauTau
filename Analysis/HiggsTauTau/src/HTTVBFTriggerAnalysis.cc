@@ -188,6 +188,8 @@ namespace ic {
     outtree_->Branch("wt",                &wt_);
     outtree_->Branch("m_vis",                &m_vis_);
 
+    /* outtree_->Branch("dy_wt",            &dy_wt_); */
+
     outtree_->Branch("two_jets",          &two_jets_);
 
     outtree_->Branch("L1Pass",       &L1Pass_);
@@ -1001,6 +1003,11 @@ std::vector<PFJet *> cleanedPFJets;
 
   	}
   
+    /* EventInfo * eventInfo = event->GetPtr<EventInfo>("eventInfo"); */
+
+    /* dy_wt_ = 1.; */
+    /* dy_wt_ = eventInfo->weight("dysoup"); */
+    
 
   // offline variables from other tree ("ntuple")
     if(event->Exists("jpt_1")) jpt_1_ = event->Get<double>("jpt_1");

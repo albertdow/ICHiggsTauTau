@@ -54,8 +54,8 @@ void effDataMCjpt1(){
     eff2->Draw("same");
 
     TF1* myErf1 = new TF1("myErf1", effErf, 50., 320., 3);
-    myErf1->SetParameter(0, 100.);
-    myErf1->SetParameter(1, 30.);
+    myErf1->SetParameter(0, 113.);
+    myErf1->SetParameter(1, 14.);
     myErf1->SetParameter(2, 1.);
 
     eff1->Fit(myErf1);
@@ -63,8 +63,8 @@ void effDataMCjpt1(){
     myErf1->Draw("same");
     
     TF1* myErf2 = new TF1("myErf2", effErf, 50., 320., 3);
-    myErf2->SetParameter(0, 100.);
-    myErf2->SetParameter(1, 30.);
+    myErf2->SetParameter(0, 120.);
+    myErf2->SetParameter(1, 19.);
     myErf2->SetParameter(2, 1.);
 
     eff2->Fit(myErf2);
@@ -82,7 +82,7 @@ void effDataMCjpt1(){
     txt->SetTextAlign(11);
     txt->DrawLatexNDC(c1->GetLeftMargin(),1.01-c1->GetTopMargin(),"#bf{CMS} #it{Preliminary}");
 
-    std::cout<<myErf1->GetParameter(2)<<std::endl; 
-    std::cout<<myErf2->GetParameter(2)<<std::endl; 
+    std::cout<<myErf1->GetParameter(0)<<" "<<myErf1->GetParameter(1)<<" "<<myErf1->GetParameter(2)<<std::endl; 
+    std::cout<<myErf2->GetParameter(0)<<" "<<myErf2->GetParameter(1)<<" "<<myErf2->GetParameter(2)<<std::endl; 
     c1->SaveAs("TEST_NEWOFFLINE_effDataMCjpt1_xclean_VBF2.pdf");
 }
