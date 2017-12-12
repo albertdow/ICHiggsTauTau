@@ -92,9 +92,9 @@ void CombineVBFHistsWithRatio(){
     //
     TH1D* h_sqrt = new TH1D("h_sqrt","h_sqrt",15,0,150);
     Int_t nbinsx = h5->GetXaxis()->GetNbins();
-    for (int i = 0; i < nbinsx; i++) {
+    for (int i = 0; i <= nbinsx; i++) {
         Double_t root = sqrt(h5->GetBinContent(i));
-        h_sqrt->Fill(root);
+        h_sqrt->SetBinContent(i,root);
         cout<<"bin: "<< i << "\n Content: " << h5->GetBinContent(i) << "\n sqrt of content: " << h_sqrt << endl;
     }
 
