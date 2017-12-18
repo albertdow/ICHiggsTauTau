@@ -17,7 +17,6 @@ from PhysicsTools.HeppyCore.utils.deltar import deltaR,bestMatch
 
 triggerBits, triggerBitLabel = Handle("edm::TriggerResults"), ("TriggerResults","","HLTX")
 triggerObjects, triggerObjectLabel  = Handle("std::vector<pat::TriggerObjectStandAlone>"), ("selectedPatTriggerCustom","","HLTX")
-triggerPrescales, triggerPrescaleLabel  = Handle("pat::PackedTriggerPrescales"), ("patTrigger","","PAT")
 
 finalObjsHandle,finalObjsLabel = Handle("trigger::TriggerFilterObjectWithRefs"),("hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20","","HLTX")
 ROOT.gROOT.ProcessLine("std::vector<reco::PFJetRef> jets;")
@@ -43,7 +42,6 @@ events = Events ('outputFULL.root')
 for iev,event in enumerate(events):
     event.getByLabel(triggerBitLabel, triggerBits)
     event.getByLabel(triggerObjectLabel, triggerObjects)
-    event.getByLabel(triggerPrescaleLabel, triggerPrescales)
 
     try:
         event.getByLabel(l1tmatched2mjjjetsLabel,l1tmatched2mjjjetsHandle)
