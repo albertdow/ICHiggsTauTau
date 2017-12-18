@@ -27,9 +27,6 @@ tauObjsHandle, tauObjsLabel = Handle("trigger::TriggerFilterObjectWithRefs"),("h
 ROOT.gROOT.ProcessLine("std::vector<reco::PFTauRef> taus;")
 TriggerTau = +84
 
-jetsOffHandle, jetsOffLabel = Handle("std::vector<pat::Jet>"), ("slimmedJets","","PAT")
-tausOffHandle, tausOffLabel = Handle("std::vector<pat::Tau>"), ("slimmedTaus","","PAT")
-
 l1tmatched2mjjjetsHandle,l1tmatched2mjjjetsLabel = Handle('std::vector<reco::PFJet>'),('hltVBFL1TLooseIDPFJetsMatching','TwoJets','HLTX')
 
 AK4jetsHandle  = Handle ('std::vector<reco::PFJet>')
