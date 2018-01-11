@@ -60,6 +60,8 @@ namespace ic {
 
     outtree_->Branch("pt_tt",             &pt_tt_);
 
+    outtree_->Branch("wt",               &wt_);
+
     outtree_->Branch("dphi_jjtt",        &dphi_jjtt_);
     outtree_->Branch("zfeld",        &zfeld_);
     outtree_->Branch("abs_zfeld",        &abs_zfeld_);
@@ -105,17 +107,22 @@ namespace ic {
 
     if(event->Exists("pt_tt")) pt_tt_ = event->Get<double>("pt_tt");
 
+    if(event->Exists("wt")) wt_ = event->Get<double>("wt");
+
 
     
     // adding Zeppenfeld variable
-    zfeld_ = -9999;
-    abs_zfeld_ = -9999;
-    zfeld_ = eta_tt_ - (jeta_1_ + jeta_2_)/2;
-    abs_zfeld_ = std::fabs(zfeld_);
-
     // adding delta phi between jj and tt pairs
-    dphi_jjtt_ = -9999;
-    dphi_jjtt_ = std::fabs(jdphi_-dphi_);
+    if (jpt_2_ > 0) {
+        zfeld_ = eta_tt_ - (jeta_1_ + jeta_2_)/2;
+        abs_zfeld_ = std::fabs(zfeld_);
+        dphi_jjtt_ = std::fabs(jdphi_-dphi_);
+    } else {
+        zfeld_ = -9999;
+        abs_zfeld_ = -9999;
+        dphi_jjtt_ = -9999;
+    }
+
 
     if(fs_) outtree_->Fill();
     

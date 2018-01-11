@@ -3648,6 +3648,8 @@ namespace ic {
     event->Add("antimu_1", antimu_1_);
     event->Add("antiele_2",antiele_2_);
     event->Add("antimu_2", antimu_2_);
+
+    event->Add("wt", wt_.var_double);
     
     
     if (write_tree_ && fs_) outtree_->Fill();
