@@ -72,6 +72,7 @@
 #include "Modules/interface/GenericModule.h"
 #include "HiggsTauTau/interface/NLOWeighting.h"
 #include "HiggsTauTau/interface/MELATest.h"
+#include "HiggsTauTau/interface/MELATestGen.h"
 
 
 namespace ic {
@@ -81,7 +82,7 @@ HTTSequence::HTTSequence(std::string& chan, std::string postf, Json::Value const
   new_svfit_mode = json["new_svfit_mode"].asUInt();
   if(new_svfit_mode > 0){
     if(json["svfit_folder"].asString()!="") {svfit_folder = json["svfit_folder"].asString();} else {std::cout<<"ERROR: svfit_folder not set"<<std::endl; exit(1);};
-    if(json["baseline"]["jes_mode"].asUInt() > 0 && json["baseline"]["split_by_source"].asBool()) svfit_folder=svfit_folder+"/";
+    if(json["baseline"]["jes_mode"].asUInt() > 0 && (json["baseline"]["split_by_source"].asBool()||json["strategy"].asString()=="smsummer16")) svfit_folder=svfit_folder+"/";
     else svfit_folder=svfit_folder+"/"+addit_output_folder+"/";
   }
   svfit_override = json["svfit_override"].asString();
@@ -786,6 +787,27 @@ mass_str.erase(mass_str.find("_"),mass_str.length()-mass_str.find("_"));
 
 BuildModule(jetIDFilter);
   TH2F btag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_Moriond2017.root","/","btag_eff_b");
+  
+  unsigned mela_mode = js["mela_mode"].asUInt();
+  if(mela_mode!=0){
+    std::string mela_folder;
+    if(js["mela_folder"].asString()!="") {
+      mela_folder = js["mela_folder"].asString();
+    } else {
+      std::cout<<"ERROR: mela_folder not set"<<std::endl; exit(1);
+    }
+    
+    if(js["baseline"]["jes_mode"].asUInt() > 0 && js["baseline"]["split_by_source"].asBool()) mela_folder=mela_folder+"/";
+    else mela_folder=mela_folder+"/"+addit_output_folder+"/";
+  
+    MELATestGen melaTestGen = MELATestGen("MELATestGen") 
+      .set_channel(channel)
+      .set_run_mode(mela_mode)
+      .set_outname(output_name)
+      .set_fullpath(mela_folder);
+    BuildModule(melaTestGen);
+  }
+  
   BuildModule(HTTGenAnalysis("HTTGenAnalysis")
     .set_fs(fs.get())
     .set_channel_str(channel_str)
@@ -1281,7 +1303,7 @@ if(channel != channel::wmnu) {
       othbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_Moriond2017.root","/","btag_eff_oth");
     }   
      
-   for(unsigned i=1; i<=27; ++i){
+   for(unsigned i=1; i<=28; ++i){
        
      std::string source = UInt2JES(i);
      std::string shift_jets_label = jets_label+source;
@@ -1425,15 +1447,34 @@ if(mela_mode!=0){
     std::cout<<"ERROR: mela_folder not set"<<std::endl; exit(1);
   }
   
-  if(js["baseline"]["jes_mode"].asUInt() > 0 && js["baseline"]["split_by_source"].asBool()) mela_folder=mela_folder+"/";
-  else mela_folder=mela_folder+"/"+addit_output_folder+"/";
+  if(js["baseline"]["jes_mode"].asUInt() == 0 || !js["baseline"]["split_by_source"].asBool()){
+    mela_folder=mela_folder+"/"+addit_output_folder+"/";
 
-  MELATest melaTest = MELATest("MELATest") 
-    .set_channel(channel)
-    .set_run_mode(mela_mode)
-    .set_outname(output_name)
-    .set_fullpath(mela_folder);
-  BuildModule(melaTest);
+    MELATest melaTest = MELATest("MELATest") 
+      .set_channel(channel)
+      .set_run_mode(mela_mode)
+      .set_outname(output_name)
+      .set_fullpath(mela_folder);
+    BuildModule(melaTest);
+  }
+  else if(js["baseline"]["jes_mode"].asUInt() > 0 && js["baseline"]["split_by_source"].asBool()){
+    mela_folder=mela_folder+"/"+addit_output_folder+"/";
+    std::string jes_input_file = "input/jec/Summer16_23Sep2016HV4_DATA_UncertaintySources_AK4PFchs.txt";
+    for(unsigned i=1; i<=28; ++i){
+      std::string source = UInt2JES(i);
+    
+      MELATest melaTest = MELATest("MELATest")
+        .set_channel(channel)
+        .set_run_mode(mela_mode)
+        .set_outname(output_name)
+        .set_fullpath(mela_folder)
+        .set_add_name(source)
+        .set_jes_uncert_file(jes_input_file)
+        .set_jes_uncert_set(source)
+        .set_jes_shift_mode(jes_mode);
+      BuildModule(melaTest);
+    }
+  }
 }
 
 
