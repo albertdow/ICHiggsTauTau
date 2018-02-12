@@ -44,6 +44,10 @@ namespace ic {
       do_sm_scale_wts_ = false;
       do_jes_vars_ = false;
       do_z_weights_ = false;
+
+      //ML stuff
+      mva_file_ = "input/Hhh_mva/2jet2tag_leppt_BDT.weights.xml";
+      reader_ = nullptr;
 }
 
   HTTCategories::~HTTCategories() {
@@ -66,6 +70,38 @@ namespace ic {
       std::cout << boost::format(param_fmt()) % "make_sync_ntuple" % make_sync_ntuple_;
       std::cout << boost::format(param_fmt()) % "bjet_regression" % bjet_regression_;
 
+      // MVA stuff
+      std::cout << boost::format(param_fmt()) % "mva_file" % mva_file_;
+
+      // create TMVA::Reader object
+      TMVA::Reader *reader_ = new TMVA::Reader();
+
+      // create a set of variables and declare them to the reader
+      // - the variable names must corresponds in name and type to
+      // those given in the weight file(s) that you use 
+
+      reader_->AddVariable("pt_1", &pt_1_.var_float);
+  	  reader_->AddVariable("pt_2", &pt_2_.var_float);
+      reader_->AddVariable("eta_1", &eta_1_.var_float);
+      reader_->AddVariable("eta_2", &eta_2_.var_float);
+  	  reader_->AddVariable("dphi", (float*) & dphi_);
+  	  reader_->AddVariable("m_vis", &m_vis_.var_float);
+
+      reader_->AddVariable("met", &met_.var_float);
+      reader_->AddVariable("met_dphi_1", (float*) & met_dphi_1_);
+      reader_->AddVariable("met_dphi_2", (float*) & met_dphi_2_);
+      reader_->AddVariable("pt_tt", &pt_tt_.var_float);
+
+  	  reader_->AddVariable("mt_1", &mt_1_.var_float);
+  	  reader_->AddVariable("mt_2", &mt_2_.var_float);
+      reader_->AddVariable("mt_lep", &mt_lep_.var_float);
+      reader_->AddVariable("n_jets", (int*) & n_jets_);
+      reader_->AddVariable("n_bjets", (int*) & n_bjets_);
+      
+      // book the MVA of your choice (prior training of these methods, ie,
+      // existence of the weight files is required)
+
+      reader_->BookMVA("BDT", mva_file_);
 
     if (fs_ && write_tree_) {
       outtree_ = fs_->make<TTree>("ntuple","ntuple");
@@ -4250,6 +4286,7 @@ namespace ic {
     event->Add("dphi_",dphi_);
     event->Add("mt_1",mt_1_.var_double);
     event->Add("mt_2",mt_2_.var_double);
+    event->Add("m_vis",m_vis_.var_double);
 
     event->Add("pt_tt", pt_tt_.var_double);
 
@@ -4263,6 +4300,10 @@ namespace ic {
 
     event->Add("wt", wt_.var_double);
     
+    // retrieve the MVA output
+    double mvaBDT = reader_->EvaluateMVA("BDT");
+    std::cout << mvaBDT << std::endl;
+
     
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
@@ -4277,6 +4318,7 @@ namespace ic {
       synctree_->Write();
       lOFile->Close();
     }
+    if (reader_) delete reader_;
     return 0;
   }
 

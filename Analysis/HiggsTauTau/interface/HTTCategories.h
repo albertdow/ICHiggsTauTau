@@ -9,6 +9,10 @@
 
 #include <string>
 
+namespace TMVA {
+    class Reader;
+}
+
 namespace ic {
 
 class HTTCategories : public ModuleBase {
@@ -47,6 +51,9 @@ class HTTCategories : public ModuleBase {
   CLASS_MEMBER(HTTCategories, bool, do_sm_scale_wts)
   CLASS_MEMBER(HTTCategories, bool, do_jes_vars)
   CLASS_MEMBER(HTTCategories, bool, do_z_weights)
+  CLASS_MEMBER(HTTCategories, std::string, mva_file)
+
+  TMVA::Reader *reader_;
 
  
   TTree *outtree_;
