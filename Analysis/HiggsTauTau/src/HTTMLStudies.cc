@@ -30,10 +30,10 @@ namespace ic {
     // jet variables
     outtree_->Branch("jpt_1",             &jpt_1_);
     outtree_->Branch("jpt_2",             &jpt_2_);
-    outtree_->Branch("jeta_1",             &jeta_1_);
-    outtree_->Branch("jeta_2",             &jeta_2_);
-    outtree_->Branch("jphi_1",             &jphi_1_);
-    outtree_->Branch("jphi_2",             &jphi_2_);
+    /* outtree_->Branch("jeta_1",             &jeta_1_); */
+    /* outtree_->Branch("jeta_2",             &jeta_2_); */
+    /* outtree_->Branch("jphi_1",             &jphi_1_); */
+    /* outtree_->Branch("jphi_2",             &jphi_2_); */
     outtree_->Branch("mjj",               &mjj_);
     outtree_->Branch("jdeta",             &jdeta_);
     outtree_->Branch("jdphi",             &jdphi_);
@@ -42,28 +42,29 @@ namespace ic {
     // lepton variables
     outtree_->Branch("pt_1",             &pt_1_);
     outtree_->Branch("pt_2",             &pt_2_);
-    outtree_->Branch("eta_1",             &eta_1_);
-    outtree_->Branch("eta_2",             &eta_2_);
-    outtree_->Branch("eta_tt",             &eta_tt_);
-    outtree_->Branch("phi_1",             &phi_1_);
-    outtree_->Branch("phi_2",             &phi_2_);
+    /* outtree_->Branch("eta_1",             &eta_1_); */
+    /* outtree_->Branch("eta_2",             &eta_2_); */
+    /* outtree_->Branch("eta_tt",             &eta_tt_); */
+    /* outtree_->Branch("phi_1",             &phi_1_); */
+    /* outtree_->Branch("phi_2",             &phi_2_); */
     outtree_->Branch("dphi",             &dphi_);
     outtree_->Branch("mt_1",             &mt_1_);
     outtree_->Branch("mt_2",             &mt_2_);
+    outtree_->Branch("m_vis",            &m_vis_);
 
-    outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1);
-    outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2);
-    outtree_->Branch("antiele_1",         &antiele_1_);
-    outtree_->Branch("antimu_1",          &antimu_1_);
-    outtree_->Branch("antiele_2",         &antiele_2_);
-    outtree_->Branch("antimu_2",          &antimu_2_);
+    /* outtree_->Branch("mva_olddm_medium_1",&lbyMediumIsolationMVArun2DBoldDMwLT_1); */
+    /* outtree_->Branch("mva_olddm_medium_2",&lbyMediumIsolationMVArun2DBoldDMwLT_2); */
+    /* outtree_->Branch("antiele_1",         &antiele_1_); */
+    /* outtree_->Branch("antimu_1",          &antimu_1_); */
+    /* outtree_->Branch("antiele_2",         &antiele_2_); */
+    /* outtree_->Branch("antimu_2",          &antimu_2_); */
 
     outtree_->Branch("pt_tt",             &pt_tt_);
 
     outtree_->Branch("wt",               &wt_);
 
     outtree_->Branch("dphi_jjtt",        &dphi_jjtt_);
-    outtree_->Branch("zfeld",        &zfeld_);
+    /* outtree_->Branch("zfeld",        &zfeld_); */
     outtree_->Branch("abs_zfeld",        &abs_zfeld_);
     }
 
@@ -97,6 +98,8 @@ namespace ic {
     if(event->Exists("dphi_")) dphi_ = event->Get<double>("dphi_");
     if(event->Exists("mt_1")) mt_1_ = event->Get<double>("mt_1");
     if(event->Exists("mt_2")) mt_2_ = event->Get<double>("mt_2");
+    if(event->Exists("m_vis")) m_vis_ = event->Get<double>("m_vis");
+    
 
     if(event->Exists("mva_olddm_medium_1")) lbyMediumIsolationMVArun2DBoldDMwLT_1 = event->Get<bool>("mva_olddm_medium_1");
     if(event->Exists("mva_olddm_medium_2")) lbyMediumIsolationMVArun2DBoldDMwLT_2 = event->Get<bool>("mva_olddm_medium_2");

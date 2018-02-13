@@ -1415,7 +1415,7 @@ if((strategy_type==strategy::fall15||strategy_type==strategy::mssmspring16||stra
     .set_legacy_svfit(true)
     .set_do_preselection(false)
     .set_MC(true)
-    .set_do_vloose_preselection(true); // set to true for MLStudies
+    .set_do_vloose_preselection(js["baseline"]["do_ff_weights"].asBool()); // set to true for MLStudies
  if(era_type == era::data_2015 || era_type == era::data_2016){
    svFitTest.set_legacy_svfit(false);
    svFitTest.set_do_preselection(!js["make_sync_ntuple"].asBool());

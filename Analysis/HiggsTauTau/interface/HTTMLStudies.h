@@ -64,6 +64,7 @@ class HTTMLStudies : public ModuleBase {
   double dphi_;
   double mt_1_;
   double mt_2_;
+  double m_vis_;
   
   bool lbyMediumIsolationMVArun2DBoldDMwLT_1;
   bool lbyMediumIsolationMVArun2DBoldDMwLT_2=0;
