@@ -178,13 +178,14 @@ void ICElectronProducer::produce(edm::Event& event,
     dest.set_dphi_sc_tk_at_vtx(src.deltaPhiSuperClusterTrackAtVtx());
     dest.set_deta_sc_tk_at_vtx(src.deltaEtaSuperClusterTrackAtVtx());
     if (src.gsfTrack().isNonnull()) {
-#if CMSSW_MAJOR_VERSION > 7 || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
+#if CMSSW_MAJOR_VERSION > 9 || (CMSSW_MAJOR_VERSION == 9 && CMSSW_MINOR_VERSION >= 4)
       dest.set_gsf_tk_nhits(
-          src.gsfTrack()->hitPattern().numberOfHits(
+          src.gsfTrack()->hitPattern().numberOfAllHits(
               reco::HitPattern::MISSING_INNER_HITS));
 #else
       dest.set_gsf_tk_nhits(
-          src.gsfTrack()->trackerExpectedHitsInner().numberOfHits());
+          src.gsfTrack()->hitPattern().numberOfHits(
+              reco::HitPattern::MISSING_INNER_HITS));
 #endif
     }
     dest.set_conv_dist(src.convDist());
