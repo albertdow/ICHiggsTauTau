@@ -406,10 +406,6 @@ if SCHEME == 'cpsummer16_2d':
 if SCHEME == 'mlcpsummer16_2d':
     # define signal regions for each training
 
-    # define control regions
-    # QCD CR for both trainings for et,mt,tt
-    # W CR for both trainings for et,mt
-
     VAR_JHU_GGH =  ''
     VAR_JHU_MISC = ''
     VAR_JHU_QCD =  ''
@@ -427,6 +423,17 @@ if SCHEME == 'mlcpsummer16_2d':
     VAR_POWHEG_W =    ''
     VAR_POWHEG_ZLL =  ''
     VAR_POWHEG_ZTT =  ''
+
+    # define control regions
+    # QCD CR for both trainings for et,mt,tt
+    # W CR for both trainings for et,mt
+
+    VAR_JHU_QCDCR =     ''
+    VAR_POWHEG_QCDCR =  ''
+    VAR_JHU_WCR =       ''
+    VAR_POWHEG_WCR =    ''
+
+
 
     VAR_0JET_LT = 'tau_decay_mode_2,m_vis[0,1,10],[0,60,65,70,75,80,85,90,95,100,105,110,400]'
     VAR_0JET_EM = 'pt_2,m_vis[15,25,35],[0,50,55,60,65,70,75,80,85,90,95,100,400]'
@@ -479,11 +486,11 @@ if SCHEME == 'mlcpsummer16_2d':
 
         # CRs - using the same cuts as in the other schemes
 
-        ("21",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, ' --set_alias="sel:mt_1<50" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
-        ("21",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, ' --set_alias="sel:mt_1<50" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
+        ("21",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCDCR, ' --set_alias="sel:mt_1<50" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
+        ("21",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCDCR, ' --set_alias="sel:mt_1<50" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
 
-        ("21",   "JHU_w",    "JHU_w",  VAR_JHU_W, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
-        ("21",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
+        ("21",   "JHU_w",    "JHU_w",  VAR_JHU_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
+        ("21",   "powheg_w",    "powheg_w",  VAR_POWHEG_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
 
     ]
     scheme_tt = [
