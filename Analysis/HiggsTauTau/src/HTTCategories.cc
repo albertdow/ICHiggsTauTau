@@ -44,14 +44,7 @@ namespace ic {
       do_sm_scale_wts_ = false;
       do_jes_vars_ = false;
       do_z_weights_ = false;
-
-      //ML stuff
-      /* mva_file_ = "input/ggh_mva/xgb_tt_powheg.weights.xml"; */
-      /* mva_file_2_ = "input/ggh_mva/xgb_tt_JHU.weights.xml"; */
-      /* mva_file_2_ = "input/ggh_mva/xgb_tt_JHU_new.xml"; */
-      /* mva_file_2_ = "input/ggh_mva/gbc_tt_JHU.weights.xml"; */
-      /* reader_ = nullptr; */
-      /* reader_2_ = nullptr; */
+      do_faketaus_ = false;
 }
 
   HTTCategories::~HTTCategories() {
@@ -74,46 +67,6 @@ namespace ic {
       std::cout << boost::format(param_fmt()) % "make_sync_ntuple" % make_sync_ntuple_;
       std::cout << boost::format(param_fmt()) % "bjet_regression" % bjet_regression_;
 
-      // MVA stuff
-      /* std::cout << boost::format(param_fmt()) % "mva_file" % mva_file_; */
-      /* std::cout << boost::format(param_fmt()) % "mva_file_2" % mva_file_2_; */
-
-      // create TMVA::Reader object
-      /* TMVA::Reader *reader_ = new TMVA::Reader(); */
-      /* TMVA::Reader *reader_2_ = new TMVA::Reader(); */
-
-      // create a set of variables and declare them to the reader
-      // - the variable names must corresponds in name and type to
-      // those given in the weight file(s) that you use 
-      
-  	  /* reader_2_->AddVariable("dphi", (float*) & dphi_); */
-      /* reader_2_->AddVariable("eta_tt", (float*) &eta_tt_); */
-
-  	  /* reader_2_->AddVariable("m_sv", &m_sv_.var_float); */
-  	  /* reader_2_->AddVariable("m_vis", &m_vis_.var_float); */
-      /* reader_2_->AddVariable("met", &met_.var_float); */
-      /* reader_2_->AddVariable("met_dphi_1", (float*) & met_dphi_1_); */
-      /* reader_2_->AddVariable("met_dphi_2", (float*) & met_dphi_2_); */
-
-  	  /* reader_2_->AddVariable("mt_1", &mt_1_.var_float); */
-  	  /* reader_2_->AddVariable("mt_2", &mt_2_.var_float); */
-      /* reader_2_->AddVariable("mt_lep", &mt_lep_.var_float); */
-
-      /* reader_2_->AddVariable("n_bjets", (float*) & n_bjets_); */
-      /* reader_2_->AddVariable("n_jets", (float*) & n_jets_); */
-
-      /* reader_2_->AddVariable("pt_1", &pt_1_.var_float); */
-  	  /* reader_2_->AddVariable("pt_2", &pt_2_.var_float); */
-      /* reader_2_->AddVariable("pt_tt", &pt_tt_.var_float); */
-
-      /* reader_2_->AddVariable("pt_vis", &pt_tt_.var_float); */
-      /* reader_2_->AddVariable("deta", &deta_.var_float); */
-      
-      // book the MVA of your choice (prior training of these methods, ie,
-      // existence of the weight files is required)
-
-      /* reader_->BookMVA("BDT", mva_file_); */
-      /* reader_2_->BookMVA("bdt", mva_file_2_); */
 
     if (fs_ && write_tree_) {
       outtree_ = fs_->make<TTree>("ntuple","ntuple");
@@ -125,6 +78,8 @@ namespace ic {
       outtree_->Branch("wt_tau_id_binned", &wt_tau_id_binned_);
       outtree_->Branch("wt_tau_id_loose", &wt_tau_id_loose_);
       outtree_->Branch("wt_tau_id_medium", &wt_tau_id_medium_);
+      outtree_->Branch("trigweight_1", &trigweight_1_, "trigweight_1/F");
+      outtree_->Branch("trigweight_2", &trigweight_2_, "trigweight_2/F");
       if (strategy_ == strategy::smsummer16) outtree_->Branch("wt_lfake_rate"    ,    &wt_lfake_rate_); 
       if(do_mssm_higgspt_){
         outtree_->Branch("wt_ggh_t", &wt_ggh_t_);
@@ -936,6 +891,12 @@ namespace ic {
       if(qcd_study_){
         outtree_->Branch("jet_flav_1", &jet_flav_1_);
         outtree_->Branch("jet_flav_2", &jet_flav_2_);
+      }
+      if(do_faketaus_){
+        outtree_->Branch("tau_pt_1", &tau_pt_1_);
+        outtree_->Branch("tau_pt_2", &tau_pt_2_);      
+        outtree_->Branch("tau_id_1", &tau_id_1_);
+        outtree_->Branch("tau_id_2", &tau_id_2_);
       }
 
       if(channel_ == channel::tpzmm || channel_ == channel::tpzee){
@@ -2414,7 +2375,7 @@ namespace ic {
     std::vector<PileupInfo *> puInfo;
     float true_int = -1;
 
-    if (event->Exists("pileupInfo") || strategy_ == strategy::phys14 || ((strategy_==strategy::spring15||strategy_==strategy::fall15||strategy_ == strategy::mssmspring16 ||strategy_ == strategy::smspring16 || strategy_ == strategy::mssmsummer16 || strategy_ == strategy::smsummer16) && !is_data_) ) {
+    if (event->Exists("pileupInfo") || strategy_ == strategy::phys14 || ((strategy_==strategy::spring15||strategy_==strategy::fall15||strategy_ == strategy::mssmspring16 ||strategy_ == strategy::smspring16 || strategy_ == strategy::mssmsummer16 || strategy_ == strategy::smsummer16) && !is_data_ && !is_embedded_) ) {
      puInfo = event->GetPtrVec<PileupInfo>("pileupInfo");
       for (unsigned i = 0; i < puInfo.size(); ++i) {
         if (puInfo[i]->bunch_crossing() == 0)
@@ -2790,6 +2751,7 @@ namespace ic {
     }
     met_ = mets->vector().pt();
     met_phi_ = mets->vector().phi();
+    
     
     uncorrmet_ = met_;
     if (event->Exists("met_norecoil")) uncorrmet_ = event->Get<double>("met_norecoil");
@@ -3622,6 +3584,7 @@ namespace ic {
       d0_2_ = muon2->dxy_vertex();
       dz_2_ = muon2->dz_vertex();
     }
+    
 
     if (channel_ == channel::tpzmm || channel_ == channel::tpzee){
       tag_trigger_match_1_ = event->Exists("tp_tag_leg1_match") ? event->Get<bool>("tp_tag_leg1_match") : 0;
@@ -4169,6 +4132,7 @@ namespace ic {
       D0star_27_    = DCP_27_/fabs(DCP_27_)*D0_27_ ;
       D0star_28_    = DCP_28_/fabs(DCP_28_)*D0_28_ ;
     }
+    
 
     if (channel_ == channel::tt && strategy_ == strategy::fall15){
       if (n_loose_bjets_ >= 1) {
@@ -4493,12 +4457,30 @@ namespace ic {
 
     event->Add("wt", wt_.var_double);
     
-    // retrieve the MVA output
 
-     /* if (n_jets_ >= 2 && mjj_.var_double > 300) { */
-     /*    event->Add("tt_JHU_bdt", reader_2_->EvaluateMVA("bdt")); */
-     /* } */
-
+    
+    if(do_faketaus_&&(channel_==channel::zmm||channel_==channel::em)){
+      std::vector<Tau *> taus = event->GetPtrVec<Tau>("taus");
+      std::sort(taus.begin(), taus.end(), bind(&Candidate::pt, _1) > bind(&Candidate::pt, _2));
+      tau_pt_1_=-9999;
+      tau_pt_2_=-9999;
+      tau_id_1_=0;
+      tau_id_2_=0;
+      if(taus.size()>0){
+        tau_pt_1_ = taus[0]->pt();
+        if(taus[0]->GetTauID("byVLooseIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 1;
+        if(taus[0]->GetTauID("byLooseIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 2;
+        if(taus[0]->GetTauID("byMediumIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 3;
+        if(taus[0]->GetTauID("byTightIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 4;
+      }
+      if(taus.size()>1){
+        tau_pt_2_ = taus[1]->pt();
+        if(taus[1]->GetTauID("byVLooseIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 1;
+        if(taus[1]->GetTauID("byLooseIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 2;
+        if(taus[1]->GetTauID("byMediumIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 3;
+        if(taus[1]->GetTauID("byTightIsolationMVArun2v1DBoldDMwLT")) tau_id_1_ = 4;
+      }
+    }
     
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
@@ -4513,8 +4495,6 @@ namespace ic {
       synctree_->Write();
       lOFile->Close();
     }
-    /* if (reader_) delete reader_; */
-    /* if (reader_2_) delete reader_2_; */
     return 0;
   }
 
