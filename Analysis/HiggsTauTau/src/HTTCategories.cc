@@ -46,8 +46,12 @@ namespace ic {
       do_z_weights_ = false;
 
       //ML stuff
-      mva_file_ = "input/ggh_mva/xgb.weights.xml";
-      reader_ = nullptr;
+      /* mva_file_ = "input/ggh_mva/xgb_tt_powheg.weights.xml"; */
+      /* mva_file_2_ = "input/ggh_mva/xgb_tt_JHU.weights.xml"; */
+      /* mva_file_2_ = "input/ggh_mva/xgb_tt_JHU_new.xml"; */
+      /* mva_file_2_ = "input/ggh_mva/gbc_tt_JHU.weights.xml"; */
+      /* reader_ = nullptr; */
+      /* reader_2_ = nullptr; */
 }
 
   HTTCategories::~HTTCategories() {
@@ -71,45 +75,52 @@ namespace ic {
       std::cout << boost::format(param_fmt()) % "bjet_regression" % bjet_regression_;
 
       // MVA stuff
-      std::cout << boost::format(param_fmt()) % "mva_file" % mva_file_;
+      /* std::cout << boost::format(param_fmt()) % "mva_file" % mva_file_; */
+      /* std::cout << boost::format(param_fmt()) % "mva_file_2" % mva_file_2_; */
 
       // create TMVA::Reader object
       /* TMVA::Reader *reader_ = new TMVA::Reader(); */
+      /* TMVA::Reader *reader_2_ = new TMVA::Reader(); */
 
       // create a set of variables and declare them to the reader
       // - the variable names must corresponds in name and type to
       // those given in the weight file(s) that you use 
+      
+  	  /* reader_2_->AddVariable("dphi", (float*) & dphi_); */
+      /* reader_2_->AddVariable("eta_tt", (float*) &eta_tt_); */
 
-  	  /* reader_->AddVariable("dphi", (float*) & dphi_); */
-      /* reader_->AddVariable("eta_1", &eta_1_.var_float); */
-      /* reader_->AddVariable("eta_2", &eta_2_.var_float); */
-  	  /* reader_->AddVariable("m_vis", &m_vis_.var_float); */
-      /* reader_->AddVariable("met", &met_.var_float); */
-      /* reader_->AddVariable("met_dphi_1", (float*) & met_dphi_1_); */
-      /* reader_->AddVariable("met_dphi_2", (float*) & met_dphi_2_); */
+  	  /* reader_2_->AddVariable("m_sv", &m_sv_.var_float); */
+  	  /* reader_2_->AddVariable("m_vis", &m_vis_.var_float); */
+      /* reader_2_->AddVariable("met", &met_.var_float); */
+      /* reader_2_->AddVariable("met_dphi_1", (float*) & met_dphi_1_); */
+      /* reader_2_->AddVariable("met_dphi_2", (float*) & met_dphi_2_); */
 
-  	  /* reader_->AddVariable("mt_1", &mt_1_.var_float); */
-  	  /* reader_->AddVariable("mt_2", &mt_2_.var_float); */
-      /* reader_->AddVariable("mt_lep", &mt_lep_.var_float); */
+  	  /* reader_2_->AddVariable("mt_1", &mt_1_.var_float); */
+  	  /* reader_2_->AddVariable("mt_2", &mt_2_.var_float); */
+      /* reader_2_->AddVariable("mt_lep", &mt_lep_.var_float); */
 
-      /* reader_->AddVariable("n_bjets", (float*) & n_bjets_); */
-      /* reader_->AddVariable("n_jets", (float*) & n_jets_); */
+      /* reader_2_->AddVariable("n_bjets", (float*) & n_bjets_); */
+      /* reader_2_->AddVariable("n_jets", (float*) & n_jets_); */
 
-      /* reader_->AddVariable("pt_1", &pt_1_.var_float); */
-  	  /* reader_->AddVariable("pt_2", &pt_2_.var_float); */
-      /* reader_->AddVariable("pt_tt", &pt_tt_.var_float); */
+      /* reader_2_->AddVariable("pt_1", &pt_1_.var_float); */
+  	  /* reader_2_->AddVariable("pt_2", &pt_2_.var_float); */
+      /* reader_2_->AddVariable("pt_tt", &pt_tt_.var_float); */
 
+      /* reader_2_->AddVariable("pt_vis", &pt_tt_.var_float); */
+      /* reader_2_->AddVariable("deta", &deta_.var_float); */
       
       // book the MVA of your choice (prior training of these methods, ie,
       // existence of the weight files is required)
 
       /* reader_->BookMVA("BDT", mva_file_); */
+      /* reader_2_->BookMVA("bdt", mva_file_2_); */
 
     if (fs_ && write_tree_) {
       outtree_ = fs_->make<TTree>("ntuple","ntuple");
       
       outtree_->Branch("event",             &event_);
       outtree_->Branch("wt",                &wt_.var_double);
+
       outtree_->Branch("wt_btag",           &wt_btag_);
       outtree_->Branch("wt_tau_id_binned", &wt_tau_id_binned_);
       outtree_->Branch("wt_tau_id_loose", &wt_tau_id_loose_);
@@ -694,6 +705,7 @@ namespace ic {
       outtree_->Branch("pt_h",              &pt_h_.var_double);
       outtree_->Branch("pt_tt",             &pt_tt_.var_double);
       outtree_->Branch("pfpt_tt",          &pfpt_tt_.var_double);
+      outtree_->Branch("pt_vis",             &pt_vis_.var_double);
       outtree_->Branch("mt_tot",            &mt_tot_.var_double);
       outtree_->Branch("pfmt_tot",          &pfmt_tot_.var_double);
       outtree_->Branch("mt_lep",            &mt_lep_.var_double);
@@ -749,6 +761,7 @@ namespace ic {
       outtree_->Branch("pt_1",              &pt_1_.var_double);
       outtree_->Branch("eta_1",             &eta_1_.var_double);
       outtree_->Branch("eta_2",             &eta_2_.var_double);
+      /* outtree_->Branch("deta",             &deta_.var_double); */
       outtree_->Branch("eta_tt",            &eta_tt_); // for ML studies
       outtree_->Branch("mjj_lowpt",         &mjj_lowpt_);
       outtree_->Branch("gen_match_1", &gen_match_1_);
@@ -2704,8 +2717,9 @@ namespace ic {
     pt_tt_ = (ditau->vector() + mets->vector()).pt();
 
     if(channel_ == channel::zmm || channel_ == channel::zee) pt_tt_ = (ditau->vector()).pt(); 
+
     m_vis_ = ditau->M();
-   
+    pt_vis_ = ditau->pt(); //added for MVA study
 
     // This is the HCP hack for the em channel
     // to better align the data with the embedded
@@ -2754,6 +2768,8 @@ namespace ic {
     pt_2_ = lep2->pt();
     eta_1_ = lep1->eta();
     eta_2_ = lep2->eta();
+    /* deta_ = -9999; */
+    /* deta_ = std::fabs(lep1->eta()-lep2->eta()); */
     phi_1_ = lep1->phi();
     phi_2_ = lep2->phi();
     dphi_ = std::fabs(ROOT::Math::VectorUtil::DeltaPhi(lep1->vector(),lep2->vector()));
@@ -4436,9 +4452,6 @@ namespace ic {
       mbb_h_ = -9999;
     }
 
-    // retrieve the MVA output
-    /* reader_->EvaluateMVA("BDT"); */
-    /* std::cout << mvaBDT << std::endl; */
 
     // adding these variables to event to use in MLntuple
     // jet variables
@@ -4458,6 +4471,7 @@ namespace ic {
     event->Add("pt_2",pt_2_.var_double);
     event->Add("eta_1",eta_1_.var_double);
     event->Add("eta_2",eta_2_.var_double);
+    /* event->Add("deta",deta_.var_double); */
     event->Add("eta_tt",eta_tt_);
     event->Add("phi_1",phi_1_.var_double);
     event->Add("phi_2",phi_2_.var_double);
@@ -4467,6 +4481,7 @@ namespace ic {
     event->Add("m_vis",m_vis_.var_double);
 
     event->Add("pt_tt", pt_tt_.var_double);
+    event->Add("pt_vis", pt_vis_.var_double);
 
     // discrimators but not needed probably
     event->Add("mva_olddm_medium_1",lbyMediumIsolationMVArun2DBoldDMwLT_1);
@@ -4478,6 +4493,11 @@ namespace ic {
 
     event->Add("wt", wt_.var_double);
     
+    // retrieve the MVA output
+
+     /* if (n_jets_ >= 2 && mjj_.var_double > 300) { */
+     /*    event->Add("tt_JHU_bdt", reader_2_->EvaluateMVA("bdt")); */
+     /* } */
 
     
     if (write_tree_ && fs_) outtree_->Fill();
@@ -4493,7 +4513,8 @@ namespace ic {
       synctree_->Write();
       lOFile->Close();
     }
-    if (reader_) delete reader_;
+    /* if (reader_) delete reader_; */
+    /* if (reader_2_) delete reader_2_; */
     return 0;
   }
 

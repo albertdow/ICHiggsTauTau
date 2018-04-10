@@ -123,24 +123,24 @@ flatjsonlist = []
 flatjsonlistdysig = []
 flatjsonlist.append("job:sequences:all:")
 n_scales=0
-for scale in scale_list: 
-  n_scales+=1  
+for scale in scale_list:
+  n_scales+=1
   if scale == "default":
     flatjsonlist.append("^%(scale)s"%vars())
     flatjsonlistdysig.append("^%(scale)s"%vars())
 #  elif scale == "scale_t":
-#    flatjsonlistdysig.append("^%(scale)s_hi^%(scale)s_lo"%vars()) 
+#    flatjsonlistdysig.append("^%(scale)s_hi^%(scale)s_lo"%vars())
   else:
     n_scales+=1
-    flatjsonlist.append("^%(scale)s_hi^%(scale)s_lo"%vars()) 
-    flatjsonlistdysig.append("^%(scale)s_hi^%(scale)s_lo"%vars()) 
- 
+    flatjsonlist.append("^%(scale)s_hi^%(scale)s_lo"%vars())
+    flatjsonlistdysig.append("^%(scale)s_hi^%(scale)s_lo"%vars())
+
 if analysis == 'sm':
   CONFIG='scripts/configsm2016.json'
 else:
   CONFIG='scripts/config2016.json'
 if options.config != '': CONFIG = options.config
- 
+
 n_channels=1
 with open(CONFIG,"r") as input:
   with open ("config_for_python_channels.json","w") as output:
@@ -153,7 +153,7 @@ with open(CONFIG,"r") as input:
 with open("config_for_python_channels.json") as config_file:
   cfg = json.load(config_file)
   n_channels=len(cfg["job"]["channels"])
-  
+
 scale = int(math.ceil(float(n_scales*n_channels)/100))
 if scale < 1: scale = 1
 
@@ -170,15 +170,15 @@ for i in flatjsonlistdysig:
 for i in range(0,scale):
    first = i*int(math.ceil(total/scale))
    last = (i+1)*int(math.ceil(total/scale))
-   temp=''.join(flatjsonlistdysig[first:last]) 
+   temp=''.join(flatjsonlistdysig[first:last])
    if temp == '': continue
    temp='job:sequences:all:'+temp
    flatjsons.append(temp)
-  
+
 FILELIST='filelists/Nov20_MC_80X'
 
 signal_mc = [ ]
-signal_vh = [ ] 
+signal_vh = [ ]
 signal_mc_ww = [ ]
 
 if os.path.isfile("./jobs/files_per_sample.txt"):
@@ -199,7 +199,7 @@ if options.proc_sm or options.proc_all or options.proc_smbkg:
       'WminusHToTauTau_M-'+mass#,
       #'TTHToTauTau_M-'+mass
     ]
-  if options.proc_sm:  
+  if options.proc_sm:
     signal_mc += [
         'GluGluHToWWTo2L2Nu_M-125',
         'VBFHToWWTo2L2Nu_M-125'
@@ -213,14 +213,14 @@ if options.proc_sm or options.proc_all or options.proc_smbkg:
         'VBFHiggs0M_M-125',
         'VBFHiggs0Mf05ph0_M-125',
         'VBFHiggs0PM_M-125',
-        'GluGluToHToTauTau_amcNLO_M-125',
-        'VBFHToTauTau_amcNLO_M-125'
-    ]  
-    
+        # 'GluGluToHToTauTau_amcNLO_M-125',
+        # 'VBFHToTauTau_amcNLO_M-125'
+    ]
+
 if options.proc_mssm or options.proc_all:
-  gghmasses = ['80','90','100','110','120','130', '140', '160','180','200','250','350','400','450','500', '600','700','800','900','1000','1200','1400','1600','1800','2000','2300','2600','2900','3200'] # 
+  gghmasses = ['80','90','100','110','120','130', '140', '160','180','200','250','350','400','450','500', '600','700','800','900','1000','1200','1400','1600','1800','2000','2300','2600','2900','3200'] #
   bbhmasses = ['80','90','100','110','120','130','140','160','180','200','250','350','400','450','500','600','700','800','900','1000','1200','1400','1600','1800','2000','2300','2600','2900','3200']
-  if options.short_signal: 
+  if options.short_signal:
     gghmasses = ['500']
     bbhmasses = ['500']
   for mass in gghmasses :
@@ -231,7 +231,7 @@ if options.proc_mssm or options.proc_all:
     signal_mc += [
       'SUSYGluGluToBBHToTauTau_M-'+mass
     ]
-nlo_signal_mc = [ ]    
+nlo_signal_mc = [ ]
 if options.proc_mssm_nlo:
   bbhmasses = ['100','1000','110','120','1200','130','140','1400','160','1600','180','1800','200','2000','2300','250','2600','2900','3200','350','400','450','500','600','700','80','800','90','900']
   for mass in bbhmasses :
@@ -269,49 +269,49 @@ if options.proc_data or options.proc_all or options.calc_lumi:
     channels=cfg["job"]["channels"]
   else:
     channels=['mt','et','tt','em','zmm','zee']
-  
+
 
   data_samples = []
   data_eras = ['B','C','D','E','F','G','H']
   for chn in channels:
-    for era in data_eras: 
+    for era in data_eras:
          if 'mt' in chn or 'zmm' in chn:
-           if not era == 'H':  
-               data_samples+=[   
+           if not era == 'H':
+               data_samples+=[
                 'SingleMuon'+era]
            else:
-               data_samples+=[   
+               data_samples+=[
                 'SingleMuon'+era+'v2']
-               data_samples+=[   
+               data_samples+=[
                 'SingleMuon'+era+'v3']
          if 'et' in chn or 'zee' in chn:
-           if not era == 'H':  
-               data_samples+=[   
+           if not era == 'H':
+               data_samples+=[
                 'SingleElectron'+era]
            else:
-               data_samples+=[   
+               data_samples+=[
                 'SingleElectron'+era+'v2']
-               data_samples+=[   
+               data_samples+=[
                 'SingleElectron'+era+'v3']
          if 'em' in chn:
-           if not era == 'H':  
-               data_samples+=[   
+           if not era == 'H':
+               data_samples+=[
                 'MuonEG'+era]
            else:
-               data_samples+=[   
+               data_samples+=[
                 'MuonEG'+era+'v2']
-               data_samples+=[   
+               data_samples+=[
                 'MuonEG'+era+'v3']
          if 'tt' in chn:
-           if not era == 'H':  
-               data_samples+=[   
+           if not era == 'H':
+               data_samples+=[
                 'Tau'+era]
            else:
-               data_samples+=[   
+               data_samples+=[
                 'Tau'+era+'v2']
-               data_samples+=[   
-                'Tau'+era+'v3'] 
-        
+               data_samples+=[
+                'Tau'+era+'v3']
+
 
 
   DATAFILELIST="./filelists/Jun16_Data_80X"
@@ -321,14 +321,14 @@ if options.proc_data or options.proc_all or options.calc_lumi:
         JOB='%s_2016' % (sa)
         JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jun16_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true,\"lumi_mask_only\":true}}' "%vars());
         nfiles = sum(1 for line in open('%(DATAFILELIST)s_%(sa)s.dat' % vars()))
-        nperjob = 500 
+        nperjob = 500
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(i)d.log" jobs/%(JOB)s-%(i)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(i)d.sh' % vars())
-        if parajobs: 
+        if parajobs:
           os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
           PARAJOBSUBMIT = getParaJobSubmit(int(math.ceil(float(nfiles)/float(nperjob))))
-          os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())  
+          os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
 
   else:
@@ -337,14 +337,14 @@ if options.proc_data or options.proc_all or options.calc_lumi:
         JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jun16_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true}}' "%vars());
         nfiles = sum(1 for line in open('%(DATAFILELIST)s_%(sa)s.dat' % vars()))
         nperjob = 40
-        
-        for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :  
+
+        for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(i)d.log" jobs/%(JOB)s-%(i)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(i)d.sh' % vars())
-        if parajobs: 
+        if parajobs:
           os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
           PARAJOBSUBMIT = getParaJobSubmit(int(math.ceil(float(nfiles)/float(nperjob))))
-          os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())  
+          os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
 
 
@@ -365,7 +365,7 @@ if options.proc_data or options.proc_all or options.calc_lumi:
 #      JOB='%s_2015' % (sa)
 #      JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(FILELIST)s_%(sa)s.dat\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
 #      nfiles = sum(1 for line in open('%(FILELIST)s_%(sa)s.dat' % vars()))
-#      nperjob = 40 
+#      nperjob = 40
 #      for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
 #        os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(i)d.log" jobs/%(JOB)s-%(i)s.sh' %vars())
 #        os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(i)d.sh' % vars())
@@ -421,7 +421,7 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
     'WGstarToLNuEE',
     'WGstarToLNuMuMu'
      ]
-  
+
   if options.analysis == 'sm':
     extra_samples = [
       'EWKWMinus2Jets_WToLNu-ext1',
@@ -433,7 +433,7 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
       'EWKZ2Jets_ZToLL-ext',
       'EWKZ2Jets_ZToLL',
       'EWKZ2Jets_ZToNuNu-ext',
-      'EWKZ2Jets_ZToNuNu'    
+      'EWKZ2Jets_ZToNuNu'
     ]
     central_samples.extend(extra_samples)
 
@@ -451,7 +451,7 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
       JOB='%s_2016' % (sa)
       JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(FILELIST)s_%(sa)s.dat\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
       job_num=0
-      for FLATJSONPATCH in flatjsons: 
+      for FLATJSONPATCH in flatjsons:
         nperjob = 20
         if 'scale' in FLATJSONPATCH:
           nperjob = 15
@@ -481,14 +481,14 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
           job_num+=1
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-      if parajobs: 
+      if parajobs:
         os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
         PARAJOBSUBMIT = getParaJobSubmit(job_num)
-        os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
-#if float(n_scales*n_channels)/100 > 1: nperjob = int(math.ceil(nperjob/(float(n_scales*n_channels)/100)))  
+        os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
+#if float(n_scales*n_channels)/100 > 1: nperjob = int(math.ceil(nperjob/(float(n_scales*n_channels)/100)))
 
 if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hhh or options.proc_all:
-  if options.analysis == 'sm': SIG_FILELIST='filelists/Nov20_MC_80X' 
+  if options.analysis == 'sm': SIG_FILELIST='filelists/Nov20_MC_80X'
   else: SIG_FILELIST = FILELIST
   for sa in signal_mc:
     JOB='%s_2016' % (sa)
@@ -496,22 +496,22 @@ if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hh
     JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(SIG_FILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/%(SIG_DIR)s/\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
     job_num=0
     for FLATJSONPATCH in flatjsons:
-      FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','')  
+      FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','')
       if os.path.exists('%(SIG_FILELIST)s_%(sa)s.dat' %vars()):
         nfiles = sum(1 for line in open('%(SIG_FILELIST)s_%(sa)s.dat' % vars()))
         nperjob = 50
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
-          job_num+=1 
+          job_num+=1
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-    if parajobs: 
+    if parajobs:
       os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
       PARAJOBSUBMIT = getParaJobSubmit(job_num)
-      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
-      
+      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
+
 NLO_FILELIST='filelists/Jul22_MC_80X'
-      
+
 if options.proc_mssm_nlo or options.proc_mssm_nlo_qsh:
   for sa in nlo_signal_mc:
     JOB='%s_2016' % (sa)
@@ -524,13 +524,13 @@ if options.proc_mssm_nlo or options.proc_mssm_nlo_qsh:
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
-          job_num+=1   
+          job_num+=1
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-    if parajobs: 
+    if parajobs:
       os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
       PARAJOBSUBMIT = getParaJobSubmit(job_num)
-      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
-      
+      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
+
 NLO_QSH_FILELIST='filelists/May23_MC_80X'
 
 if options.proc_mssm_nlo_qsh:
@@ -545,11 +545,11 @@ if options.proc_mssm_nlo_qsh:
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
-          job_num+=1 
+          job_num+=1
         file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-    if parajobs: 
+    if parajobs:
       os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
       PARAJOBSUBMIT = getParaJobSubmit(job_num)
-      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
+      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
 
 

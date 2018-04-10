@@ -406,23 +406,23 @@ if SCHEME == 'cpsummer16_2d':
 if SCHEME == 'mlcpsummer16_2d':
     # define signal regions for each training
 
-    VAR_JHU_GGH =  'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_MISC = 'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_QCD =  'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_QQH =  'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_TT =   'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_W =    'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_ZLL =  'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_ZTT =  'mva_score_Mar26_3,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_GGH =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_MISC = 'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_QCD =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_QQH =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_TT =   'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_W =    'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_ZLL =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_ZTT =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
 
-    VAR_POWHEG_GGH =  'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_MISC = 'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_QCD =  'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_QQH =  'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_TT =   'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_W =    'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_ZLL =  'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_ZTT =  'mva_score_Mar29_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_GGH =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_MISC = 'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_QCD =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_QQH =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_TT =   'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_W =    'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_ZLL =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_ZTT =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
 
     # define control regions
     # QCD CR for both trainings for et,mt,tt
@@ -543,20 +543,20 @@ if SCHEME == 'mlcpsummer16_2d':
     scheme_tt = [
         ("8",   "JHU_ggh",    "JHU_ggh",  VAR_JHU_GGH, '  '),
         ("8",   "JHU_misc",    "JHU_misc",  VAR_JHU_MISC, '  '),
-        ("8",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, '  '),
+        ("8",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, ' --do_ss '),
         ("8",   "JHU_qqh",    "JHU_qqh",  VAR_JHU_QQH, '  '),
-        ("8",   "JHU_tt",    "JHU_tt",  VAR_JHU_TT, '  '),
-        ("8",   "JHU_w",    "JHU_w",  VAR_JHU_W, '  '),
-        ("8",   "JHU_zll",    "JHU_zll",  VAR_JHU_ZLL, '  '),
+        # ("8",   "JHU_tt",    "JHU_tt",  VAR_JHU_TT, '  '),
+        # ("8",   "JHU_w",    "JHU_w",  VAR_JHU_W, '  '),
+        # ("8",   "JHU_zll",    "JHU_zll",  VAR_JHU_ZLL, '  '),
         ("8",   "JHU_ztt",    "JHU_ztt",  VAR_JHU_ZTT, '  '),
 
         ("8",   "powheg_ggh",    "powheg_ggh",  VAR_POWHEG_GGH, '  '),
         ("8",   "powheg_misc",    "powheg_misc",  VAR_POWHEG_MISC, '  '),
-        ("8",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, '  '),
+        ("8",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, ' --do_ss  '),
         ("8",   "powheg_qqh",    "powheg_qqh",  VAR_POWHEG_QQH, '  '),
-        ("8",   "powheg_tt",    "powheg_tt",  VAR_POWHEG_TT, '  '),
-        ("8",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, '  '),
-        ("8",   "powheg_zll",    "powheg_zll",  VAR_POWHEG_ZLL, '  '),
+        # ("8",   "powheg_tt",    "powheg_tt",  VAR_POWHEG_TT, '  '),
+        # ("8",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, '  '),
+        # ("8",   "powheg_zll",    "powheg_zll",  VAR_POWHEG_ZLL, '  '),
         ("8",   "powheg_ztt",    "powheg_ztt",  VAR_POWHEG_ZTT, '  '),
 
         # CRs - using the same cuts as in the other schemes

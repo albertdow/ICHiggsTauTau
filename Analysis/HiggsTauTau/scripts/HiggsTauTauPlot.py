@@ -359,23 +359,38 @@ if options.channel == 'et': cats['baseline_loose'] = '(iso_1<0.3 && mva_olddm_me
 if options.channel == 'mt': cats['baseline_loose'] = '(iso_1<0.3 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && (trg_singlemuon*(pt_1>23) || trg_mutaucross*(pt_1<23)))'
 
 ## MVA categories for SM MVA
-mva_JHU_ggh =  '(mva_cat_Mar26_3==0)'
-mva_JHU_misc = '(mva_cat_Mar26_3==1)'
-mva_JHU_qcd =  '(mva_cat_Mar26_3==2)'
-mva_JHU_qqh =  '(mva_cat_Mar26_3==3)'
-mva_JHU_tt =   '(mva_cat_Mar26_3==4)'
-mva_JHU_w =    '(mva_cat_Mar26_3==5)'
-mva_JHU_zll =  '(mva_cat_Mar26_3==6)'
-mva_JHU_ztt =  '(mva_cat_Mar26_3==7)'
+if options.channel in ['em','et','mt']:
+    mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
+    mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
+    mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
+    mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
+    mva_JHU_tt =      '(mva_cat_cpsm_Apr06_1_JHU==4)'
+    mva_JHU_w =       '(mva_cat_cpsm_Apr06_1_JHU==5)'
+    mva_JHU_zll =     '(mva_cat_cpsm_Apr06_1_JHU==6)'
+    mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==7)'
 
-mva_powheg_ggh =  '(mva_cat_Mar29_powheg==0)'
-mva_powheg_misc = '(mva_cat_Mar29_powheg==1)'
-mva_powheg_qcd =  '(mva_cat_Mar29_powheg==2)'
-mva_powheg_qqh =  '(mva_cat_Mar29_powheg==3)'
-mva_powheg_tt =   '(mva_cat_Mar29_powheg==4)'
-mva_powheg_w =    '(mva_cat_Mar29_powheg==5)'
-mva_powheg_zll =  '(mva_cat_Mar29_powheg==6)'
-mva_powheg_ztt =  '(mva_cat_Mar29_powheg==7)'
+    mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
+    mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
+    mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
+    mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
+    mva_powheg_tt =   '(mva_cat_cpsm_Apr06_1_powheg==4)'
+    mva_powheg_w =    '(mva_cat_cpsm_Apr06_1_powheg==5)'
+    mva_powheg_zll =  '(mva_cat_cpsm_Apr06_1_powheg==6)'
+    mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==7)'
+
+if options.channel == 'tt':
+    mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
+    mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
+    mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
+    mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
+    mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==4)'
+
+    mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
+    mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
+    mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
+    mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
+    mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==4)'
+
 # SM categories
 ## add the cuts here for the SM ML multiclass
 ## depending on what class it belongs to add it to the category
@@ -391,7 +406,7 @@ cats['boosted'] = '(!(%s) && !(%s))' % (cats['0jet'], cats['vbf'])
 if options.channel == 'em': cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' % (cats['0jet'], cats['vbf'])
 
 if options.era == 'cpsummer16': # change here for mlcpsummer16
-  if options.channel in ['em','mt','et','tt']:
+  if options.channel in ['em','mt','et']:
       cats['JHU_ggh'] =  mva_JHU_ggh
       cats['JHU_misc'] = mva_JHU_misc
       cats['JHU_qcd'] =  mva_JHU_qcd
@@ -399,7 +414,7 @@ if options.era == 'cpsummer16': # change here for mlcpsummer16
       cats['JHU_tt'] =   mva_JHU_tt
       cats['JHU_w'] =    mva_JHU_w
       cats['JHU_zll'] =  mva_JHU_zll
-      cats['JHU_ztt'] =  mva_JHU_zll
+      cats['JHU_ztt'] =  mva_JHU_ztt
 
       cats['powheg_ggh'] =  mva_powheg_ggh
       cats['powheg_misc'] = mva_powheg_misc
@@ -408,7 +423,19 @@ if options.era == 'cpsummer16': # change here for mlcpsummer16
       cats['powheg_tt'] =   mva_powheg_tt
       cats['powheg_w'] =    mva_powheg_w
       cats['powheg_zll'] =  mva_powheg_zll
-      cats['powheg_ztt'] =  mva_powheg_zll
+      cats['powheg_ztt'] =  mva_powheg_ztt
+  if options.channel == 'tt':
+      cats['JHU_ggh'] =  mva_JHU_ggh
+      cats['JHU_misc'] = mva_JHU_misc
+      cats['JHU_qcd'] =  mva_JHU_qcd
+      cats['JHU_qqh'] =  mva_JHU_qqh
+      cats['JHU_ztt'] =  mva_JHU_ztt
+
+      cats['powheg_ggh'] =  mva_powheg_ggh
+      cats['powheg_misc'] = mva_powheg_misc
+      cats['powheg_qcd'] =  mva_powheg_qcd
+      cats['powheg_qqh'] =  mva_powheg_qqh
+      cats['powheg_ztt'] =  mva_powheg_ztt
 
       # cats['0jet'] = '(n_jets==0 && n_bjets==0)'
       # cats['dijet']='n_jets>=2 && mjj>300 && n_bjets==0'
@@ -523,13 +550,9 @@ elif options.channel == 'tt':
     z_sels['ztt_sel'] = '(gen_match_1==5&&gen_match_2==5)'
     z_sels['zl_sel'] = '(gen_match_2<6&&gen_match_1<6&&!(gen_match_1==5&&gen_match_2==5))'
     z_sels['zj_sel'] = '(gen_match_2==6||gen_match_1==6)'
-elif options.channel == 'em': # add mva_score
+elif options.channel == 'em':
     z_sels['ztt_sel'] = '(gen_match_1>2 && gen_match_2>3)'
     z_sels['zll_sel'] = '(gen_match_1<3 || gen_match_2<4)'
-    # z_sels['ztt_sel'] = '(gen_match_1>2 && gen_match_2>3)'+mva_ztt
-    # z_sels['zll_sel'] = '(gen_match_1<3 || gen_match_2<4)'+mva_zll
-    # z_sels['ztt_sel'] = '(gen_match_1>2 && gen_match_2>3 && mva_score ==7)'
-    # z_sels['zll_sel'] = '(gen_match_1<3 || gen_match_2<4 && mva_score ==6)'
 elif options.channel == 'zee' or  options.channel == 'zmm':
     z_sels['ztt_sel'] = '(gen_match_1>2&&gen_match_1<6 && gen_match_2>2&&gen_match_2<6)'
     if options.channel == 'zmm': z_sels['zl_sel'] = '(gen_match_1==2&&gen_match_2==2)'
@@ -559,7 +582,7 @@ if options.channel in ['mj']:
   top_sels['ttt_sel'] = '(0)'
   top_sels['ttj_sel'] = '(1)'
 
-if options.era in ["smsummer16",'cpsummer16']: ## add mva_score
+if options.era in ["smsummer16",'cpsummer16']:
   if options.channel in ['mt','et']:
     z_sels['ztt_sel'] = '(gen_match_2==5)'
     z_sels['zl_sel'] = '(gen_match_2!=6&&gen_match_2!=5)'
@@ -568,21 +591,7 @@ if options.era in ["smsummer16",'cpsummer16']: ## add mva_score
     vv_sels['vvj_sel'] = '(gen_match_2!=5)'
     top_sels['ttt_sel'] = '(gen_match_2==5)'
     top_sels['ttj_sel'] = '(gen_match_2!=5)'
-    # z_sels['ztt_sel'] = '(gen_match_2==5)'+mva_ztt
-    # z_sels['zl_sel'] = '(gen_match_2!=6&&gen_match_2!=5)'+mva_zll
-    # z_sels['zj_sel'] = '(gen_match_2==6)'+mva_misc
-    # vv_sels['vvt_sel'] = '(gen_match_2==5)'+mva_misc
-    # vv_sels['vvj_sel'] = '(gen_match_2!=5)'+mva_misc
-    # top_sels['ttt_sel'] = '(gen_match_2==5)'+mva_tt
-    # top_sels['ttj_sel'] = '(gen_match_2!=5)'+mva_tt
-    # z_sels['ztt_sel'] = '(gen_match_2==5 && mva_score==7)'
-    # z_sels['zl_sel'] = '(gen_match_2!=6&&gen_match_2!=5 && mva_score==6)'
-    # z_sels['zj_sel'] = '(gen_match_2==6 && mva_score==1)'
-    # vv_sels['vvt_sel'] = '(gen_match_2==5 && mva_score==1)'
-    # vv_sels['vvj_sel'] = '(gen_match_2!=5 && mva_score==1)'
-    # top_sels['ttt_sel'] = '(gen_match_2==5 && mva_score==4)'
-    # top_sels['ttj_sel'] = '(gen_match_2!=5 && mva_score==4)'
-  elif options.channel == 'tt': ### FINISH THESE
+  elif options.channel == 'tt':
     z_sels['ztt_sel'] = '(gen_match_1==5&&gen_match_2==5)'
     z_sels['zl_sel'] = '(!(gen_match_1==6 || gen_match_2==6) && !(gen_match_1==5&&gen_match_2==5))'
     z_sels['zj_sel'] = '(gen_match_1==6 || gen_match_2==6)'
@@ -590,19 +599,6 @@ if options.era in ["smsummer16",'cpsummer16']: ## add mva_score
     vv_sels['vvj_sel'] = '(!(gen_match_1==5 && gen_match_2==5))'
     top_sels['ttt_sel'] = '(gen_match_1==5 && gen_match_2==5)'
     top_sels['ttj_sel'] = '(!(gen_match_1==5 && gen_match_2==5))'
-    # z_sels['ztt_sel'] = '(gen_match_1==5&&gen_match_2==5)'+mva_ztt
-    # z_sels['zl_sel'] = '(!(gen_match_1==6 || gen_match_2==6) && !(gen_match_1==5&&gen_match_2==5))'+mva_zll
-    # z_sels['zj_sel'] = '(gen_match_1==6 || gen_match_2==6)'+mva_misc
-    # vv_sels['vvt_sel'] = '(gen_match_1==5 && gen_match_2==5)'+mva_misc
-    # vv_sels['vvj_sel'] = '(!(gen_match_1==5 && gen_match_2==5))'+mva_misc
-    # top_sels['ttt_sel'] = '(gen_match_1==5 && gen_match_2==5)'+mva_tt
-    # top_sels['ttj_sel'] = '(!(gen_match_1==5 && gen_match_2==5))'+mva_tt
-    # z_sels['ztt_sel'] = '(gen_match_1==5&&gen_match_2==5 && mva_score==)'
-    # z_sels['zl_sel'] = '(!(gen_match_1==6 || gen_match_2==6) && !(gen_match_1==5&&gen_match_2==5) && mva_score==)'
-    # z_sels['zj_sel'] = '(gen_match_1==6 || gen_match_2==6 && mva_score==1)'
-    # vv_sels['vvj_sel'] = '(!(gen_match_1==5 && gen_match_2==5) && mva_score==1)'
-    # top_sels['ttt_sel'] = '(gen_match_1==5 && gen_match_2==5 && mva_score==4)'
-    # top_sels['ttj_sel'] = '(!(gen_match_1==5 && gen_match_2==5 && mva_score==4))'
 
 # Add data sample names
 if options.channel == 'mt':

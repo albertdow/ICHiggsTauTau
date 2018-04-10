@@ -51,9 +51,11 @@ class HTTCategories : public ModuleBase {
   CLASS_MEMBER(HTTCategories, bool, do_sm_scale_wts)
   CLASS_MEMBER(HTTCategories, bool, do_jes_vars)
   CLASS_MEMBER(HTTCategories, bool, do_z_weights)
-  CLASS_MEMBER(HTTCategories, std::string, mva_file)
+  /* CLASS_MEMBER(HTTCategories, std::string, mva_file) */
+  /* CLASS_MEMBER(HTTCategories, std::string, mva_file_2) */
 
-  TMVA::Reader *reader_;
+  /* TMVA::Reader *reader_; */
+  /* TMVA::Reader *reader_2_; */
 
  
   TTree *outtree_;
@@ -143,6 +145,7 @@ class HTTCategories : public ModuleBase {
   float phi_h_;
   branch_var pt_tt_;
   branch_var pfpt_tt_;
+  branch_var pt_vis_; //added for MVA study
   branch_var mt_1_;
   branch_var mt_lep_;
   branch_var mt_tot_;
@@ -175,6 +178,7 @@ class HTTCategories : public ModuleBase {
   branch_var pt_2_;
   branch_var eta_1_;
   branch_var eta_2_;
+  /* branch_var deta_; */
   branch_var phi_1_;
   branch_var phi_2_;
   double E_1_;
