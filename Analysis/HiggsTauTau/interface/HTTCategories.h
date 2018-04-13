@@ -380,6 +380,10 @@ class HTTCategories : public ModuleBase {
   float jptunc_1_; 
   float jptunc_2_; 
   float jmva_1_; 
+  float jm_1_; 
+  float jm_2_; 
+  float dijetpt_;
+  float dijetphi_;
   float jmva_2_; 
   float jlrm_1_; 
   float jlrm_2_; 

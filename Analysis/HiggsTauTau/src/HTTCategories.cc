@@ -696,6 +696,16 @@ namespace ic {
       outtree_->Branch("n_jetsingap",       &n_jetsingap_);
       outtree_->Branch("jdeta",             &jdeta_.var_double);
       outtree_->Branch("jdphi",             &jdphi_);
+      outtree_->Branch("dijetpt",           &dijetpt_);
+      outtree_->Branch("jm_1",              &jm_1_);
+      outtree_->Branch("jmva_1",            &jmva_1_);
+      outtree_->Branch("jm_2",              &jm_2_);
+      outtree_->Branch("d0_1",              &d0_1_.var_double);
+      outtree_->Branch("beta_2",            &beta_2_.var_double);
+      outtree_->Branch("bcsv_2",            &bcsv_2_);
+      outtree_->Branch("bphi_1",            &bphi_1_);
+      outtree_->Branch("bphi_2",            &bphi_2_);
+
       if (strategy_ == strategy::smsummer16){
         outtree_->Branch("sjdphi",             &sjdphi_);
         outtree_->Branch("D0", &D0_);
@@ -3648,6 +3658,7 @@ namespace ic {
       jpt_1_ = lowpt_jets[0]->pt();
       jeta_1_ = lowpt_jets[0]->eta();
       jphi_1_ = lowpt_jets[0]->phi();
+      jm_1_ = lowpt_jets[0]->M();
       jrawf_1_ = lowpt_jets[0]->uncorrected_energy()/lowpt_jets[0]->energy();//* (jets[0]->pt() / jets[0]->energy());
       jptunc_1_ = 0.0;
       jmva_1_ = lowpt_jets[0]->pu_id_mva_value();
@@ -3665,6 +3676,7 @@ namespace ic {
       jpt_1_ = -9999;
       jeta_1_ = -9999;
       jphi_1_ = -9999;
+      jm_1_ = -9999;
       jrawf_1_ = -9999;
       jptunc_1_ = -9999;
       jmva_1_ = -9999;
@@ -3676,6 +3688,7 @@ namespace ic {
       jpt_2_ = lowpt_jets[1]->pt();
       jeta_2_ = lowpt_jets[1]->eta();
       jphi_2_ = lowpt_jets[1]->phi();
+      jm_2_ = lowpt_jets[1]->M();
       jrawf_2_ = lowpt_jets[1]->uncorrected_energy()/lowpt_jets[1]->energy();// * (jets[1]->pt() / jets[1]->energy());
       jptunc_2_ = 0.0;
       jmva_2_ = lowpt_jets[1]->pu_id_mva_value();
@@ -3684,6 +3697,8 @@ namespace ic {
       mjj_ = (lowpt_jets[0]->vector() + lowpt_jets[1]->vector()).M();
       jdeta_ = fabs(lowpt_jets[0]->eta() - lowpt_jets[1]->eta());
       jdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(lowpt_jets[0]->vector(), lowpt_jets[1]->vector());
+      dijetpt_ =  (lowpt_jets[0]->vector() + lowpt_jets[1]->vector()).pt();
+      dijetphi_ =  (lowpt_jets[0]->vector() + lowpt_jets[1]->vector()).phi();
       
       if (strategy_ == strategy::smsummer16){
         if (event->Exists("D0")) D0_ = event->Get<float>("D0");
@@ -3758,6 +3773,8 @@ namespace ic {
       jpt_2_ = -9999;
       jeta_2_ = -9999;
       jphi_2_ = -9999;
+      jm_2_ = -9999;
+      dijetpt_ = -9999;
       mjj_ = -9999;
       jdeta_ = -9999;
       jdphi_ = -9999;

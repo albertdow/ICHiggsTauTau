@@ -420,23 +420,23 @@ if SCHEME == 'cpsummer16_2d':
 if SCHEME == 'mlcpsummer16_2d':
     # define signal regions for each training
 
-    VAR_JHU_GGH =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_MISC = 'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_QCD =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_QQH =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_TT =   'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_W =    'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_ZLL =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
-    VAR_JHU_ZTT =  'mva_score_Apr5_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_GGH =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_MISC =    'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_QCD =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_QQH =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_TT =      'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_W =       'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_ZLL =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
+    VAR_JHU_ZTT =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
 
-    VAR_POWHEG_GGH =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_MISC = 'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_QCD =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_QQH =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_TT =   'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_W =    'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_ZLL =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
-    VAR_POWHEG_ZTT =  'mva_score_Apr5_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8]'
+    VAR_POWHEG_GGH =  'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_MISC = 'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_QCD =  'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_QQH =  'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_TT =   'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_W =    'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_ZLL =  'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
+    VAR_POWHEG_ZTT =  'mva_score_Apr06_1_powheg[0.0, 0.2, 0.4, 0.6, 0.8, 1.0]'
 
     # define control regions
     # QCD CR for both trainings for et,mt,tt

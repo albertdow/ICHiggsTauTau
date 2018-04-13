@@ -589,6 +589,7 @@ void HTTSequence::BuildSequence(){
   std::cout << boost::format(param_fmt) % "anti-electron" % tau_anti_elec_discr;
   std::cout << boost::format(param_fmt) % "anti-muon" % tau_anti_muon_discr;
 
+
   auto eventChecker = CheckEvents("EventChecker").set_skip_events(true);
   std::vector<int> to_check =
   {
@@ -1107,6 +1108,7 @@ BuildModule(SimpleFilter<CompositeCandidate>("PairFilter")
 
   // Pileup Weighting
 if(strategy_type != strategy::phys14){
+    std::cout<<"file name" << js["data_pu_file"].asString()<<std::endl;
   TH1D d_pu = GetFromTFile<TH1D>(js["data_pu_file"].asString(), "/", "pileup");
   TH1D m_pu = GetFromTFile<TH1D>(js["mc_pu_file"].asString(), "/", "pileup");
   if (js["do_pu_wt"].asBool()&&!is_data&&!is_embedded) {

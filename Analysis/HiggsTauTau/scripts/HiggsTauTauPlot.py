@@ -295,16 +295,16 @@ cats = {}
 if options.analysis == 'sm':
     if options.channel == 'mt':
         cats['baseline'] = '(iso_1<0.15 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto)'
-        # if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(iso_1<0.15 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && (trg_singlemuon*(pt_1>23) || trg_mutaucross*(pt_1<23)))'
+        if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(iso_1<0.15 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && (trg_singlemuon*(pt_1>23) || trg_mutaucross*(pt_1<23)))'
 
         ## CUTS LOOSENED FOR MVA STUDY
-        if options.era in ['cpsummer16']: cats['baseline'] = '(iso_1<0.15 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && (trg_singlemuon*(pt_1>23) || trg_mutaucross*(pt_1<23)))'
+        # if options.era in ['cpsummer16']: cats['baseline'] = '(iso_1<0.15 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && (trg_singlemuon*(pt_1>23) || trg_mutaucross*(pt_1<23)))'
     elif options.channel == 'et':
         cats['baseline'] = '(iso_1<0.1  && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto)'
-        # if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(iso_1<0.1  && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && trg_singleelectron)'
+        if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(iso_1<0.1  && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && trg_singleelectron)'
 
         ## CUTS LOOSENED FOR MVA STUDY
-        if options.era in ['cpsummer16']: cats['baseline'] = '(iso_1<0.1  && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && trg_singleelectron)'
+        # if options.era in ['cpsummer16']: cats['baseline'] = '(iso_1<0.1  && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && !leptonveto && pt_2>30 && trg_singleelectron)'
 
 elif options.analysis == 'mssm':
     if options.channel == 'mt':
@@ -325,9 +325,9 @@ elif options.analysis == 'mssm':
 if options.channel == 'tt':
     cats['baseline'] = '(mva_olddm_tight_1>0.5 && mva_olddm_tight_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)'
     if options.era == 'mssmsummer16': cats['baseline'] = '(mva_olddm_medium_1>0.5 && mva_olddm_medium_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)'
-    # if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(pt_1>50 && mva_olddm_tight_1>0.5 && mva_olddm_tight_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto && trg_doubletau)'
+    if options.era in ['smsummer16','cpsummer16']: cats['baseline'] = '(pt_1>50 && mva_olddm_tight_1>0.5 && mva_olddm_tight_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto && trg_doubletau)'
     ## CUTS LOOSENED FOR MVA STUDY
-    if options.era in ['cpsummer16']: cats['baseline'] = '(pt_1>40 && mva_olddm_medium_1>0.5 && mva_olddm_medium_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto && trg_doubletau)'
+    # if options.era in ['cpsummer16']: cats['baseline'] = '(pt_1>40 && mva_olddm_medium_1>0.5 && mva_olddm_medium_2>0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto && trg_doubletau)'
 elif options.channel == 'em':
     cats['baseline'] = '(iso_1<0.15 && iso_2<0.2 && !leptonveto)'
     cats['loose_baseline'] = '(iso_1<0.5 && iso_2>0.2 && iso_2<0.5 && !leptonveto &&trg_muonelectron)'
@@ -346,11 +346,10 @@ if options.era in ['smsummer16']: cats['w_sdb'] = 'mt_1>80.'
 cats['w_sdb_os'] = 'os'
 cats['tt_qcd_norm'] = '(mva_olddm_tight_1>0.5 && mva_olddm_medium_2>0.5 &&mva_olddm_tight_2<0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
 if options.era == 'mssmsummer16': cats['tt_qcd_norm'] = '(mva_olddm_medium_1>0.5 && mva_olddm_loose_2>0.5 &&mva_olddm_medium_2<0.5 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
-# if options.era in ['smsummer16','cpsummer16']: cats['tt_qcd_norm'] = '(((mva_olddm_loose_1>0.5 && mva_olddm_tight_1<0.5 && mva_olddm_medium_2>0.5) || (mva_olddm_loose_2>0.5 && mva_olddm_tight_2<0.5 && mva_olddm_medium_1>0.5)) && pt_1>50 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
+if options.era in ['smsummer16','cpsummer16']: cats['tt_qcd_norm'] = '(((mva_olddm_loose_1>0.5 && mva_olddm_tight_1<0.5 && mva_olddm_medium_2>0.5) || (mva_olddm_loose_2>0.5 && mva_olddm_tight_2<0.5 && mva_olddm_medium_1>0.5)) && pt_1>50 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
 
 ## CUTS LOOSENED FOR MVA STUDY
-
-if options.era in ['cpsummer16']: cats['tt_qcd_norm'] = '(((mva_olddm_loose_1>0.5 && mva_olddm_medium_1<0.5 && mva_olddm_loose_2>0.5) || (mva_olddm_loose_2>0.5 && mva_olddm_medium_2<0.5 && mva_olddm_loose_1>0.5)) && pt_1>50 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
+# if options.era in ['cpsummer16']: cats['tt_qcd_norm'] = '(((mva_olddm_loose_1>0.5 && mva_olddm_medium_1<0.5 && mva_olddm_loose_2>0.5) || (mva_olddm_loose_2>0.5 && mva_olddm_medium_2<0.5 && mva_olddm_loose_1>0.5)) && pt_1>50 && antiele_1 && antimu_1 && antiele_2 && antimu_2 && !leptonveto)&&trg_doubletau'
 cats['qcd_loose_shape'] = '(iso_1>0.2 && iso_1<0.5 && mva_olddm_tight_2>0.5 && antiele_2 && antimu_2 && !leptonveto)'
 
 # CR categories
@@ -384,36 +383,66 @@ if options.channel == 'mt': cats['baseline_loose'] = '(iso_1<0.3 && mva_olddm_me
 
 ## MVA categories for SM MVA
 if options.channel in ['em','et','mt']:
-    mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
-    mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
-    mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
-    mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
-    mva_JHU_tt =      '(mva_cat_cpsm_Apr06_1_JHU==4)'
-    mva_JHU_w =       '(mva_cat_cpsm_Apr06_1_JHU==5)'
-    mva_JHU_zll =     '(mva_cat_cpsm_Apr06_1_JHU==6)'
-    mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==7)'
+    mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
+    mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
+    mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
+    mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
+    mva_JHU_tt =      '(mva_cat_sm_Apr11_sm_0_JHU==4)'
+    mva_JHU_w =       '(mva_cat_sm_Apr11_sm_0_JHU==5)'
+    mva_JHU_zll =     '(mva_cat_sm_Apr11_sm_0_JHU==6)'
+    mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==7)'
 
-    mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
-    mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
-    mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
-    mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
-    mva_powheg_tt =   '(mva_cat_cpsm_Apr06_1_powheg==4)'
-    mva_powheg_w =    '(mva_cat_cpsm_Apr06_1_powheg==5)'
-    mva_powheg_zll =  '(mva_cat_cpsm_Apr06_1_powheg==6)'
-    mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==7)'
+    mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
+    mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
+    mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
+    mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
+    mva_powheg_tt =   '(mva_cat_sm_Apr11_sm_0_powheg==4)'
+    mva_powheg_w =    '(mva_cat_sm_Apr11_sm_0_powheg==5)'
+    mva_powheg_zll =  '(mva_cat_sm_Apr11_sm_0_powheg==6)'
+    mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==7)'
+
+#     mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
+#     mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
+#     mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
+#     mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
+#     mva_JHU_tt =      '(mva_cat_cpsm_Apr06_1_JHU==4)'
+#     mva_JHU_w =       '(mva_cat_cpsm_Apr06_1_JHU==5)'
+#     mva_JHU_zll =     '(mva_cat_cpsm_Apr06_1_JHU==6)'
+#     mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==7)'
+
+#     mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
+#     mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
+#     mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
+#     mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
+#     mva_powheg_tt =   '(mva_cat_cpsm_Apr06_1_powheg==4)'
+#     mva_powheg_w =    '(mva_cat_cpsm_Apr06_1_powheg==5)'
+#     mva_powheg_zll =  '(mva_cat_cpsm_Apr06_1_powheg==6)'
+#     mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==7)'
 
 if options.channel == 'tt':
-    mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
-    mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
-    mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
-    mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
-    mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==4)'
+    mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
+    mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
+    mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
+    mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
+    mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==4)'
 
-    mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
-    mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
-    mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
-    mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
-    mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==4)'
+    mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
+    mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
+    mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
+    mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
+    mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==4)'
+
+    # mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
+    # mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
+    # mva_JHU_qcd =     '(mva_cat_cpsm_Apr06_1_JHU==2)'
+    # mva_JHU_qqh =     '(mva_cat_cpsm_Apr06_1_JHU==3)'
+    # mva_JHU_ztt =     '(mva_cat_cpsm_Apr06_1_JHU==4)'
+
+    # mva_powheg_ggh =  '(mva_cat_cpsm_Apr06_1_powheg==0)'
+    # mva_powheg_misc = '(mva_cat_cpsm_Apr06_1_powheg==1)'
+    # mva_powheg_qcd =  '(mva_cat_cpsm_Apr06_1_powheg==2)'
+    # mva_powheg_qqh =  '(mva_cat_cpsm_Apr06_1_powheg==3)'
+    # mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==4)'
 
 # SM categories
 ## add the cuts here for the SM ML multiclass
@@ -429,7 +458,7 @@ if options.channel == 'tt': cats['vbf'] = '(n_jets>=2 && pt_tt>100 && jdeta>2.5)
 cats['boosted'] = '(!(%s) && !(%s))' % (cats['0jet'], cats['vbf'])
 if options.channel == 'em': cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' % (cats['0jet'], cats['vbf'])
 
-if options.era == 'cpsummer16': # change here for mlcpsummer16
+if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
   if options.channel in ['em','mt','et']:
       cats['JHU_ggh'] =  mva_JHU_ggh
       cats['JHU_misc'] = mva_JHU_misc
