@@ -567,14 +567,14 @@ if SCHEME == 'mlcpsummer16_2d_KIT':
     # TT category not available
 
     VAR_GGH =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
+    VAR_QQH =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
     VAR_ZTT =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
     VAR_ZLL =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
     VAR_QCD =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
     VAR_W =       'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
     VAR_MISC =    'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8,1.0]'
 
-    VAR_QQH =     'KIT_0_max_score[0.0,0.2,0.4,0.6,0.8]'
-    VAR_QQH_DIJET = 'KIT_0_max_score,((mjj>300 && n_jets>1)*sjdphi+((mjj>300 && n_jets>1)==0)*-3.3)[0.0,0.2,0.4,0.6,0.8],(11,-3.84,3.2)'
+    VAR_QQH_DIJET = 'KIT_0_max_score,((mjj>300 && n_jets>1)*sjdphi+((mjj>300 && n_jets>1)==0)*-3.3)[0.0,0.25,0.5,0.75],(11,-3.84,3.2)'
 
     # define control regions
     # QCD CR for both trainings for et,mt,tt
@@ -586,96 +586,61 @@ if SCHEME == 'mlcpsummer16_2d_KIT':
     VAR_LT_WCR =       'mt_1[80,200]'
 
     scheme_et = [
-        ("21",   "JHU_ggh",    "JHU_ggh",  VAR_JHU_GGH, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_misc",    "JHU_misc",  VAR_JHU_MISC, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_qqh",    "JHU_qqh",  VAR_JHU_QQH, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_tt",    "JHU_tt",  VAR_JHU_TT, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_w",    "JHU_w",  VAR_JHU_W, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_zll",    "JHU_zll",  VAR_JHU_ZLL, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "JHU_ztt",    "JHU_ztt",  VAR_JHU_ZTT, ' --set_alias="sel:mt_1<80" '),
-
-        ("21",   "powheg_ggh",    "powheg_ggh",  VAR_POWHEG_GGH, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_misc",    "powheg_misc",  VAR_POWHEG_MISC, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_qqh",    "powheg_qqh",  VAR_POWHEG_QQH, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_tt",    "powheg_tt",  VAR_POWHEG_TT, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_zll",    "powheg_zll",  VAR_POWHEG_ZLL, ' --set_alias="sel:mt_1<80" '),
-        ("21",   "powheg_ztt",    "powheg_ztt",  VAR_POWHEG_ZTT, ' --set_alias="sel:mt_1<80" '),
-
-        # CRs - using the same cuts as in the other schemes
-
-        ("21",   "JHU_qcd",    "JHU_qcd_cr",  VAR_JHU_LT_QCDCR, ' --set_alias="sel:mt_1<80" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
-        ("21",   "powheg_qcd",    "powheg_qcd_cr",  VAR_POWHEG_LT_QCDCR, ' --set_alias="sel:mt_1<80" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
-
-        ("21",   "JHU_w",    "JHU_w_cr",  VAR_JHU_LT_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
-        ("21",   "powheg_w",    "powheg_w_cr",  VAR_POWHEG_LT_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
-
-    ]
-
-    scheme_mt = [
-        ## only writing this for now since not using other channels
-
-        ("8",   "ggh",    "ggh",   VAR_GGH, '  --set_alias="sel:mt_1<50" '),
-        ("21",   "misc",   "misc",  VAR_MISC, ' --set_alias="sel:mt_1<50" '),
-        ("21",   "qcd",    "qcd",   VAR_QCD, '  --set_alias="sel:mt_1<50" '),
-        ("21",   "w",      "w",     VAR_W, '    --set_alias="sel:mt_1<50" '),
-        ("21",   "zll",    "zll",   VAR_ZLL, '  --set_alias="sel:mt_1<50" '),
-        ("21",   "ztt",    "ztt",   VAR_ZTT, '  --set_alias="sel:mt_1<50" '),
-
-        ("21",   "qqh",    "qqh",   VAR_QQH, '  --set_alias="sel:mt_1<50" '),
-        ("21",   "qqh_dijet",    "qqh_dijet",   VAR_QQH_DIJET, ' --set_alias="sel:mt_1<50" '),
-
+        ("21",   "ggh",    "ggh",  VAR_GGH, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "misc",    "misc",  VAR_MISC, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "qcd",    "qcd",  VAR_QCD, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "qqh",    "qqh",  VAR_QQH, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "w",    "w",  VAR_W, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "zll",    "zll",  VAR_ZLL, ' --set_alias="sel:mt_1<80" '),
+        ("21",   "ztt",    "ztt",  VAR_ZTT, ' --set_alias="sel:mt_1<80" '),
         # CRs - using the same cuts as in the other schemes
 
         ("21",   "qcd",    "qcd_cr",  VAR_LT_QCDCR, ' --set_alias="sel:mt_1<80" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
 
         ("21",   "w",    "w_cr",  VAR_LT_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
+
     ]
 
-    scheme_tt = [
-        ("8",   "JHU_ggh",    "JHU_ggh",  VAR_JHU_GGH, '  '),
-        ("8",   "JHU_misc",    "JHU_misc",  VAR_JHU_MISC, '  '),
-        ("8",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, ' --do_ss '),
-        ("8",   "JHU_qqh",    "JHU_qqh",  VAR_JHU_QQH, '  '),
-        # ("8",   "JHU_tt",    "JHU_tt",  VAR_JHU_TT, '  '),
-        # ("8",   "JHU_w",    "JHU_w",  VAR_JHU_W, '  '),
-        # ("8",   "JHU_zll",    "JHU_zll",  VAR_JHU_ZLL, '  '),
-        ("8",   "JHU_ztt",    "JHU_ztt",  VAR_JHU_ZTT, '  '),
+    scheme_mt = [
+        ## only writing this for now since not using other channels
+        ("21",   "qqh_dijet", "qqh_dijet", VAR_QQH_DIJET, ' --set_alias="sel:mt_1<50" '),
 
-        ("8",   "powheg_ggh",    "powheg_ggh",  VAR_POWHEG_GGH, '  '),
-        ("8",   "powheg_misc",    "powheg_misc",  VAR_POWHEG_MISC, '  '),
-        ("8",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, ' --do_ss  '),
-        ("8",   "powheg_qqh",    "powheg_qqh",  VAR_POWHEG_QQH, '  '),
-        # ("8",   "powheg_tt",    "powheg_tt",  VAR_POWHEG_TT, '  '),
-        # ("8",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, '  '),
-        # ("8",   "powheg_zll",    "powheg_zll",  VAR_POWHEG_ZLL, '  '),
-        ("8",   "powheg_ztt",    "powheg_ztt",  VAR_POWHEG_ZTT, '  '),
+        ("21",   "qqh",       "qqh",       VAR_QQH,       ' --set_alias="sel:mt_1<50" '),
+        ("8",   "ggh",    "ggh",   VAR_GGH,  ' --set_alias="sel:mt_1<50" '),
+        ("8",   "misc",   "misc",  VAR_MISC, ' --set_alias="sel:mt_1<50" '),
+        ("8",   "qcd",    "qcd",   VAR_QCD,  ' --set_alias="sel:mt_1<50" '),
+        ("8",   "w",      "w",     VAR_W,    ' --set_alias="sel:mt_1<50" '),
+        ("8",   "zll",    "zll",   VAR_ZLL,  ' --set_alias="sel:mt_1<50" '),
+        ("8",   "ztt",    "ztt",   VAR_ZTT,  ' --set_alias="sel:mt_1<50" '),
+
 
         # CRs - using the same cuts as in the other schemes
 
-        ("8",   "JHU_qcd",    "JHU_qcd_cr",  VAR_JHU_TT_QCDCR, ' --do_ss '),
-        ("8",   "powheg_qcd",    "powheg_qcd_cr",  VAR_POWHEG_TT_QCDCR, ' --do_ss '),
+        ("8",   "qcd",    "qcd_cr",  VAR_LT_QCDCR, ' --set_alias="sel:mt_1<80" --set_alias="baseline:(iso_1>0.1 && iso_1<0.3 && mva_olddm_medium_2>0.5 && antiele_2 && antimu_2 && leptonveto==0 && pt_2>30 && trg_singleelectron)" --set_alias="qcd_shape:({qcd_shape}&&iso_1>0.1)" '),
+
+        ("8",   "w",    "w_cr",  VAR_LT_WCR, ' --set_alias="sel:mt_1>80" --set_alias="0jet:({0jet}&&n_bjets==0)" '),
+    ]
+
+    scheme_tt = [
+        ("8",   "ggh",    "ggh",  VAR_GGH, '  '),
+        ("8",   "misc",    "misc",  VAR_MISC, '  '),
+        ("8",   "qcd",    "qcd",  VAR_QCD, ' --do_ss '),
+        ("8",   "qqh",    "qqh",  VAR_QQH, '  '),
+        ("8",   "ztt",    "ztt",  VAR_ZTT, '  '),
+
+
+        # CRs - using the same cuts as in the other schemes
+
+        ("8",   "qcd",    "qcd_cr",  VAR_TT_QCDCR, ' --do_ss '),
     ]
     scheme_em = [
-        ("19",   "JHU_ggh",    "JHU_ggh",  VAR_JHU_GGH, '  '),
-        ("19",   "JHU_misc",    "JHU_misc",  VAR_JHU_MISC, '  '),
-        ("19",   "JHU_qcd",    "JHU_qcd",  VAR_JHU_QCD, '  '),
-        ("19",   "JHU_qqh",    "JHU_qqh",  VAR_JHU_QQH, '  '),
-        ("19",   "JHU_tt",    "JHU_tt",  VAR_JHU_TT, '  '),
-        ("19",   "JHU_w",    "JHU_w",  VAR_JHU_W, '  '),
-        ("19",   "JHU_zll",    "JHU_zll",  VAR_JHU_ZLL, '  '),
-        ("19",   "JHU_ztt",    "JHU_ztt",  VAR_JHU_ZTT, '  '),
-
-        ("19",   "powheg_ggh",    "powheg_ggh",  VAR_POWHEG_GGH, '  '),
-        ("19",   "powheg_misc",    "powheg_misc",  VAR_POWHEG_MISC, '  '),
-        ("19",   "powheg_qcd",    "powheg_qcd",  VAR_POWHEG_QCD, '  '),
-        ("19",   "powheg_qqh",    "powheg_qqh",  VAR_POWHEG_QQH, '  '),
-        ("19",   "powheg_tt",    "powheg_tt",  VAR_POWHEG_TT, '  '),
-        ("19",   "powheg_w",    "powheg_w",  VAR_POWHEG_W, '  '),
-        ("19",   "powheg_zll",    "powheg_zll",  VAR_POWHEG_ZLL, '  '),
-        ("19",   "powheg_ztt",    "powheg_ztt",  VAR_POWHEG_ZTT, '  '),
+        ("19",   "ggh",    "ggh",  VAR_GGH, '  '),
+        ("19",   "misc",    "misc",  VAR_MISC, '  '),
+        ("19",   "qcd",    "qcd",  VAR_QCD, '  '),
+        ("19",   "qqh",    "qqh",  VAR_QQH, '  '),
+        ("19",   "w",    "w",  VAR_W, '  '),
+        ("19",   "zll",    "zll",  VAR_ZLL, '  '),
+        ("19",   "ztt",    "ztt",  VAR_ZTT, '  '),
     ]
     bkg_schemes = {
       'et' : 'et_default',
