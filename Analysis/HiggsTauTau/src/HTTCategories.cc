@@ -72,7 +72,7 @@ namespace ic {
       outtree_ = fs_->make<TTree>("ntuple","ntuple");
       
       outtree_->Branch("event",             &event_);
-      outtree_->Branch("wt",                &wt_.var_double);
+      outtree_->Branch("wt",                &wt_.var_float);
 
       outtree_->Branch("wt_btag",           &wt_btag_);
       outtree_->Branch("wt_tau_id_binned", &wt_tau_id_binned_);
@@ -654,23 +654,23 @@ namespace ic {
      }
       
       outtree_->Branch("os",                &os_);
-      outtree_->Branch("m_sv",              &m_sv_.var_double);
+      outtree_->Branch("m_sv",              &m_sv_.var_float);
       outtree_->Branch("mt_sv",             &mt_sv_.var_double);
-      outtree_->Branch("m_vis",             &m_vis_.var_double);
+      outtree_->Branch("m_vis",             &m_vis_.var_float);
       outtree_->Branch("pt_h",              &pt_h_.var_double);
-      outtree_->Branch("pt_tt",             &pt_tt_.var_double);
+      outtree_->Branch("pt_tt",             &pt_tt_.var_float);
       outtree_->Branch("pfpt_tt",          &pfpt_tt_.var_double);
-      outtree_->Branch("pt_vis",             &pt_vis_.var_double);
+      outtree_->Branch("pt_vis",             &pt_vis_.var_float);
       outtree_->Branch("mt_tot",            &mt_tot_.var_double);
       outtree_->Branch("pfmt_tot",          &pfmt_tot_.var_double);
-      outtree_->Branch("mt_lep",            &mt_lep_.var_double);
-      outtree_->Branch("mt_2",              &mt_2_.var_double);
-      outtree_->Branch("mt_1",              &mt_1_.var_double);
+      outtree_->Branch("mt_lep",            &mt_lep_.var_float);
+      outtree_->Branch("mt_2",              &mt_2_.var_float);
+      outtree_->Branch("mt_1",              &mt_1_.var_float);
       outtree_->Branch("m_2",               &m_2_.var_double);
       outtree_->Branch("pfmt_1",            &pfmt_1_.var_double);
       outtree_->Branch("pfmt_2",            &pfmt_2_.var_double);
       outtree_->Branch("puppimt_1",         &puppimt_1_.var_double);
-      outtree_->Branch("pzeta",             &pzeta_.var_double);
+      outtree_->Branch("pzeta",             &pzeta_.var_float);
       outtree_->Branch("pfpzeta",           &pfpzeta_.var_double);
       outtree_->Branch("puppipzeta",        &puppipzeta_.var_double);
       outtree_->Branch("iso_1",             &iso_1_.var_double);
@@ -687,27 +687,28 @@ namespace ic {
       outtree_->Branch("extramuon_veto",    &extramuon_veto_);
       outtree_->Branch("minimal_extraelec_veto",    &minimal_extraelec_veto_);
       outtree_->Branch("minimal_extramuon_veto",    &minimal_extramuon_veto_);
-      outtree_->Branch("met",               &met_.var_double);
+      outtree_->Branch("met",               &met_.var_float);
       outtree_->Branch("pfmet",             &pfmet_.var_double);
       outtree_->Branch("n_jets",            &n_jets_);
       outtree_->Branch("n_bjets",           &n_bjets_);
       outtree_->Branch("n_loose_bjets",     &n_loose_bjets_);
-      outtree_->Branch("mjj",               &mjj_.var_double);
+      outtree_->Branch("mjj",               &mjj_.var_float);
       outtree_->Branch("n_jetsingap",       &n_jetsingap_);
-      outtree_->Branch("jdeta",             &jdeta_.var_double);
+      outtree_->Branch("jdeta",             &jdeta_.var_float);
       outtree_->Branch("jdphi",             &jdphi_);
       outtree_->Branch("dijetpt",           &dijetpt_);
       outtree_->Branch("jm_1",              &jm_1_);
       outtree_->Branch("jmva_1",            &jmva_1_);
       outtree_->Branch("jm_2",              &jm_2_);
-      outtree_->Branch("d0_1",              &d0_1_.var_double);
-      outtree_->Branch("beta_2",            &beta_2_.var_double);
+      outtree_->Branch("d0_1",              &d0_1_.var_float);
+      outtree_->Branch("beta_2",            &beta_2_.var_float);
       outtree_->Branch("bcsv_2",            &bcsv_2_);
       outtree_->Branch("bphi_1",            &bphi_1_);
       outtree_->Branch("bphi_2",            &bphi_2_);
 
       if (strategy_ == strategy::smsummer16){
         outtree_->Branch("sjdphi",             &sjdphi_);
+        outtree_->Branch("mjj_sjdphi",             &mjj_sjdphi_);
         outtree_->Branch("D0", &D0_);
         outtree_->Branch("DCP", &DCP_);
         outtree_->Branch("D0star", &D0star_);
@@ -722,11 +723,11 @@ namespace ic {
       }
       outtree_->Branch("n_lowpt_jets",      &n_lowpt_jets_);
       outtree_->Branch("n_jetsingap_lowpt", &n_jetsingap_lowpt_);
-      outtree_->Branch("pt_2",              &pt_2_.var_double);
-      outtree_->Branch("pt_1",              &pt_1_.var_double);
-      outtree_->Branch("eta_1",             &eta_1_.var_double);
-      outtree_->Branch("eta_2",             &eta_2_.var_double);
-      /* outtree_->Branch("deta",             &deta_.var_double); */
+      outtree_->Branch("pt_2",              &pt_2_.var_float);
+      outtree_->Branch("pt_1",              &pt_1_.var_float);
+      outtree_->Branch("eta_1",             &eta_1_.var_float);
+      outtree_->Branch("eta_2",             &eta_2_.var_float);
+      outtree_->Branch("deta",              &deta_.var_float);
       outtree_->Branch("eta_tt",            &eta_tt_); // for ML studies
       outtree_->Branch("mjj_lowpt",         &mjj_lowpt_);
       outtree_->Branch("gen_match_1", &gen_match_1_);
@@ -758,10 +759,10 @@ namespace ic {
       outtree_->Branch("trg_singletau_1",    &trg_singletau_1_);
       outtree_->Branch("trg_singletau_2",    &trg_singletau_2_);
       outtree_->Branch("trg_mutaucross",    &trg_mutaucross_);
-      outtree_->Branch("jpt_1",             &jpt_1_.var_double);
-      outtree_->Branch("jpt_2",             &jpt_2_.var_double);
-      outtree_->Branch("jeta_1",            &jeta_1_.var_double);
-      outtree_->Branch("jeta_2",            &jeta_2_.var_double);
+      outtree_->Branch("jpt_1",             &jpt_1_.var_float);
+      outtree_->Branch("jpt_2",             &jpt_2_.var_float);
+      outtree_->Branch("jeta_1",            &jeta_1_.var_float);
+      outtree_->Branch("jeta_2",            &jeta_2_.var_float);
       
       //outtree_->Branch("HLT_paths",    &HLT_paths_);
 
@@ -1271,8 +1272,8 @@ namespace ic {
         outtree_->Branch("wt_trig_down_2",    &wt_trig_down_2_);
         outtree_->Branch("n_vtx",             &n_vtx_);
         outtree_->Branch("good_vtx",          &good_vtx_);
-        outtree_->Branch("phi_1",             &phi_1_.var_double);
-        outtree_->Branch("phi_2",             &phi_2_.var_double);
+        outtree_->Branch("phi_1",             &phi_1_.var_float);
+        outtree_->Branch("phi_2",             &phi_2_.var_float);
         //if (channel_ != channel::em){
           outtree_->Branch("dphi",              &dphi_);
         //}
@@ -1283,12 +1284,12 @@ namespace ic {
         outtree_->Branch("n_prebjets",        &n_prebjets_);
         outtree_->Branch("nearjpt_1",             &nearjpt_1_);
         outtree_->Branch("j1_dm",             &j1_dm_);
-        outtree_->Branch("jphi_1",            &jphi_1_, "jphi_1/F");
-        outtree_->Branch("jphi_2",            &jphi_2_, "jphi_1/F");
-        outtree_->Branch("bpt_1",             &bpt_1_.var_double);
-        outtree_->Branch("bpt_2",             &bpt_2_.var_double);
-        outtree_->Branch("beta_1",            &beta_1_.var_double);
-        outtree_->Branch("bcsv_1",            &bcsv_1_.var_double);
+        outtree_->Branch("jphi_1",            &jphi_1_);
+        outtree_->Branch("jphi_2",            &jphi_2_);
+        outtree_->Branch("bpt_1",             &bpt_1_.var_float);
+        outtree_->Branch("bpt_2",             &bpt_2_.var_float);
+        outtree_->Branch("beta_1",            &beta_1_.var_float);
+        outtree_->Branch("bcsv_1",            &bcsv_1_.var_float);
         outtree_->Branch("met_dphi_1",             &met_dphi_1_);
         outtree_->Branch("met_dphi_2",             &met_dphi_2_);
 /*        outtree_->Branch("trigger_object_pt_1",&trigger_object_pt_1.var_double);
@@ -2739,8 +2740,8 @@ namespace ic {
     pt_2_ = lep2->pt();
     eta_1_ = lep1->eta();
     eta_2_ = lep2->eta();
-    /* deta_ = -9999; */
-    /* deta_ = std::fabs(lep1->eta()-lep2->eta()); */
+    deta_ = -9999;
+    deta_ = std::fabs(lep1->eta()-lep2->eta());
     phi_1_ = lep1->phi();
     phi_2_ = lep2->phi();
     dphi_ = std::fabs(ROOT::Math::VectorUtil::DeltaPhi(lep1->vector(),lep2->vector()));
@@ -3714,6 +3715,7 @@ namespace ic {
           sjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(lowpt_jets[1]->vector(), lowpt_jets[0]->vector());
         }
         opp_sides_ = lowpt_jets[0]->eta()*lowpt_jets[1]->eta() < 0 ? 1 : 0;
+        mjj_sjdphi_ = ((lowpt_jets[0]->vector() + lowpt_jets[1]->vector()).M() > 300 && n_jets_ > 1) ? sjdphi_ : -3.3;
         
         n_pjets_=0;
         if (jets.size()==1) n_pjets_=1;
@@ -4452,7 +4454,7 @@ namespace ic {
     event->Add("pt_2",pt_2_.var_double);
     event->Add("eta_1",eta_1_.var_double);
     event->Add("eta_2",eta_2_.var_double);
-    /* event->Add("deta",deta_.var_double); */
+    event->Add("deta",deta_.var_double);
     event->Add("eta_tt",eta_tt_);
     event->Add("phi_1",phi_1_.var_double);
     event->Add("phi_2",phi_2_.var_double);

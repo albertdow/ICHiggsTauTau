@@ -160,9 +160,9 @@ class HTTCategories : public ModuleBase {
   branch_var pzetamiss_;
   branch_var pfpzetamiss_;
   branch_var puppipzetamiss_;
-  double dphi_;
-  double met_dphi_1_;
-  double met_dphi_2_;
+  float dphi_;
+  float met_dphi_1_;
+  float met_dphi_2_;
   double emu_csv_;
   double emu_dxy_1_;
   double emu_dxy_2_;
@@ -174,7 +174,7 @@ class HTTCategories : public ModuleBase {
   branch_var pt_2_;
   branch_var eta_1_;
   branch_var eta_2_;
-  /* branch_var deta_; */
+  branch_var deta_;
   branch_var phi_1_;
   branch_var phi_2_;
   double E_1_;
@@ -361,9 +361,9 @@ class HTTCategories : public ModuleBase {
   int tau_decay_mode_1_;
   int tau_decay_mode_2_;
 
-  unsigned n_jets_;
+  float n_jets_;
   unsigned n_lowpt_jets_;
-  unsigned n_bjets_;
+  float n_bjets_;
   unsigned n_loose_bjets_;
   unsigned n_jetsingap_; // Defined if n_jets >= 2
   unsigned n_jetsingap20_; // Defined if n_jets >= 2
@@ -442,6 +442,7 @@ class HTTCategories : public ModuleBase {
   branch_var jdeta_;     // Defined if n_jets >= 2
   float jdphi_;
   float sjdphi_;
+  float mjj_sjdphi_;
   float D0_;
   float DCP_;
   float D0star_;
