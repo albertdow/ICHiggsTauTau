@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ -z $1 ]
 then
     echo "Usage: make_output_folder.sh [output/some_folder]"

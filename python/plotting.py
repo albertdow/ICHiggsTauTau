@@ -80,6 +80,8 @@ def SetAxisTitles(plot, channel):
   titles['jeta_2'] = ['#eta_{j_{2}}','Events / '+bin_width, 'dN/d#eta_{j_{2}}']
   titles['jpt_1'] = ['P_{T}^{j_{1}} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{j_{1}} (1/GeV)']
   titles['jpt_2'] = ['P_{T}^{j_{2}} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{j_{2}} (1/GeV)']
+  # KIT MVA score
+  titles['KIT_0_max_score'] = ['MVA Score','Events / '+bin_width, 'dN/d(MVA Score)']
 
 
 
