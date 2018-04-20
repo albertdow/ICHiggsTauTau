@@ -383,23 +383,35 @@ if options.channel == 'mt': cats['baseline_loose'] = '(iso_1<0.3 && mva_olddm_me
 
 ## MVA categories for SM MVA
 if options.channel in ['em','et','mt']:
-    mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
-    mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
-    mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
-    mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
-    mva_JHU_tt =      '(mva_cat_sm_Apr11_sm_0_JHU==4)'
-    mva_JHU_w =       '(mva_cat_sm_Apr11_sm_0_JHU==5)'
-    mva_JHU_zll =     '(mva_cat_sm_Apr11_sm_0_JHU==6)'
-    mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==7)'
+    ## for KIT cats
+    mva_ggh =     '(KIT_0_max_index==0)'
+    mva_qqh =     '(KIT_0_max_index==1)'
+    mva_ztt =     '(KIT_0_max_index==2)'
+    mva_zll =     '(KIT_0_max_index==3)'
+    mva_w =       '(KIT_0_max_index==4)'
+    mva_qcd =     '(KIT_0_max_index==5)'
+    mva_misc =    '(KIT_0_max_index==6)'
 
-    mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
-    mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
-    mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
-    mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
-    mva_powheg_tt =   '(mva_cat_sm_Apr11_sm_0_powheg==4)'
-    mva_powheg_w =    '(mva_cat_sm_Apr11_sm_0_powheg==5)'
-    mva_powheg_zll =  '(mva_cat_sm_Apr11_sm_0_powheg==6)'
-    mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==7)'
+
+    # IC categories
+
+    # mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
+    # mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
+    # mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
+    # mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
+    # mva_JHU_tt =      '(mva_cat_sm_Apr11_sm_0_JHU==4)'
+    # mva_JHU_w =       '(mva_cat_sm_Apr11_sm_0_JHU==5)'
+    # mva_JHU_zll =     '(mva_cat_sm_Apr11_sm_0_JHU==6)'
+    # mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==7)'
+
+    # mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
+    # mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
+    # mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
+    # mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
+    # mva_powheg_tt =   '(mva_cat_sm_Apr11_sm_0_powheg==4)'
+    # mva_powheg_w =    '(mva_cat_sm_Apr11_sm_0_powheg==5)'
+    # mva_powheg_zll =  '(mva_cat_sm_Apr11_sm_0_powheg==6)'
+    # mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==7)'
 
 #     mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
 #     mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
@@ -460,23 +472,36 @@ if options.channel == 'em': cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' %
 
 if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
   if options.channel in ['em','mt','et']:
-      cats['JHU_ggh'] =  mva_JHU_ggh
-      cats['JHU_misc'] = mva_JHU_misc
-      cats['JHU_qcd'] =  mva_JHU_qcd
-      cats['JHU_qqh'] =  mva_JHU_qqh
-      cats['JHU_tt'] =   mva_JHU_tt
-      cats['JHU_w'] =    mva_JHU_w
-      cats['JHU_zll'] =  mva_JHU_zll
-      cats['JHU_ztt'] =  mva_JHU_ztt
+      # KIT categories (with qqh modification)
+      cats['ggh'] =  mva_ggh
+      cats['misc'] = mva_misc
+      cats['qcd'] =  mva_qcd
+      cats['w'] =    mva_w
+      cats['zll'] =  mva_zll
+      cats['ztt'] =  mva_ztt
 
-      cats['powheg_ggh'] =  mva_powheg_ggh
-      cats['powheg_misc'] = mva_powheg_misc
-      cats['powheg_qcd'] =  mva_powheg_qcd
-      cats['powheg_qqh'] =  mva_powheg_qqh
-      cats['powheg_tt'] =   mva_powheg_tt
-      cats['powheg_w'] =    mva_powheg_w
-      cats['powheg_zll'] =  mva_powheg_zll
-      cats['powheg_ztt'] =  mva_powheg_ztt
+      cats['qqh'] =  '({}) && !(n_jets>=2 && mjj>300)'.format(mva_qqh)
+      cats['qqh_dijet'] =  '({}) && (n_jets>=2 && mjj>300)'.format(mva_qqh)
+
+      # IC categories
+
+      # cats['JHU_ggh'] =  mva_JHU_ggh
+      # cats['JHU_misc'] = mva_JHU_misc
+      # cats['JHU_qcd'] =  mva_JHU_qcd
+      # cats['JHU_qqh'] =  mva_JHU_qqh
+      # cats['JHU_tt'] =   mva_JHU_tt
+      # cats['JHU_w'] =    mva_JHU_w
+      # cats['JHU_zll'] =  mva_JHU_zll
+      # cats['JHU_ztt'] =  mva_JHU_ztt
+
+      # cats['powheg_ggh'] =  mva_powheg_ggh
+      # cats['powheg_misc'] = mva_powheg_misc
+      # cats['powheg_qcd'] =  mva_powheg_qcd
+      # cats['powheg_qqh'] =  mva_powheg_qqh
+      # cats['powheg_tt'] =   mva_powheg_tt
+      # cats['powheg_w'] =    mva_powheg_w
+      # cats['powheg_zll'] =  mva_powheg_zll
+      # cats['powheg_ztt'] =  mva_powheg_ztt
   if options.channel == 'tt':
       cats['JHU_ggh'] =  mva_JHU_ggh
       cats['JHU_misc'] = mva_JHU_misc
