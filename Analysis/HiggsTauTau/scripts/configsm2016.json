@@ -50,6 +50,7 @@
     "met"           : "pfMET",
     "genTaus"       : "genParticles",
     "genJets"       : "genJets",
+    "do_mt_tagandprobe"    : false,
     "do_iso_eff"    : false,
     "do_tau_eff"    : false,
     "do_ff_weights" : false,
