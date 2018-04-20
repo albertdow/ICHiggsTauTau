@@ -81,7 +81,7 @@ def SetAxisTitles(plot, channel):
   titles['jpt_1'] = ['P_{T}^{j_{1}} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{j_{1}} (1/GeV)']
   titles['jpt_2'] = ['P_{T}^{j_{2}} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{j_{2}} (1/GeV)']
   # KIT MVA score
-  titles['KIT_0_max_score'] = ['MVA Score','Events / '+bin_width, 'dN/d(MVA Score)']
+  titles['KIT_0_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)']
 
 
 
@@ -152,6 +152,9 @@ def SetAxisTitles2D(plot, channel):
   titles['D0'] = ['D_{0}','Events', 'dN/dD_{0}','']
   titles['DCP'] = ['D_{CP}','Events', 'dN/dD_{CP}','']
   titles['D0star'] = ['D_{0}^{*}','Events', 'dN/dD_{0}^{*}','']
+  # KIT MVA score
+  titles['KIT_0_max_score'] = ['MVA Score','Events / {} GeV'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['((mjj>300 && n_jets>1)*sjdphi+((mjj>300 && n_jets>1)==0)*-3.3)'] = ['#Delta#tilde{#phi_{jj}}','Events', 'dN/d#Delta#tilde{#phi_{jj}}','']
 
   if channel in ['zee','zmm']: titles['pt_tt'] = ['P_{T}^{'+chan_label+'} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{'+chan_label+'} (1/GeV)','GeV']
   else:  titles['pt_tt'] = ['P_{T}^{tot} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{tot} (1/GeV)','GeV']
@@ -3050,7 +3053,7 @@ def HTTPlotUnrolled(nodename,
     sig_schemes = {}
 
 
-    sig_schemes['sm_ggH'] = ( str(int(signal_scale))+"#times SM ggH("+signal_mass+" GeV)#rightarrow#tau#tau", ["ggHsm_htt"], False , R.kRed)
+    sig_schemes['sm_ggH'] = ( str(int(signal_scale))+"#times SM ggH("+signal_mass+" GeV)#rightarrow#tau#tau", ["ggHsm_htt"], False , R.kGreen+2)
     #sig_schemes['sm_qqH'] = ( str(int(signal_scale))+"#times SM qqH("+signal_mass+" GeV)#rightarrow#tau#tau", ["qqH_htt"], False, R.kBlue)
 
     ModTDRStyle(width=1200, height=600, r=0.3, l=0.14, t=0.12,b=0.15)
