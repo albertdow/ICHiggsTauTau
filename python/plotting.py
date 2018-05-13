@@ -82,6 +82,15 @@ def SetAxisTitles(plot, channel):
   titles['jpt_2'] = ['P_{T}^{j_{2}} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{j_{2}} (1/GeV)']
   # KIT MVA score
   titles['KIT_0_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)']
+  titles['IC_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_less2jets_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_jetpts_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_jetvars_noscaling_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_tests_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_10May_fulljetvars_fullfakes_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_10May_mjj_jdeta_dijetpt_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
 
 
 
@@ -154,7 +163,16 @@ def SetAxisTitles2D(plot, channel):
   titles['D0star'] = ['D_{0}^{*}','Events', 'dN/dD_{0}^{*}','']
   # KIT MVA score
   titles['KIT_0_max_score'] = ['MVA Score','Events / {} GeV'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_max_score'] = ['MVA Score','Events / {} GeV'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_less2jets_max_score'] = ['MVA Score','Events / {} GeV'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
   titles['((mjj>300 && n_jets>1)*sjdphi+((mjj>300 && n_jets>1)==0)*-3.3)'] = ['#Delta#tilde{#phi_{jj}}','Events', 'dN/d#Delta#tilde{#phi_{jj}}','']
+  titles['IC_highMjj_9May_jetpts_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_jetvars_noscaling_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_9May_tests_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_10May_fulljetvars_fullfakes_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_10May_mjj_jdeta_dijetpt_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
 
   if channel in ['zee','zmm']: titles['pt_tt'] = ['P_{T}^{'+chan_label+'} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{'+chan_label+'} (1/GeV)','GeV']
   else:  titles['pt_tt'] = ['P_{T}^{tot} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{tot} (1/GeV)','GeV']
@@ -3399,18 +3417,22 @@ def HTTPlotUnrolled(nodename,
       latex.SetTextSize(0.028)
 
       Nybins = len(y_bins)
-      if Nybins > 5: latex.SetTextSize(0.023)
+      if Nybins > 4: latex.SetTextSize(0.019)
       for i in range(0, Nybins):
         ymin = y_labels_vec[0][i][0]
         ymax = y_labels_vec[0][i][1]
-        if ymax == -1: y_bin_label = '%s #geq %0.f %s' % (var,ymin,unit)
-        else: y_bin_label = '%0.f #leq %s < %0.f %s' % (ymin,var,ymax,unit)
+        if var not in ['MVA Score']:
+            if ymax == -1: y_bin_label = '%s #geq %0.f %s' % (var,ymin,unit)
+            else: y_bin_label = '%0.f #leq %s < %0.f %s' % (ymin,var,ymax,unit)
+        else:
+            if ymax == -1: y_bin_label = '%s #geq %.3f %s' % (var,ymin,unit)
+            else: y_bin_label = '%.3f #leq %s < %.3f %s' % (ymin,var,ymax,unit)
         if "tau decay mode" in var and Nybins == 3:
           if i == 0: y_bin_label = "1 prong"
           if i == 1: y_bin_label = "1 prong + #pi^{0}"
           if i == 2: y_bin_label = "3 prong"
         xshift = 0.78/Nybins*i  # bit annoying but will have to change the 0.78 if the plot proportions are changed
-        latex.DrawLatex(0.095+xshift,0.82,y_bin_label)
+        latex.DrawLatex(0.090+xshift,0.82,y_bin_label)
 
 
     c1.SaveAs(plot_name+'.pdf')

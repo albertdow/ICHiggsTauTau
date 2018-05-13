@@ -763,6 +763,18 @@ namespace ic {
       outtree_->Branch("jpt_2",             &jpt_2_.var_float);
       outtree_->Branch("jeta_1",            &jeta_1_.var_float);
       outtree_->Branch("jeta_2",            &jeta_2_.var_float);
+
+      outtree_->Branch("jphi_1",            &jphi_1_);
+      outtree_->Branch("jphi_2",            &jphi_2_);
+      outtree_->Branch("bpt_1",             &bpt_1_.var_float);
+      outtree_->Branch("bpt_2",             &bpt_2_.var_float);
+      outtree_->Branch("beta_1",            &beta_1_.var_float);
+      outtree_->Branch("bcsv_1",            &bcsv_1_.var_float);
+      outtree_->Branch("met_dphi_1",             &met_dphi_1_);
+      outtree_->Branch("met_dphi_2",             &met_dphi_2_);
+      outtree_->Branch("phi_1",             &phi_1_.var_float);
+      outtree_->Branch("phi_2",             &phi_2_.var_float);
+      outtree_->Branch("dphi",              &dphi_);
       
       //outtree_->Branch("HLT_paths",    &HLT_paths_);
 
@@ -1130,10 +1142,10 @@ namespace ic {
         outtree_->Branch("wt_trig_down_2",    &wt_trig_down_2_);
         outtree_->Branch("n_vtx",             &n_vtx_);
         outtree_->Branch("good_vtx",          &good_vtx_);
-        outtree_->Branch("phi_1",             &phi_1_.var_float);
-        outtree_->Branch("phi_2",             &phi_2_.var_float);
+        /* outtree_->Branch("phi_1",             &phi_1_.var_float); */
+        /* outtree_->Branch("phi_2",             &phi_2_.var_float); */
         //if (channel_ != channel::em){
-          outtree_->Branch("dphi",              &dphi_);
+          /* outtree_->Branch("dphi",              &dphi_); */
         //}
         outtree_->Branch("E_1",               &E_1_);
         outtree_->Branch("E_2",               &E_2_);
@@ -1142,14 +1154,14 @@ namespace ic {
         outtree_->Branch("n_prebjets",        &n_prebjets_);
         outtree_->Branch("nearjpt_1",             &nearjpt_1_);
         outtree_->Branch("j1_dm",             &j1_dm_);
-        outtree_->Branch("jphi_1",            &jphi_1_);
-        outtree_->Branch("jphi_2",            &jphi_2_);
-        outtree_->Branch("bpt_1",             &bpt_1_.var_float);
-        outtree_->Branch("bpt_2",             &bpt_2_.var_float);
-        outtree_->Branch("beta_1",            &beta_1_.var_float);
-        outtree_->Branch("bcsv_1",            &bcsv_1_.var_float);
-        outtree_->Branch("met_dphi_1",             &met_dphi_1_);
-        outtree_->Branch("met_dphi_2",             &met_dphi_2_);
+        /* outtree_->Branch("jphi_1",            &jphi_1_); */
+        /* outtree_->Branch("jphi_2",            &jphi_2_); */
+        /* outtree_->Branch("bpt_1",             &bpt_1_.var_float); */
+        /* outtree_->Branch("bpt_2",             &bpt_2_.var_float); */
+        /* outtree_->Branch("beta_1",            &beta_1_.var_float); */
+        /* outtree_->Branch("bcsv_1",            &bcsv_1_.var_float); */
+        /* outtree_->Branch("met_dphi_1",             &met_dphi_1_); */
+        /* outtree_->Branch("met_dphi_2",             &met_dphi_2_); */
 /*        outtree_->Branch("trigger_object_pt_1",&trigger_object_pt_1.var_double);
         outtree_->Branch("trigger_object_eta_1",&trigger_object_eta_1.var_double);
         outtree_->Branch("trigger_object_pt_2",&trigger_object_pt_2.var_double);

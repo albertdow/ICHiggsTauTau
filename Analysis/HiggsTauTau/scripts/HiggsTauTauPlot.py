@@ -394,16 +394,42 @@ if options.channel == 'mt': cats['baseline_loose'] = '(iso_1<0.3 && mva_olddm_me
 ## MVA categories for SM MVA
 if options.channel in ['em','et','mt']:
     ## for KIT cats
-    mva_ggh =     '(KIT_0_max_index==0)'
-    mva_qqh =     '(KIT_0_max_index==1)'
-    mva_ztt =     '(KIT_0_max_index==2)'
-    mva_zll =     '(KIT_0_max_index==3)'
-    mva_w =       '(KIT_0_max_index==4)'
-    mva_qcd =     '(KIT_0_max_index==5)'
-    mva_misc =    '(KIT_0_max_index==6)'
+    # mva_ggh =     '(KIT_0_max_index==0)'
+    # mva_qqh =     '(KIT_0_max_index==1)'
+    # mva_ztt =     '(KIT_0_max_index==2)'
+    # mva_zll =     '(KIT_0_max_index==3)'
+    # mva_w =       '(KIT_0_max_index==4)'
+    # mva_qcd =     '(KIT_0_max_index==5)'
+    # mva_misc =    '(KIT_0_max_index==6)'
 
 
-    # IC categories
+    # IC categories (!dijet + lowMjj, powheg trained)
+    mva_less2jets_ggh =     '(IC_less2jets_max_index==0)'
+    mva_less2jets_misc =    '(IC_less2jets_max_index==1)'
+    mva_less2jets_qcd =     '(IC_less2jets_max_index==2)'
+    mva_less2jets_qqh =     '(IC_less2jets_max_index==3)'
+    mva_less2jets_tt =      '(IC_less2jets_max_index==4)'
+    mva_less2jets_w =       '(IC_less2jets_max_index==5)'
+    mva_less2jets_zll =     '(IC_less2jets_max_index==6)'
+    mva_less2jets_ztt =     '(IC_less2jets_max_index==7)'
+
+    # IC categories (highMjj only, JHU trained)
+    # mva_ggh =     '(IC_max_index==0)'
+    # mva_misc =    '(IC_max_index==1)'
+    # mva_qcd =     '(IC_max_index==2)'
+    # mva_qqh =     '(IC_max_index==3)'
+    # mva_tt =      '(IC_max_index==4)'
+    # mva_w =       '(IC_max_index==5)'
+    # mva_zll =     '(IC_max_index==6)'
+    # mva_ztt =     '(IC_max_index==7)'
+
+    mva_fake =    '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==0)'
+    mva_ggh =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==1)'
+    mva_misc =    '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==2)'
+    mva_qqh =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==3)'
+    mva_tt =      '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==4)'
+    mva_ztt =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==5)'
+
 
     # mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
     # mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
@@ -442,17 +468,38 @@ if options.channel in ['em','et','mt']:
 #     mva_powheg_ztt =  '(mva_cat_cpsm_Apr06_1_powheg==7)'
 
 if options.channel == 'tt':
-    mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
-    mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
-    mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
-    mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
-    mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==4)'
+    # IC categories (!dijet + lowMjj)
+    mva_less2jets_ggh =     '(IC_less2jets_max_index==0)'
+    mva_less2jets_misc =    '(IC_less2jets_max_index==1)'
+    mva_less2jets_qcd =     '(IC_less2jets_max_index==2)'
+    mva_less2jets_qqh =     '(IC_less2jets_max_index==3)'
+    mva_less2jets_ztt =     '(IC_less2jets_max_index==4)'
 
-    mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
-    mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
-    mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
-    mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
-    mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==4)'
+    # IC categories (highMjj only)
+    # mva_ggh =     '(IC_max_index==0)'
+    # mva_misc =    '(IC_max_index==1)'
+    # mva_qcd =     '(IC_max_index==2)'
+    # mva_qqh =     '(IC_max_index==3)'
+    # mva_ztt =     '(IC_max_index==4)'
+
+    # IC categories (highMjj only)
+    mva_ggh =     '(IC_highMjj_9May_jetpts_max_index==0)'
+    mva_misc =    '(IC_highMjj_9May_jetpts_max_index==1)'
+    mva_qcd =     '(IC_highMjj_9May_jetpts_max_index==2)'
+    mva_qqh =     '(IC_highMjj_9May_jetpts_max_index==3)'
+    mva_ztt =     '(IC_highMjj_9May_jetpts_max_index==4)'
+
+    # mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
+    # mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
+    # mva_JHU_qcd =     '(mva_cat_sm_Apr11_sm_0_JHU==2)'
+    # mva_JHU_qqh =     '(mva_cat_sm_Apr11_sm_0_JHU==3)'
+    # mva_JHU_ztt =     '(mva_cat_sm_Apr11_sm_0_JHU==4)'
+
+    # mva_powheg_ggh =  '(mva_cat_sm_Apr11_sm_0_powheg==0)'
+    # mva_powheg_misc = '(mva_cat_sm_Apr11_sm_0_powheg==1)'
+    # mva_powheg_qcd =  '(mva_cat_sm_Apr11_sm_0_powheg==2)'
+    # mva_powheg_qqh =  '(mva_cat_sm_Apr11_sm_0_powheg==3)'
+    # mva_powheg_ztt =  '(mva_cat_sm_Apr11_sm_0_powheg==4)'
 
     # mva_JHU_ggh =     '(mva_cat_cpsm_Apr06_1_JHU==0)'
     # mva_JHU_misc =    '(mva_cat_cpsm_Apr06_1_JHU==1)'
@@ -483,17 +530,40 @@ if options.channel == 'em': cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' %
 if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
   if options.channel in ['em','mt','et']:
       # KIT categories (with qqh modification)
-      cats['ggh'] =  mva_ggh
-      cats['misc'] = mva_misc
-      cats['qcd'] =  mva_qcd
-      cats['w'] =    mva_w
-      cats['zll'] =  mva_zll
-      cats['ztt'] =  mva_ztt
+      # cats['ggh'] =  mva_ggh
+      # cats['misc'] = mva_misc
+      # cats['qcd'] =  mva_qcd
+      # cats['w'] =    mva_w
+      # cats['zll'] =  mva_zll
+      # cats['ztt'] =  mva_ztt
 
-      cats['qqh'] =  '({}) && !(n_jets>=2 && mjj>300)'.format(mva_qqh)
-      cats['qqh_dijet'] =  '({}) && (n_jets>=2 && mjj>300)'.format(mva_qqh)
+      # cats['qqh'] =  '({}) && !(n_jets>=2 && mjj>300)'.format(mva_qqh)
+      # cats['qqh_dijet'] =  '({}) && (n_jets>=2 && mjj>300)'.format(mva_qqh)
 
-      # IC categories
+
+      # IC categories !dijet + lowMjj
+
+      cats['ggh_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_ggh)
+      cats['misc_lowMjj'] = '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_misc)
+      cats['qcd_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_qcd)
+      cats['qqh_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_qqh)
+      cats['tt_lowMjj'] =   '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_tt)
+      cats['w_lowMjj'] =    '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_w)
+      cats['zll_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_zll)
+      cats['ztt_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_ztt)
+
+      # IC categories highMjj only
+
+      cats['fake_highMjj'] = '({} && n_jets>=2 && mjj>300)'.format(mva_fake)
+      cats['ggh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ggh)
+      cats['misc_highMjj'] = '({} && n_jets>=2 && mjj>300)'.format(mva_misc)
+      # cats['qcd_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qcd)
+      cats['qqh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qqh)
+      cats['tt_highMjj'] =   '({} && n_jets>=2 && mjj>300)'.format(mva_tt)
+      # cats['w_highMjj'] =    '({} && n_jets>=2 && mjj>300)'.format(mva_w)
+      # cats['zll_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_zll)
+      cats['ztt_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ztt)
+
 
       # cats['JHU_ggh'] =  mva_JHU_ggh
       # cats['JHU_misc'] = mva_JHU_misc
@@ -513,17 +583,31 @@ if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
       # cats['powheg_zll'] =  mva_powheg_zll
       # cats['powheg_ztt'] =  mva_powheg_ztt
   if options.channel == 'tt':
-      cats['JHU_ggh'] =  mva_JHU_ggh
-      cats['JHU_misc'] = mva_JHU_misc
-      cats['JHU_qcd'] =  mva_JHU_qcd
-      cats['JHU_qqh'] =  mva_JHU_qqh
-      cats['JHU_ztt'] =  mva_JHU_ztt
+      # IC categories !dijet + lowMjj
+      cats['ggh_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_ggh)
+      cats['misc_lowMjj'] = '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_misc)
+      cats['qcd_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_qcd)
+      cats['qqh_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_qqh)
+      cats['ztt_lowMjj'] =  '({} && !(n_jets>=2 && mjj>300))'.format(mva_less2jets_ztt)
 
-      cats['powheg_ggh'] =  mva_powheg_ggh
-      cats['powheg_misc'] = mva_powheg_misc
-      cats['powheg_qcd'] =  mva_powheg_qcd
-      cats['powheg_qqh'] =  mva_powheg_qqh
-      cats['powheg_ztt'] =  mva_powheg_ztt
+      # IC categories highMjj only
+      cats['ggh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ggh)
+      cats['misc_highMjj'] = '({} && n_jets>=2 && mjj>300)'.format(mva_misc)
+      cats['qcd_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qcd)
+      cats['qqh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qqh)
+      cats['ztt_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ztt)
+
+      # cats['JHU_ggh'] =  mva_JHU_ggh
+      # cats['JHU_misc'] = mva_JHU_misc
+      # cats['JHU_qcd'] =  mva_JHU_qcd
+      # cats['JHU_qqh'] =  mva_JHU_qqh
+      # cats['JHU_ztt'] =  mva_JHU_ztt
+
+      # cats['powheg_ggh'] =  mva_powheg_ggh
+      # cats['powheg_misc'] = mva_powheg_misc
+      # cats['powheg_qcd'] =  mva_powheg_qcd
+      # cats['powheg_qqh'] =  mva_powheg_qqh
+      # cats['powheg_ztt'] =  mva_powheg_ztt
 
       # cats['0jet'] = '(n_jets==0 && n_bjets==0)'
       # cats['dijet']='n_jets>=2 && mjj>300 && n_bjets==0'
@@ -531,19 +615,19 @@ if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
       # cats['dijet_lowboost']='%s && pt_tt<150 && n_bjets==0' % cats['dijet']
       # cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' % (cats['0jet'], cats['dijet'])
   # else:
-# if options.era == 'cpsummer16':
-#   if options.channel in ['em','mt','et']:
-#       cats['0jet'] = '(n_jets==0 && n_bjets==0)'
-#       cats['dijet']='n_jets>=2 && mjj>300 && n_bjets==0'
-#       cats['dijet_boosted']='%s && pt_tt>200' % cats['dijet']
-#       cats['dijet_lowboost']='%s && pt_tt<200' % cats['dijet']
-#       cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' % (cats['0jet'], cats['dijet'])
-#   else:
-#     cats['0jet'] = '(n_jets==0)'
-#     cats['dijet']='n_jets>=2 && mjj>300'
-#     cats['dijet_boosted']='%s && pt_tt>150' % cats['dijet']
-#     cats['dijet_lowboost']='%s && pt_tt<200' % cats['dijet']
-#     cats['boosted'] = '(!(%s) && !(%s))' % (cats['0jet'], cats['dijet'])
+if options.era == 'cpsummer16':
+  if options.channel in ['em','mt','et']:
+      cats['0jet'] = '(n_jets==0 && n_bjets==0)'
+      cats['dijet']='n_jets>=2 && mjj>300 && n_bjets==0'
+      cats['dijet_boosted']='%s && pt_tt>200' % cats['dijet']
+      cats['dijet_lowboost']='%s && pt_tt<200' % cats['dijet']
+      cats['boosted'] = '(!(%s) && !(%s) && n_bjets==0)' % (cats['0jet'], cats['dijet'])
+  else:
+    cats['0jet'] = '(n_jets==0)'
+    cats['dijet']='n_jets>=2 && mjj>300'
+    cats['dijet_boosted']='%s && pt_tt>150' % cats['dijet']
+    cats['dijet_lowboost']='%s && pt_tt<200' % cats['dijet']
+    cats['boosted'] = '(!(%s) && !(%s))' % (cats['0jet'], cats['dijet'])
 
 
 
@@ -587,8 +671,11 @@ if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
 if options.era in ['smsummer16','cpsummer16']:
   if options.channel in ['et','mt']: cats['qcd_shape'] = '('+cats['baseline_loose']+')*('+cats[options.cat]+')'
   if options.cat in ['boosted','vbf','dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj', ## add all mva cats as well for now (also in some systematics, see below)
-          'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-          'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+          'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+          'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+          'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt', # in case I still wanna use KIT
+          'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+          'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
       cats['w_shape'] = cats['qcd_shape']
 
 
@@ -878,18 +965,27 @@ if options.syst_zpt_statpt80 != '':
     systematics['syst_zpt_statpt80_up'] = ('' , '_'+options.syst_zpt_statpt80+'Up', 'wt*wt_zpt_stat_m400pt80_up', ['VVT','VVJ','TTT','TTJ','QCD','W','signal','jetFakes','EmbedZTT'], False)
     systematics['syst_zpt_statpt80_down'] = ('' , '_'+options.syst_zpt_statpt80+'Down', 'wt*wt_zpt_stat_m400pt80_down', ['VVT','VVJ','TTT','TTJ','QCD','W','signal','jetFakes','EmbedZTT'], False)
 if options.syst_z_mjj != '' and options.cat in ['vbf','dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-    'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-    'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+    'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+    'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+    'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+    'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+    'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
     systematics['syst_z_mjj_up'] = ('' , '_'+options.syst_z_mjj+'Up', 'wt*wt_z_mjj_up', ['VVT','VVJ','TTT','TTJ','QCD','W','signal','jetFakes','ggH_hww125','qqH_hww125', 'ggH_hww', 'qqH_hww','EmbedZTT'], False)
     systematics['syst_z_mjj_down'] = ('' , '_'+options.syst_z_mjj+'Down', 'wt*wt_z_mjj_down', ['VVT','VVJ','TTT','TTJ','QCD','W','signal','jetFakes','ggH_hww125','qqH_hww125', 'ggH_hww', 'qqH_hww','EmbedZTT'], False)
 if options.syst_qcd_scale != '' and options.cat in ['0jet','boosted','vbf','dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-    'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-    'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt'] and options.channel in ['em','et','mt','tt']:
+    'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+    'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+    'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+    'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+    'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt'] and options.channel in ['em','et','mt','tt']:
     weight_up = 'wt*wt_scale_%s_%s' % (options.channel, options.cat)
     weight_down = 'wt*(2-wt_scale_%s_%s)' % (options.channel, options.cat)
     if options.cat in ['dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-            'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-            'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+            'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+            'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+            'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+            'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+            'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
       weight_up = 'wt*wt_scale_%s_vbf' % (options.channel)
       weight_down = 'wt*(2-wt_scale_%s_vbf)' % (options.channel)
     systematics['syst_qcd_scale_up'] = ('' , '_'+options.syst_qcd_scale+'Up', weight_up, ['ZTT','ZL','ZJ','ZLL','VVT','VVJ','TTT','TTJ','QCD','W','jetFakes','qqH','WminusH','WplusH','ZH','EWKZ','ggH_hww125','qqH_hww125','ggH_hww','qqH_hww','EmbedZTT'], False)
@@ -914,8 +1010,11 @@ if options.syst_qcd_shape_wsf != '':
     systematics['syst_qcd_shape_wsf_down'] = ('' , '_'+options.syst_qcd_shape_wsf.replace('cat',options.cat)+'Down', 'wt', ['ZTT','ZL','ZJ','ZLL','VVT','VVJ','TTT','TTJ','jetFakes','signal','W','EWKZ','ggH_hww125','qqH_hww125','ggH_hww','qqH_hww','EmbedZTT'], False)
     if options.cat in ["0jet","boosted"]: w_abs_shift=0.1
     if options.cat in ["vbf",'dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-            'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-            'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+            'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+            'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+            'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+            'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+            'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
         w_abs_shift=0.3
 if options.syst_scale_met_unclustered != '':
     systematics['syst_scale_met_unclustered_up'] = ('METUNCL_UP' , '_'+options.syst_scale_met_unclustered+'Up', 'wt', ['QCD','jetFakes','EmbedZTT'], False)
@@ -978,16 +1077,22 @@ else:
           if options.cat == '0jet': qcd_os_ss_ratio = 1.0
           elif options.cat == 'boosted': qcd_os_ss_ratio = 1.28
           elif options.cat in ['vbf','dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-                  'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-                  'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+                  'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+                  'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+                  'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+                  'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+                  'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
               qcd_os_ss_ratio = 1.0
       elif options.channel in ['mt','mj']:
           qcd_os_ss_ratio = 1.07
           if options.cat == '0jet': qcd_os_ss_ratio = 1.07
           elif options.cat == 'boosted': qcd_os_ss_ratio = 1.06
           elif options.cat in ['vbf','dijet','dijet_lowM','dijet_highM','dijet_lowboost','dijet_boosted', 'dijet_lowMjj',
-                  'mva_JHU_ggh','mva_JHU_misc','mva_JHU_qcd','mva_JHU_qqh','mva_JHU_tt','mva_JHU_w','mva_JHU_zll','mva_JHU_ztt',
-                  'mva_powheg_ggh','mva_powheg_misc','mva_powheg_qcd','mva_powheg_qqh','mva_powheg_tt','mva_powheg_w','mva_powheg_zll','mva_powheg_ztt']:
+                  'ggh_lowMjj','qqh_lowMjj','misc_lowMjj','qcd_lowMjj','qqh_lowMjj','tt_lowMjj','w_lowMjj','zll_lowMjj','ztt_lowMjj', # powheg trained
+                  'ggh_highMjj','qqh_highMjj','misc_highMjj','qcd_highMjj','qqh_highMjj','tt_highMjj','w_highMjj','zll_highMjj','ztt_highMjj', 'fake_highMjj',# JHU trained
+                  'ggh','qqh','qqh_dijet','misc','qcd','qqh','tt','w','zll','ztt',
+                  'JHU_ggh','JHU_misc','JHU_qcd','JHU_qqh','JHU_tt','JHU_w','JHU_zll','JHU_ztt',
+                  'powheg_ggh','powheg_misc','powheg_qcd','powheg_qqh','powheg_tt','powheg_w','powheg_zll','powheg_ztt']:
               qcd_os_ss_ratio = 1.0
       elif options.channel == 'zmm' or options.channel == 'zee':
           qcd_os_ss_ratio = 1.07

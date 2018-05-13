@@ -195,7 +195,7 @@ class TChainEvaluator(TTreeEvaluator):
 class BaseNode:
     def __init__(self, name, WriteSubnodes=True):
         self.name = name
-        self.WriteSubnodes = WriteSubnodes    
+        self.WriteSubnodes = WriteSubnodes
 
     def GetNameStr(self):
         return '%s::%s' % (self.__class__.__name__, self.name)
@@ -506,7 +506,7 @@ class HttWQCDCombinedNode(BaseNode):
     def AddRequests(self, manifest):
         for node in self.SubNodes():
             node.AddRequests(manifest)
-            
+
 class HttWNode(BaseNode):
     def __init__(self, name, data, subtract, w_control, w_signal, w_shape, extra_num_node=None, extra_den_node=None):
         BaseNode.__init__(self, name)
@@ -523,12 +523,23 @@ class HttWNode(BaseNode):
         if self.data_node is None:
           if self.w_shape is None:
             self.shape = self.w_signal_node.shape
-          else: self.shape = self.w_signal_node.shape.rate / self.w_shape.shape.rate * self.w_shape.shape  
+          elif self.w_shape.shape.rate > 0:
+              self.shape = self.w_signal_node.shape.rate / self.w_shape.shape.rate * self.w_shape.shape
+          else:
+              self.shape = self.w_signal_node.shape
         else:
           if self.w_shape is None:
-              self.shape = (self.data_node.shape.rate - self.subtract_node.shape.rate)/self.w_control_node.shape.rate * self.w_signal_node.shape
+              if self.w_control_node.shape.rate > 0:
+                self.shape = (self.data_node.shape.rate - self.subtract_node.shape.rate)/self.w_control_node.shape.rate * self.w_signal_node.shape
+              else:
+                self.shape = self.w_signal_node.shape
           else:
-              self.shape = (self.data_node.shape.rate - self.subtract_node.shape.rate)/self.w_control_node.shape.rate * self.w_signal_node.shape.rate / self.w_shape.shape.rate * self.w_shape.shape
+              if self.w_control_node.shape.rate > 0 and self.w_shape.shape.rate > 0:
+                self.shape = (self.data_node.shape.rate - self.subtract_node.shape.rate)/self.w_control_node.shape.rate * self.w_signal_node.shape.rate / self.w_shape.shape.rate * self.w_shape.shape
+              elif self.w_shape.shape.rate > 0:
+                self.shape = self.w_signal_node.shape.rate / self.w_shape.shape.rate * self.w_shape.shape
+              else:
+                self.shape = self.w_signal_node.shape
         if self.extra_num_node is not None and self.extra_den_node is not None:
             self.shape *= self.extra_num_node.shape.rate / self.extra_den_node.shape.rate
 
@@ -544,14 +555,14 @@ class HttWNode(BaseNode):
         if self.w_shape is not None:
             subnodes.append(self.w_shape)
         if self.extra_num_node is not None and self.extra_den_node is not None:
-            subnodes.append(self.extra_num_node) 
-            subnodes.append(self.extra_den_node)    
+            subnodes.append(self.extra_num_node)
+            subnodes.append(self.extra_den_node)
         return subnodes
 
     def AddRequests(self, manifest):
         for node in self.SubNodes():
             node.AddRequests(manifest)
-            
+
 class HttWOSSSNode(BaseNode):
     def __init__(self, name, data_os, subtract_os, data_ss, subtract_ss, w_control, w_signal, w_os, w_ss, w_shape, qcd_factor=1, get_os=True, btag_extrap_num_node = None, btag_extrap_den_node = None):
         BaseNode.__init__(self, name)
@@ -580,7 +591,7 @@ class HttWOSSSNode(BaseNode):
             self.shape *=w_factor
         if self.btag_extrap_num_node is not None and self.btag_extrap_den_node is not None:
             self.shape *= self.btag_extrap_num_node.shape.rate / self.btag_extrap_den_node.shape.rate
-        
+
     def Objects(self):
         return {self.name: self.shape.hist}
 
@@ -590,12 +601,12 @@ class HttWOSSSNode(BaseNode):
     def SubNodes(self):
         subnodes = [self.data_os_node, self.subtract_os_node, self.data_ss_node, self.subtract_ss_node, self.w_control_node, self.w_signal_node, self.w_os_node, self.w_ss_node]
         if self.btag_extrap_num_node is not None and self.btag_extrap_den_node is not None:
-            subnodes.append(self.btag_extrap_num_node) 
+            subnodes.append(self.btag_extrap_num_node)
             subnodes.append(self.btag_extrap_den_node)
         if self.w_shape is not None:
             subnodes.append(self.w_shape)
-        return subnodes 
-    
+        return subnodes
+
     def AddRequests(self, manifest):
         for node in self.SubNodes():
             node.AddRequests(manifest)
@@ -652,7 +663,7 @@ class Analysis(object):
                 self.trees[newname] = TTreeEvaluator(tree, f)
             testf.Close()
             #print self.trees
-    
+
     def writeSubnodes(self,WriteSubnodes):
         self.WriteSubnodes = WriteSubnodes
 
@@ -685,7 +696,7 @@ class Analysis(object):
                 myfactors.append(self.info[sample]['sf'])
             else:
                 myfactors.append(1.0)
-        if add_name is not None: 
+        if add_name is not None:
             name+=add_name
             sample+=add_name
         return BasicNode(name, sample, var, sel, factors=myfactors,WriteSubnodes=self.WriteSubnodes)
