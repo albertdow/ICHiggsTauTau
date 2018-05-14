@@ -212,7 +212,13 @@ if options.proc_sm or options.proc_all or options.proc_smbkg:
         'GluGluH2JetsToTauTau_M125_CPmixing_sm',
         'VBFHiggs0M_M-125',
         'VBFHiggs0Mf05ph0_M-125',
-        'VBFHiggs0PM_M-125'#,
+        'VBFHiggs0PM_M-125',
+        'ZHiggs0M_M-125',
+        'ZHiggs0Mf05ph0_M-125',
+        'ZHiggs0PM_M-125',
+        'WHiggs0M_M-125',
+        'WHiggs0Mf05ph0_M-125',
+        'WHiggs0PM_M-125'
         #'GluGluToHToTauTau_amcNLO_M-125',
         #'VBFHToTauTau_amcNLO_M-125'
     ]
@@ -381,7 +387,7 @@ if options.proc_embed or options.proc_all:
       nperjob = 10
       FLATJSONPATCH = FLATJSONPATCH.replace('^scale_j_hi^scale_j_lo','').replace('^scale_j_hf_hi^scale_j_hf_lo','').replace('^scale_j_cent_hi^scale_j_cent_lo','').replace('^scale_j_full_hi^scale_j_full_lo','').replace('^scale_j_relbal_hi^scale_j_relbal_lo','')
 
-      FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','').replace('^met_cl_hi^met_cl_lo','').replace('^met_uncl_hi^met_uncl_lo','').replace('scale_met_hi^scale_met_lo','').replace('res_met_hi^res_met_lo','')
+      FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','').replace('^met_cl_hi^met_cl_lo','').replace('^met_uncl_hi^met_uncl_lo','').replace('scale_met_hi^scale_met_lo','').replace('res_met_hi^res_met_lo','').replace('scale_met_njets0_hi^scale_met_njets0_lo','').replace('res_met_njets0_hi^res_met_njets0_lo','').replace('scale_met_njets1_hi^scale_met_njets1_lo','').replace('res_met_njets1_hi^res_met_njets1_lo','').replace('scale_met_njets2_hi^scale_met_njets2_lo','').replace('res_met_njets2_hi^res_met_njets2_lo','')
       if 'TauTau' in  sa: FLATJSONPATCH = FLATJSONPATCH.replace('^scale_e_hi^scale_e_lo','').replace('^scale_mu_hi^scale_mu_lo','').replace('^scale_t_hi^scale_t_lo','')
       if 'ElMu' in  sa: FLATJSONPATCH = FLATJSONPATCH.replace('^scale_e_hi^scale_e_lo','').replace('^scale_t_0pi_hi^scale_t_0pi_lo','').replace('^scale_t_1pi_hi^scale_t_1pi_lo','').replace('^scale_t_3prong_hi^scale_t_3prong_lo','')
       if 'MuTau' in  sa: FLATJSONPATCH = FLATJSONPATCH.replace('^scale_e_hi^scale_e_lo','').replace('^scale_t_hi^scale_t_lo','')
@@ -426,71 +432,80 @@ if options.proc_embed or options.proc_all:
 
 if options.proc_bkg or options.proc_all or options.qcd_study:
   central_samples = [
+    'TT',
+    'VVTo2L2Nu',
+    'VVTo2L2Nu-ext1',
+    'ZZTo2L2Q',
+    'ZZTo4L-amcat',
+    'WWTo1L1Nu2Q',
+    'WZJToLLLNu',
+    'WZTo1L3Nu',
+    'WZTo2L2Q',
+    'WZTo1L1Nu2Q',
+    'T-t',
+    'Tbar-t',
     'T-tW',
+    'Tbar-tW',
+    'DYJetsToLL-LO-ext1',
+    'DYJetsToLL-LO-ext2',
+    'DYJetsToLL_M-10-50-LO',
+    'DY1JetsToLL-LO',
+    'DY2JetsToLL-LO',
+    'DY3JetsToLL-LO',
+    'DY4JetsToLL-LO',
+    'WJetsToLNu-LO',
+    'WJetsToLNu-LO-ext',
+    'W1JetsToLNu-LO',
+    'W2JetsToLNu-LO',
+    'W2JetsToLNu-LO-ext',
+    'W3JetsToLNu-LO',
+    'W3JetsToLNu-LO-ext',
+    'W4JetsToLNu-LO',
+    'W4JetsToLNu-LO-ext1',
+    'W4JetsToLNu-LO-ext2',
+    'WGToLNuG',
+    'WGToLNuG-ext',
+    'WGstarToLNuEE',
+    'WGstarToLNuMuMu',
+    'QCDMuEnrichedPt15'
      ]
 
-# if options.proc_bkg or options.proc_all or options.qcd_study:
-#   central_samples = [
-#     'TT',
-#     'VVTo2L2Nu',
-#     'VVTo2L2Nu-ext1',
-#     'ZZTo2L2Q',
-#     'ZZTo4L-amcat',
-#     'WWTo1L1Nu2Q',
-#     'WZJToLLLNu',
-#     'WZTo1L3Nu',
-#     'WZTo2L2Q',
-#     'WZTo1L1Nu2Q',
-#     'T-t',
-#     'Tbar-t',
-#     'T-tW',
-#     'Tbar-tW',
-#     'DYJetsToLL-LO-ext1',
-#     'DYJetsToLL-LO-ext2',
-#     'DYJetsToLL_M-10-50-LO',
-#     'DY1JetsToLL-LO',
-#     'DY2JetsToLL-LO',
-#     'DY3JetsToLL-LO',
-#     'DY4JetsToLL-LO',
-#     'WJetsToLNu-LO',
-#     'WJetsToLNu-LO-ext',
-#     'W1JetsToLNu-LO',
-#     'W2JetsToLNu-LO',
-#     'W2JetsToLNu-LO-ext',
-#     'W3JetsToLNu-LO',
-#     'W3JetsToLNu-LO-ext',
-#     'W4JetsToLNu-LO',
-#     'W4JetsToLNu-LO-ext1',
-#     'W4JetsToLNu-LO-ext2',
-#     'WGToLNuG',
-#     'WGToLNuG-ext',
-#     'WGstarToLNuEE',
-#     'WGstarToLNuMuMu',
-#     'QCDMuEnrichedPt15'
-#      ]
-
-#   if options.analysis == 'sm':
-#     extra_samples = [
-#       'EWKWMinus2Jets_WToLNu-ext1',
-#       'EWKWMinus2Jets_WToLNu-ext2',
-#       'EWKWMinus2Jets_WToLNu',
-#       'EWKWPlus2Jets_WToLNu-ext1',
-#       'EWKWPlus2Jets_WToLNu-ext2',
-#       'EWKWPlus2Jets_WToLNu',
-#       'EWKZ2Jets_ZToLL-ext',
-#       'EWKZ2Jets_ZToLL'
-#     ]
-#     central_samples.extend(extra_samples)
+  if options.analysis == 'sm':
+    extra_samples = [
+      'EWKWMinus2Jets_WToLNu-ext1',
+      'EWKWMinus2Jets_WToLNu-ext2',
+      'EWKWMinus2Jets_WToLNu',
+      'EWKWPlus2Jets_WToLNu-ext1',
+      'EWKWPlus2Jets_WToLNu-ext2',
+      'EWKWPlus2Jets_WToLNu',
+      'EWKZ2Jets_ZToLL-ext',
+      'EWKZ2Jets_ZToLL'
+    ]
+    central_samples.extend(extra_samples)
 
   if options.qcd_study:
-    #FILELIST='filelists/Feb25_MC_76X'
-    FILELIST='filelists/Nov20_MC_80X'
+    FILELIST='filelists/Apr02_MC_80X'
     central_samples = [
+      'QCDEM_Pt120to170',
+      'QCDEM_Pt170to300',
+      'QCDEM_Pt20to30',
+      'QCDEM_Pt300toInf',
+      'QCDEM_Pt30to50',
+      'QCDEM_Pt50to80',
+      'QCDEM_Pt80to120',
+      'QCDMu5_Pt1000toInf',
+      'QCDMu5_Pt120to170',
+      'QCDMu5_Pt15to20',
+      'QCDMu5_Pt170to130',
+      'QCDMu5_Pt20to30',
+      'QCDMu5_Pt300to470',
+      'QCDMu5_Pt30to50',
+      'QCDMu5_Pt470to600',
+      'QCDMu5_Pt50to80',
+      'QCDMu5_Pt600to800',
+      'QCDMu5_Pt800to1000',
+      'QCDMu5_Pt80to120',
       'QCDMuEnrichedPt15'
-  #    'QCDEMEnrichedPt15-20',
-  #    'QCDEMEnrichedPt20-30',
-  #    'QCDFlat',
-  #    'QCDbcToEPt20-30'
        ]
   for sa in central_samples:
       JOB='%s_2016' % (sa)
@@ -519,7 +534,7 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
         if 'DY' not in sa and 'EWKZ' not in sa:
           FLATJSONPATCH = FLATJSONPATCH.replace('^scale_efake_0pi_hi^scale_efake_0pi_lo','').replace('^scale_efake_1pi_hi^scale_efake_1pi_lo','').replace('^scale_mufake_0pi_hi^scale_mufake_0pi_lo','').replace('^scale_mufake_1pi_hi^scale_mufake_1pi_lo','')
         if 'DY' not in sa and 'JetsToLNu' not in sa and 'WG' not in sa and 'EWKZ' not in sa and 'EWKW' not in sa:
-          FLATJSONPATCH = FLATJSONPATCH.replace('scale_met_hi^scale_met_lo','').replace('res_met_hi^res_met_lo','')
+          FLATJSONPATCH = FLATJSONPATCH.replace('scale_met_hi^scale_met_lo','').replace('res_met_hi^res_met_lo','').replace('scale_met_njets0_hi^scale_met_njets0_lo','').replace('res_met_njets0_hi^res_met_njets0_lo','').replace('scale_met_njets1_hi^scale_met_njets1_lo','').replace('res_met_njets1_hi^res_met_njets1_lo','').replace('scale_met_njets2_hi^scale_met_njets2_lo','').replace('res_met_njets2_hi^res_met_njets2_lo','')
         n_scales = FLATJSONPATCH.count('_lo') + FLATJSONPATCH.count('default')
         nperjob = int(math.ceil(float(nperjob)/max(1.,float(n_scales)*float(n_channels)/10.)))
         nfiles = sum(1 for line in open('%(FILELIST)s_%(sa)s.dat' % vars()))
