@@ -91,6 +91,8 @@ def SetAxisTitles(plot, channel):
   titles['IC_highMjj_9May_tests_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
   titles['IC_highMjj_10May_fulljetvars_fullfakes_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
   titles['IC_highMjj_10May_mjj_jdeta_dijetpt_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_14May_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_14May_logloss_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
 
 
 
@@ -173,6 +175,8 @@ def SetAxisTitles2D(plot, channel):
   titles['IC_highMjj_9May_tests_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
   titles['IC_highMjj_10May_fulljetvars_fullfakes_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
   titles['IC_highMjj_10May_mjj_jdeta_dijetpt_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_14May_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
+  titles['IC_highMjj_14May_logloss_max_score'] = ['MVA Score','Events / {}'.format(bin_width), 'dN/d(MVA Score)','']
 
   if channel in ['zee','zmm']: titles['pt_tt'] = ['P_{T}^{'+chan_label+'} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{'+chan_label+'} (1/GeV)','GeV']
   else:  titles['pt_tt'] = ['P_{T}^{tot} (GeV)','Events / '+bin_width+' GeV', 'dN/dP_{T}^{tot} (1/GeV)','GeV']

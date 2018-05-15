@@ -426,12 +426,12 @@ if options.channel in ['em','et','mt']:
     # mva_zll =     '(IC_max_index==6)'
     # mva_ztt =     '(IC_max_index==7)'
 
-    mva_fake =    '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==0)'
-    mva_ggh =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==1)'
-    mva_misc =    '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==2)'
-    mva_qqh =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==3)'
-    mva_tt =      '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==4)'
-    mva_ztt =     '(IC_highMjj_10May_mjj_jdeta_dijetpt_max_index==5)'
+    mva_fake =    '(IC_highMjj_14May_logloss_max_index==0)'
+    mva_ggh =     '(IC_highMjj_14May_logloss_max_index==1)'
+    mva_misc =    '(IC_highMjj_14May_logloss_max_index==2)'
+    mva_qqh =     '(IC_highMjj_14May_logloss_max_index==3)'
+    mva_tt =      '(IC_highMjj_14May_logloss_max_index==4)'
+    mva_ztt =     '(IC_highMjj_14May_logloss_max_index==5)'
 
 
     # mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
@@ -486,11 +486,11 @@ if options.channel == 'tt':
     # mva_ztt =     '(IC_max_index==4)'
 
     # IC categories (highMjj only)
-    mva_ggh =     '(IC_highMjj_9May_jetpts_max_index==0)'
-    mva_misc =    '(IC_highMjj_9May_jetpts_max_index==1)'
-    mva_qcd =     '(IC_highMjj_9May_jetpts_max_index==2)'
-    mva_qqh =     '(IC_highMjj_9May_jetpts_max_index==3)'
-    mva_ztt =     '(IC_highMjj_9May_jetpts_max_index==4)'
+    mva_ggh =     '(IC_highMjj_14May_logloss_max_index==0)'
+    mva_misc =    '(IC_highMjj_14May_logloss_max_index==1)'
+    mva_qcd =     '(IC_highMjj_14May_logloss_max_index==2)'
+    mva_qqh =     '(IC_highMjj_14May_logloss_max_index==3)'
+    mva_ztt =     '(IC_highMjj_14May_logloss_max_index==4)'
 
     # mva_JHU_ggh =     '(mva_cat_sm_Apr11_sm_0_JHU==0)'
     # mva_JHU_misc =    '(mva_cat_sm_Apr11_sm_0_JHU==1)'
@@ -557,15 +557,15 @@ if options.era in ['smsummer16','cpsummer16']: # change here for mlcpsummer16
 
       # IC categories highMjj only
 
-      cats['fake_highMjj'] = '({} && n_jets>=2 && mjj>300)'.format(mva_fake)
-      cats['ggh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ggh)
-      cats['misc_highMjj'] = '({} && n_jets>=2 && mjj>300)'.format(mva_misc)
+      cats['fake_highMjj'] = '({} && n_jets>=2 && mjj>350)'.format(mva_fake)
+      cats['ggh_highMjj'] =  '({} && n_jets>=2 && mjj>350)'.format(mva_ggh)
+      cats['misc_highMjj'] = '({} && n_jets>=2 && mjj>350)'.format(mva_misc)
+      cats['qqh_highMjj'] =  '({} && n_jets>=2 && mjj>350)'.format(mva_qqh)
+      cats['tt_highMjj'] =   '({} && n_jets>=2 && mjj>350)'.format(mva_tt)
+      cats['ztt_highMjj'] =  '({} && n_jets>=2 && mjj>350)'.format(mva_ztt)
       # cats['qcd_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qcd)
-      cats['qqh_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_qqh)
-      cats['tt_highMjj'] =   '({} && n_jets>=2 && mjj>300)'.format(mva_tt)
       # cats['w_highMjj'] =    '({} && n_jets>=2 && mjj>300)'.format(mva_w)
       # cats['zll_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_zll)
-      cats['ztt_highMjj'] =  '({} && n_jets>=2 && mjj>300)'.format(mva_ztt)
 
 
       # cats['JHU_ggh'] =  mva_JHU_ggh

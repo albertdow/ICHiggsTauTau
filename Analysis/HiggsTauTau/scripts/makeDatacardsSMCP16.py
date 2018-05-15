@@ -62,6 +62,8 @@ parser.add_option("--embedding", dest="embedding", action='store_true', default=
                   help="Add shapes are embedded samples.")
 parser.add_option("--batch", dest="batch", action='store_true', default=False,
                   help="Submit on batch.")
+parser.add_option("--hadd", dest="hadd", action='store_true', default=False,
+                  help="Hadd output files (post batch).")
 
 (options, args) = parser.parse_args()
 output_folder = options.output_folder
@@ -475,19 +477,19 @@ if SCHEME == 'mlcpsummer16_2d':
     # VAR_MT_HIGHMJJ_ZLL =     'IC_max_score[0.0,1.0]'
     # VAR_MT_HIGHMJJ_ZTT =     'IC_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
 
-    # VAR_MT_HIGHMJJ_GGH =     'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(12,-3.2,3.2)'
-    # VAR_MT_HIGHMJJ_QQH =     'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
-    # VAR_MT_HIGHMJJ_MISC =    'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
-    # VAR_MT_HIGHMJJ_TT =      'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
-    # VAR_MT_HIGHMJJ_FAKE =    'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
-    # VAR_MT_HIGHMJJ_ZTT =     'IC_highMjj_9May_jetvars_fullfakes_noscaling_fix_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    # VAR_MT_HIGHMJJ_GGH =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
+    # VAR_MT_HIGHMJJ_QQH =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
+    # VAR_MT_HIGHMJJ_MISC =    'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    # VAR_MT_HIGHMJJ_TT =      'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
+    # VAR_MT_HIGHMJJ_FAKE =    'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    # VAR_MT_HIGHMJJ_ZTT =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
 
-    VAR_MT_HIGHMJJ_GGH =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
-    VAR_MT_HIGHMJJ_QQH =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
-    VAR_MT_HIGHMJJ_MISC =    'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
-    VAR_MT_HIGHMJJ_TT =      'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
-    VAR_MT_HIGHMJJ_FAKE =    'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
-    VAR_MT_HIGHMJJ_ZTT =     'IC_highMjj_10May_mjj_jdeta_dijetpt_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
+    VAR_MT_HIGHMJJ_GGH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
+    VAR_MT_HIGHMJJ_QQH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6,0.7,0.8],(10,-3.2,3.2)'
+    VAR_MT_HIGHMJJ_MISC =    'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    VAR_MT_HIGHMJJ_TT =      'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
+    VAR_MT_HIGHMJJ_FAKE =    'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    VAR_MT_HIGHMJJ_ZTT =     'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
 
     # VAR_ET_HIGHMJJ_GGH =     'IC_max_score,sjdphi[0.0,0.4,0.5,0.6],(10,-3.2,3.2)'
     # VAR_ET_HIGHMJJ_QQH =     'IC_max_score,sjdphi[0.0,0.4,0.5,0.6],(10,-3.2,3.2)'
@@ -498,18 +500,32 @@ if SCHEME == 'mlcpsummer16_2d':
     # VAR_ET_HIGHMJJ_ZLL =     'IC_max_score[0.0,1.0]'
     # VAR_ET_HIGHMJJ_ZTT =     'IC_max_score[0.0,0.4,0.5,0.6,0.7,0.8,1.0]'
 
-    VAR_ET_HIGHMJJ_GGH =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
-    VAR_ET_HIGHMJJ_QQH =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
-    VAR_ET_HIGHMJJ_MISC =    'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
-    VAR_ET_HIGHMJJ_TT =      'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
-    VAR_ET_HIGHMJJ_FAKE =    'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
-    VAR_ET_HIGHMJJ_ZTT =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+    # VAR_ET_HIGHMJJ_GGH =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
+    # VAR_ET_HIGHMJJ_QQH =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
+    # VAR_ET_HIGHMJJ_MISC =    'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
+    # VAR_ET_HIGHMJJ_TT =      'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
+    # VAR_ET_HIGHMJJ_FAKE =    'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
+    # VAR_ET_HIGHMJJ_ZTT =     'IC_highMjj_10May_fulljetvars_fullfakes_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
 
-    VAR_TT_HIGHMJJ_GGH =     'IC_highMjj_9May_jetpts_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
-    VAR_TT_HIGHMJJ_QQH =     'IC_highMjj_9May_jetpts_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
-    VAR_TT_HIGHMJJ_MISC =    'IC_highMjj_9May_jetpts_max_score[0.0,0.5,0.6,0.7,0.8,0.9,1.0]'
-    VAR_TT_HIGHMJJ_QCD =     'IC_highMjj_9May_jetpts_max_score[0.0,0.4,0.5,0.6,0.7,0.8,0.9,1.0]'
-    VAR_TT_HIGHMJJ_ZTT =     'IC_highMjj_9May_jetpts_max_score[0.0,0.4,0.5,0.6,0.7,0.8,1.0]'
+    VAR_ET_HIGHMJJ_GGH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
+    VAR_ET_HIGHMJJ_QQH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.3,0.4,0.5,0.6],(10,-3.2,3.2)'
+    VAR_ET_HIGHMJJ_MISC =    'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
+    VAR_ET_HIGHMJJ_TT =      'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,0.8,1.0]'
+    VAR_ET_HIGHMJJ_FAKE =    'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,1.0]'
+    VAR_ET_HIGHMJJ_ZTT =     'IC_highMjj_14May_logloss_max_score[0.0,0.3,0.4,0.5,0.6,0.7,1.0]'
+
+
+    # VAR_TT_HIGHMJJ_GGH =     'IC_highMjj_9May_jetpts_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
+    # VAR_TT_HIGHMJJ_QQH =     'IC_highMjj_9May_jetpts_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
+    # VAR_TT_HIGHMJJ_MISC =    'IC_highMjj_9May_jetpts_max_score[0.0,0.5,0.6,0.7,0.8,0.9,1.0]'
+    # VAR_TT_HIGHMJJ_QCD =     'IC_highMjj_9May_jetpts_max_score[0.0,0.4,0.5,0.6,0.7,0.8,0.9,1.0]'
+    # VAR_TT_HIGHMJJ_ZTT =     'IC_highMjj_9May_jetpts_max_score[0.0,0.4,0.5,0.6,0.7,0.8,1.0]'
+
+    VAR_TT_HIGHMJJ_GGH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
+    VAR_TT_HIGHMJJ_QQH =     'IC_highMjj_14May_logloss_max_score,sjdphi[0.0,0.4,0.5,0.6,0.7],(10,-3.2,3.2)'
+    VAR_TT_HIGHMJJ_MISC =    'IC_highMjj_14May_logloss_max_score[0.0,0.5,0.6,0.7,0.8,0.9,1.0]'
+    VAR_TT_HIGHMJJ_QCD =     'IC_highMjj_14May_logloss_max_score[0.0,0.4,0.5,0.6,0.7,0.8,0.9,1.0]'
+    VAR_TT_HIGHMJJ_ZTT =     'IC_highMjj_14May_logloss_max_score[0.0,0.4,0.5,0.6,0.7,0.8,1.0]'
 
     # VAR_JHU_GGH =     'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
     # VAR_JHU_MISC =    'mva_score_Apr06_1_JHU,sjdphi[0.0,0.2,0.4,0.6,0.8],(12,-3.2,3.2)'
@@ -661,13 +677,14 @@ if SCHEME == 'mlcpsummer16_2d':
     ]
 
     scheme_tt = [
+        ("8",   "ggh_highMjj",    "ggh_highMjj",  VAR_TT_HIGHMJJ_GGH,  '  '),
+
         ("8",   "ggh_lowMjj",    "ggh_lowMjj",  VAR_TT_LOWMJJ_GGH,  '  '),
         ("8",   "misc_lowMjj",   "misc_lowMjj", VAR_TT_LOWMJJ_MISC, '  '),
         ("8",   "qcd_lowMjj",    "qcd_lowMjj",  VAR_TT_LOWMJJ_QCD,  '  '),
         ("8",   "qqh_lowMjj",    "qqh_lowMjj",  VAR_TT_LOWMJJ_QQH,  '  '),
         ("8",   "ztt_lowMjj",    "ztt_lowMjj",  VAR_TT_LOWMJJ_ZTT,  '  '),
 
-        ("8",   "ggh_highMjj",    "ggh_highMjj",  VAR_TT_HIGHMJJ_GGH,  '  '),
         ("8",   "misc_highMjj",   "misc_highMjj", VAR_TT_HIGHMJJ_MISC, '  '),
         ("8",   "qcd_highMjj",    "qcd_highMjj",  VAR_TT_HIGHMJJ_QCD,  '  '),
         ("8",   "qqh_highMjj",    "qqh_highMjj",  VAR_TT_HIGHMJJ_QQH,  '  '),
@@ -824,7 +841,7 @@ if SCHEME == 'mlcpsummer16_2d_KIT':
     ANA = 'sm'
 
 
-if SCHEME == 'cpsummer16_neww':
+if SCHEME == 'cpsummer16_new':
 
 
   VAR_0JET_LT = 'm_sv[0,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300]'
@@ -922,66 +939,78 @@ cat_schemes = {
   # 'zmm': scheme_zmm
 }
 
-qsub_command = "qsub -e ./err -o /dev/null -cwd -V -q hep.q -v CFG='{}',ch='{}',cat_num='{}',cat_str='{}',YEAR='{}',output_folder='{}',dc='{}',PARAMS='{}',FOLDER='{}',BLIND='{}',var=\'{}\',extra=\'{}\'"
+qsub_command = 'qsub   -e ./err -o ./out -cwd -V -q hep.q -v CFG="{}",ch="{}",cat_num="{}",cat_str="{}",YEAR="{}",output_folder="{}",dc="{}",PARAMS="{}",FOLDER="{}",BLIND="{}"'
 
 dc_app='-2D'
 for ch in channels:
-  scheme = cat_schemes[ch]
-  bkg_scheme = bkg_schemes[ch]
-  for x in scheme:
-    cat_num = x[0]
-    cat_str = x[1]
-    dc      = x[2]
-    var     = x[3]
-    opts    = x[4]
-    extra = options.extra + ' ' + extra_global + ' ' + extra_channel[ch] + ' ' + opts
-    if options.embedding: extra+=' --embedding'
-    extra_jes = options.extra + ' ' + extra_global + ' ' + jes_systematics + ' ' + opts + ' --no_default '
+    scheme = cat_schemes[ch]
+    bkg_scheme = bkg_schemes[ch]
+    for x in scheme:
+        cat_num = x[0]
+        cat_str = x[1]
+        dc      = x[2]
+        var     = x[3]
+        opts    = x[4]
+        extra = options.extra + ' ' + extra_global + ' ' + extra_channel[ch] + ' ' + opts
+        if options.embedding: extra+=' --embedding'
+        extra_jes = options.extra + ' ' + extra_global + ' ' + jes_systematics + ' ' + opts + ' --no_default '
 
-    if not options.batch:
-        os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
-            ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s'
-            ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
-            ' --var="%(var)s" %(extra)s --no_plot' % vars())
+        if not options.hadd:
+            if not options.batch:
+                os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
+                    ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s'
+                    ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
+                    ' --var="%(var)s" %(extra)s --no_plot' % vars())
 
-    else:
-        print(qsub_command
-                .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND,var,extra)
-                + ' ./scripts/batch_datacards.sh'
-                '\n')
-        exit()
+            else:
+                run_command(qsub_command
+                        .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND)
+                        + ' -v var="\'{}\'"'.format(var)
+                        + ' -v extra="{}"'.format(extra)
+                        + ' ./scripts/batch_datacards.sh'
+                        )
 
-    if jes_systematics and not options.no_shape_systs and not options.batch:
-      # have to do this to avoid using too much memory...
-        os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
-            ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes1'
-            ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
-            ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=1:9' % vars())
-        os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
-            ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes2'
-            ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
-            ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=10:18' % vars())
-        os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
-            ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes3'
-            ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
-            ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=19:27' % vars())
+            if jes_systematics and not options.no_shape_systs and not options.batch:
+              # have to do this to avoid using too much memory...
+                os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
+                    ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes1'
+                    ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
+                    ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=1:9' % vars())
+                os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
+                    ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes2'
+                    ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
+                    ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=10:18' % vars())
+                os.system('python $CMSSW_BASE/src/UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/scripts/HiggsTauTauPlot.py --cfg=%(CFG)s --channel=%(ch)s'
+                    ' --method=%(cat_num)s --cat=%(cat_str)s --year=%(YEAR)s --outputfolder=%(output_folder)s/ --datacard=%(dc)s --extra_name=jes3'
+                    ' --paramfile=%(PARAMS)s --folder=%(FOLDER)s %(BLIND)s'
+                    ' --var="%(var)s" %(extra_jes)s --no_plot --jes_sources=19:27' % vars())
 
-    # elif jes_systematics and not options.no_shape_systs and options.batch:
-    #     run_command(qsub_command
-    #             .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND,var,extra_jes)
-    #             + ',extra_name=jes1,jes_sources=1:9 ./scripts/batch_datacards_jes.sh'
-    #             )
-    #     exit()
-    #     run_command(qsub_command
-    #             .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND,var,extra_jes)
-    #             + ',extra_name=jes2,jes_sources=10:18 ./scripts/batch_datacards_jes.sh'
-    #             )
-    #     run_command(qsub_command
-    #             .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND,var,extra_jes)
-    #             + ',extra_name=jes3,jes_sources=19:27 ./scripts/batch_datacards_jes.sh'
-    #             )
+            elif jes_systematics and not options.no_shape_systs and options.batch:
+                run_command(qsub_command
+                        .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND)
+                        + ' -v var="\'{}\'"'.format(var)
+                        + ' -v extra_jes="{}"'.format(extra_jes)
+                        + ' -v extra_name=jes1,jes_sources=1:9 ./scripts/batch_datacards_jes.sh'
+                        )
+                run_command(qsub_command
+                        .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND)
+                        + ' -v var="\'{}\'"'.format(var)
+                        + ' -v extra_jes="{}"'.format(extra_jes)
+                        + ' -v extra_name=jes2,jes_sources=10:18 ./scripts/batch_datacards_jes.sh'
+                        )
+                run_command(qsub_command
+                        .format(CFG,ch,cat_num,cat_str,YEAR,output_folder,dc,PARAMS,FOLDER,BLIND)
+                        + ' -v var="\'{}\'"'.format(var)
+                        + ' -v extra_jes="{}"'.format(extra_jes)
+                        + ' -v extra_name=jes3,jes_sources=19:27 ./scripts/batch_datacards_jes.sh'
+                        )
 
-    if not options.batch:
+            if not options.batch:
+                os.system('hadd -f %(output_folder)s/htt_%(ch)s.inputs-%(ANA)s-%(COM)sTeV%(dc_app)s%(output)s.root %(output_folder)s/datacard_*_%(ch)s_%(YEAR)s.root' % vars())
+                os.system('rm %(output_folder)s/datacard_*_%(ch)s_%(YEAR)s.root' % vars())
+
+    if options.hadd:
         os.system('hadd -f %(output_folder)s/htt_%(ch)s.inputs-%(ANA)s-%(COM)sTeV%(dc_app)s%(output)s.root %(output_folder)s/datacard_*_%(ch)s_%(YEAR)s.root' % vars())
-        os.system('rm %(output_folder)s/datacard_*_%(ch)s_%(YEAR)s.root' % vars())
+        os.system('mv %(output_folder)s/datacard_*_%(ch)s_%(YEAR)s.root tmp/' % vars())
+
 
