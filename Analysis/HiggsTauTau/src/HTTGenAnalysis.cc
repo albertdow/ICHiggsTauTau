@@ -32,6 +32,13 @@ struct PtComparator{
     return (a.vector().Pt() > b.vector().Pt());
   }
 };
+
+struct PtComparatorGenPart{
+  bool operator() (ic::GenParticle *a, ic::GenParticle *b) {
+    return (a->vector().Pt() > b->vector().Pt());
+  }
+};
+
   
 namespace ic {
 
@@ -66,6 +73,18 @@ namespace ic {
       outtree_ = fs_->make<TTree>("gen_ntuple","gen_ntuple");
       outtree_->Branch("event"       , &event_       );
       outtree_->Branch("wt"       , &wt_       );
+      outtree_->Branch("wt_stitch"       , &wt_stitch_       );
+      outtree_->Branch("wt_topmass"       , &wt_topmass_       );
+      outtree_->Branch("wt_topmass_2"     , &wt_topmass_2_  );
+      outtree_->Branch("wt_ps_down", &wt_ps_down_);
+      outtree_->Branch("wt_ps_up", &wt_ps_up_);
+      outtree_->Branch("wt_ue_down", &wt_ue_down_);
+      outtree_->Branch("wt_ue_up", &wt_ue_up_);
+      outtree_->Branch("npNLO", &npNLO_);
+      outtree_->Branch("cand_1"       , &cand_1_       );
+      outtree_->Branch("cand_2"       , &cand_2_       );
+      outtree_->Branch("match_1"       , &match_1_       );
+      outtree_->Branch("match_2"       , &match_2_       );
       if(do_theory_uncert_){
         outtree_->Branch("wt_mur1_muf1",    &scale1_);
         outtree_->Branch("wt_mur1_muf2",    &scale2_);
@@ -190,6 +209,8 @@ namespace ic {
       outtree_->Branch("met"         , &met_         );
       outtree_->Branch("m_vis"       , &m_vis_       );
       outtree_->Branch("pt_tt"       , &pt_tt_       );
+      outtree_->Branch("mass"       , &mass_       );
+      outtree_->Branch("wtzpt"       , &wtzpt_       );
       outtree_->Branch("mt_1"        , &mt_1_        );
       outtree_->Branch("mt_2"        , &mt_2_        );
       outtree_->Branch("pzeta"       , &pzeta_       );
@@ -213,15 +234,31 @@ namespace ic {
       outtree_->Branch("geneta_2"    , &geneta_2_       );
       outtree_->Branch("geneta_1"    , &geneta_1_       );
       outtree_->Branch("HiggsPt"     , &HiggsPt_     );
-      outtree_->Branch("HiggsPt"     , &HiggsPt_     );
-      outtree_->Branch("n_jets_offline"     , &n_jets_offline_);
-      outtree_->Branch("n_bjets_offline"     , &n_bjets_offline_);
       outtree_->Branch("partons"     , &partons_);
+      outtree_->Branch("partons_lhe"     , &partons_lhe_);
       outtree_->Branch("parton_pt"     , &parton_pt_);
+      outtree_->Branch("parton_pt_2"     , &parton_pt_2_);
+      outtree_->Branch("parton_pt_3"     , &parton_pt_3_);
+      outtree_->Branch("parton_mjj",    &parton_mjj_);
+      outtree_->Branch("parton_HpT", &parton_HpT_);
       outtree_->Branch("D0"     , &D0_);
       outtree_->Branch("D0star"     , &D0star_);
       outtree_->Branch("DCP"     , &DCP_);
       outtree_->Branch("sjdphi"     , &sjdphi_);
+      outtree_->Branch("spjdphi"     , &spjdphi_);
+      outtree_->Branch("ysep"     , &ysep_);
+      outtree_->Branch("n_pjets"     , &n_pjets_);
+      outtree_->Branch("n_pu",      &n_pu_);
+
+      outtree_->Branch("aco_angle_1", &aco_angle_1_);
+      outtree_->Branch("aco_angle_2", &aco_angle_2_);
+      outtree_->Branch("aco_angle_3", &aco_angle_3_);
+      outtree_->Branch("aco_angle_4", &aco_angle_4_);
+      outtree_->Branch("cp_sign_1",     &cp_sign_1_);
+      outtree_->Branch("cp_sign_2",     &cp_sign_2_);
+      outtree_->Branch("cp_sign_3",     &cp_sign_3_);
+      outtree_->Branch("cp_sign_4",     &cp_sign_4_);
+      outtree_->Branch("cp_channel",    &cp_channel_);
       
       outtree_->Branch("wt_ggh_t", &wt_ggh_t_);
       outtree_->Branch("wt_ggh_b", &wt_ggh_b_);
@@ -242,7 +279,22 @@ namespace ic {
     count_mm_ = 0;
     count_mt_ = 0;
     count_tt_ = 0;
-    
+
+    GetFromTFile<TH2D>("input/zpt_weights/dy_weights_2017.root","/","zptmass_histo").Copy(z_pt_weights_sm_);
+    topmass_wts_ = GetFromTFile<TH1F>("input/ggh_weights/top_mass_weights.root","/","pt_weight");
+
+    /* topmass_wts_toponly_ = GetFromTFile<TH1F>("input/ggh_weights/quarkmass_uncerts_hnnlo.root","/","nom"); */
+   
+    /* ps_0jet_up_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_0jet_up"); */
+    /* ps_0jet_down_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_0jet_down"); */
+    /* ps_1jet_up_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_1jet_up"); */
+    /* ps_1jet_down_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_1jet_down"); */
+    /* ps_2jet_up_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_2jet_up"); */
+    /* ps_2jet_down_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_2jet_down"); */
+    /* ps_3jet_up_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_3jet_up"); */
+    /* ps_3jet_down_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ps_3jet_down"); */   
+    /* ue_up_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ue_up"); */
+    /* ue_down_ = GetFromTFile<TH1D>("input/ggh_weights/MG_ps_uncerts.root","/","ue_down"); */ 
     return 0;
   }
 
@@ -252,7 +304,8 @@ namespace ic {
     event_ = (unsigned long long) eventInfo->event();
     wt_ = 1;
     
-    if(eventInfo->weight_defined("wt_mc_sign")) wt_ = eventInfo->weight("wt_mc_sign");
+    wt_ = eventInfo->total_weight();
+
     if(do_theory_uncert_){
       // note some of these labels may be generator dependent so need to make sure you check before using them
       if(eventInfo->weight_defined("1001")) scale1_ = eventInfo->weight("1001"); else scale1_=1.0;
@@ -264,6 +317,51 @@ namespace ic {
       if(eventInfo->weight_defined("1007")) scale7_ = eventInfo->weight("1007"); else scale7_=1.0;
       if(eventInfo->weight_defined("1008")) scale8_ = eventInfo->weight("1008"); else scale8_=1.0;
       if(eventInfo->weight_defined("1009")) scale9_ = eventInfo->weight("1009"); else scale9_=1.0; 
+
+      // For MG5 samples:
+      //  <weight MUF="1.0" MUR="2.0" PDF="292200" id="1002"> MUR=2.0  </weight>
+      //  <weight MUF="1.0" MUR="0.5" PDF="292200" id="1003"> MUR=0.5  </weight>
+      //  <weight MUF="2.0" MUR="1.0" PDF="292200" id="1004"> MUF=2.0  </weight>
+      //  <weight MUF="2.0" MUR="2.0" PDF="292200" id="1005"> MUR=2.0 MUF=2.0  </weight>
+      //  <weight MUF="2.0" MUR="0.5" PDF="292200" id="1006"> MUR=0.5 MUF=2.0  </weight>
+      //  <weight MUF="0.5" MUR="1.0" PDF="292200" id="1007"> MUF=0.5  </weight>
+      //  <weight MUF="0.5" MUR="2.0" PDF="292200" id="1008"> MUR=2.0 MUF=0.5  </weight>
+      //  <weight MUF="0.5" MUR="0.5" PDF="292200" id="1009"> MUR=0.5 MUF=0.5  </weight>
+      //
+
+      // for NNLOPS:
+      //  <weight id="1001"> muR=1 muF=1 </weight>
+      //  <weight id="1002"> muR=1 muF=2 </weight>
+      //  <weight id="1003"> muR=1 muF=0.5 </weight>
+      //  <weight id="1004"> muR=2 muF=1 </weight>
+      //  <weight id="1005"> muR=2 muF=2 </weight>
+      //  <weight id="1006"> muR=2 muF=0.5 </weight>
+      //  <weight id="1007"> muR=0.5 muF=1 </weight>
+      //  <weight id="1008"> muR=0.5 muF=2 </weight>
+      //  <weight id="1009"> muR=0.5 muF=0.5 </weight>
+
+      //std::cout << eventInfo->weight_defined("1001")    << std::endl;
+ 
+      //<weight id="1001"> dyn=  -1 muR=0.10000E+01 muF=0.10000E+01 </weight>
+      //<weight id="1002"> dyn=  -1 muR=0.20000E+01 muF=0.10000E+01 </weight>
+      //<weight id="1003"> dyn=  -1 muR=0.50000E+00 muF=0.10000E+01 </weight>
+      //<weight id="1004"> dyn=  -1 muR=0.10000E+01 muF=0.20000E+01 </weight>
+      //<weight id="1005"> dyn=  -1 muR=0.20000E+01 muF=0.20000E+01 </weight>
+      //<weight id="1006"> dyn=  -1 muR=0.50000E+00 muF=0.20000E+01 </weight>
+      //<weight id="1007"> dyn=  -1 muR=0.10000E+01 muF=0.50000E+00 </weight>
+      //<weight id="1008"> dyn=  -1 muR=0.20000E+01 muF=0.50000E+00 </weight>
+      //<weight id="1009"> dyn=  -1 muR=0.50000E+00 muF=0.50000E+00 </weight>
+
+ 
+      //if(eventInfo->weight_defined("1")) scale1_ = eventInfo->weight("1"); else scale1_=1.0;
+      //if(eventInfo->weight_defined("2")) scale2_ = eventInfo->weight("2"); else scale2_=1.0;
+      //if(eventInfo->weight_defined("3")) scale3_ = eventInfo->weight("3"); else scale3_=1.0;
+      //if(eventInfo->weight_defined("4")) scale4_ = eventInfo->weight("4"); else scale4_=1.0;
+      //if(eventInfo->weight_defined("5")) scale5_ = eventInfo->weight("5"); else scale5_=1.0;
+      //if(eventInfo->weight_defined("6")) scale6_ = eventInfo->weight("6"); else scale6_=1.0;
+      //if(eventInfo->weight_defined("7")) scale7_ = eventInfo->weight("7"); else scale7_=1.0;
+      //if(eventInfo->weight_defined("8")) scale8_ = eventInfo->weight("8"); else scale8_=1.0;
+      //if(eventInfo->weight_defined("9")) scale9_ = eventInfo->weight("9"); else scale9_=1.0;
       //pdf variation weights
       //if(eventInfo->weight_defined("2001")) wt_pdf_1_ = eventInfo->weight("2001"); else wt_pdf_1_=1.0;
       //if(eventInfo->weight_defined("2002")) wt_pdf_2_ = eventInfo->weight("2002"); else wt_pdf_2_=1.0;
@@ -389,21 +487,61 @@ namespace ic {
 
     double pT=0;
     HiggsPt_=-9999;
+    partons_lhe_=0;
     partons_=0;
+    parton_mjj_=-9999;
+    parton_HpT_=-9999;
+    double higgs_eta = 0;
+    std::vector<double> parton_pt_vec = {};
     bool lhe_exists = event->ExistsInTree("lheParticles");
     if(lhe_exists){
       std::vector<GenParticle*> const& lhe_parts = event->GetPtrVec<GenParticle>("lheParticles");
-      parton_pt_=0;
+      parton_pt_=-9999;
+      std::vector<GenParticle*> outparts;
       for(unsigned i = 0; i< lhe_parts.size(); ++i){
            if(lhe_parts[i]->status() != 1) continue;
            unsigned id = abs(lhe_parts[i]->pdgid());
-           if ((id >= 1 && id <=6) || id == 21){ partons_++; if(lhe_parts[i]->pt()>parton_pt_) parton_pt_ = lhe_parts[i]->pt();}
+           if(id==25) parton_HpT_ = lhe_parts[i]->pt();
+           if ((id >= 1 && id <=6) || id == 21){ 
+             outparts.push_back(lhe_parts[i]);
+             partons_++;
+             parton_pt_vec.push_back(lhe_parts[i]->pt());
+             if(lhe_parts[i]->pt()>=10) partons_lhe_++; 
+        }
+      }
+      std::sort(outparts.begin(),outparts.end(),PtComparatorGenPart());
+      if(outparts.size()>1) parton_mjj_ = (outparts[0]->vector()+outparts[1]->vector()).M();
+      else parton_mjj_ = -9999;
+      if(outparts.size()>2){
+        double parton_mjj_2 = (outparts[0]->vector()+outparts[2]->vector()).M(); 
+        double parton_mjj_3 = (outparts[1]->vector()+outparts[2]->vector()).M();  
+        if(parton_mjj_ < std::max(parton_mjj_2, parton_mjj_3)) parton_mjj_ = std::max(parton_mjj_2, parton_mjj_3);
+   
       }
     }
+    std::sort(parton_pt_vec.begin(),parton_pt_vec.end());
+    std::reverse(parton_pt_vec.begin(),parton_pt_vec.end());
+    if (parton_pt_vec.size()>0) parton_pt_ = parton_pt_vec[0];
+    else parton_pt_ = -9999;
+    if (parton_pt_vec.size()>1) parton_pt_2_ = parton_pt_vec[1];
+    else parton_pt_2_ = -9999;
+    if (parton_pt_vec.size()>2) parton_pt_3_ = parton_pt_vec[2];
+    else parton_pt_3_ = -9999;
+
+    npNLO_ = eventInfo->npNLO();
+    if(npNLO_<0) npNLO_ = 2; 
+    double n_inc_ = 3089015.;
+    double n2_    = 14254055;
+    double f2_   = 0.279662;
+    if(npNLO_>=2) wt_stitch_ = (n_inc_*f2_) / ( (n_inc_*f2_) + n2_ );
+    else wt_stitch_=1.;
     
     for(unsigned i=0; i<gen_particles.size(); ++i){
       if((gen_particles[i]->statusFlags()[FromHardProcessBeforeFSR] || gen_particles[i]->statusFlags()[IsLastCopy]) && gen_particles[i]->pdgid() == 25) {
           HiggsPt_ = gen_particles[i]->pt();
+           higgs_eta = gen_particles[i]->eta();
+           wt_topmass_ = topmass_wts_toponly_.GetBinContent(topmass_wts_toponly_.FindBin(HiggsPt_))*1.006;
+           wt_topmass_2_ = topmass_wts_.GetBinContent(topmass_wts_.FindBin(HiggsPt_))*0.985; //*sm = 0.985022, mix= 0.985167 ps=0.985076 -> all = 0.985 to 3dp so use thsi number
       }
 
       
@@ -415,8 +553,8 @@ namespace ic {
       bool status_flag_tlc = part.statusFlags().at(13);
       bool status_hard_process = part.statusFlags().at(7);
       
-      if (!lhe_exists && status_hard_process &&(genID == 1 || genID == 2 || genID == 3 || genID == 4 || genID == 5 || genID == 6 || genID == 21) && gen_particles[part.mothers().at(0)]->pdgid() != 2212) partons_++;
-      
+      if (!lhe_exists && status_hard_process &&(genID == 1 || genID == 2 || genID == 3 || genID == 4 || genID == 5 || genID == 6 || genID == 21) && gen_particles[part.mothers().at(0)]->pdgid() != 2212 ) partons_++;
+ 
       if(genID==36 && gen_particles[i]->statusFlags()[IsLastCopy]){
         pT = gen_particles[i]->vector().Pt();
         pT_A_ = pT;
@@ -425,14 +563,45 @@ namespace ic {
         pT = gen_particles[i]->vector().Pt();
         pT_A_ = pT;
       }
-      
+
+      std::vector<ic::Electron*> reco_electrons = {};//event->GetPtrVec<ic::Electron>("electrons");
+      std::vector<ic::Muon*> reco_muons = {};//event->GetPtrVec<ic::Muon>("muons");     
+
       // add neutrinos 4-vectors to get gen met
       if(genID == 12 || genID == 14 || genID == 16){
         met.set_vector(met.vector() + part.vector());
         continue;
       }
-      
-      
+      if(channel_str_=="zmm") {
+        if(!(genID == 13 && gen_particles[i]->statusFlags()[IsPrompt] && gen_particles[i]->statusFlags()[IsLastCopy])) continue;
+        higgs_products.push_back(*(gen_particles[i]));
+        decay_types.push_back("m");
+        std::vector<ic::GenParticle *> match_muons = {gen_particles[i]};
+        if(fabs(gen_particles[i]->eta())<2.4 && gen_particles[i]->pt()>20.) {
+          if(decay_types.size()==1){
+            cand_1_ = true;
+            match_1_ = (MatchByDR(match_muons,reco_muons,0.5,true,true).size()>0);
+          } else if (decay_types.size()==2) {
+            cand_2_ = true;
+            match_2_ = (MatchByDR(match_muons,reco_muons,0.5,true,true).size()>0);
+          }
+        }
+      }
+      if(channel_str_=="zee") {
+        if(!(genID == 11 && gen_particles[i]->statusFlags()[IsPrompt] && gen_particles[i]->statusFlags()[IsLastCopy])) continue;
+        higgs_products.push_back(*(gen_particles[i]));
+        decay_types.push_back("e");
+        std::vector<ic::GenParticle *> match_elecs = {gen_particles[i]};
+        if(fabs(gen_particles[i]->eta())<2.5 && gen_particles[i]->pt()>20.) {
+          if(decay_types.size()==1){
+            cand_1_ = true;
+            match_1_ = (MatchByDR(match_elecs,reco_electrons,0.5,true,true).size()>0);
+          } else if (decay_types.size()==2) {
+            cand_2_ = true;
+            match_2_ = (MatchByDR(match_elecs,reco_electrons,0.5,true,true).size()>0); 
+          }
+        }
+      }
       if(!(genID == 15 && status_flag_t && status_flag_tlc)) continue;
       gen_taus.push_back(part);
       std::vector<ic::GenParticle> family;
@@ -493,7 +662,7 @@ namespace ic {
         if(pt > min_tau_pt[i] && eta < max_tau_eta_) taus.push_back(higgs_products[i]);
       }
     }
-    
+
     //size of decay_types vector should always be 2 but added this if statement just to be sure
     decayType = "";
     std::sort(decay_types.begin(),decay_types.end(),swap_labels());
@@ -507,7 +676,7 @@ namespace ic {
     if(decayType == "mm") count_mm_++;
     if(decayType == "mt") count_mt_++;
     if(decayType == "tt") count_tt_++;
-    
+
     pt_1_ = -9999.;
     pt_2_ = -9999.;
     ic::Candidate lep1;
@@ -521,6 +690,12 @@ namespace ic {
         passed_ = true;
       }
     } else if(channel_str_ == "mm"){
+      if(muons.size() == 2){
+        lep1 = muons[0];
+        lep2 = muons[1];
+        passed_ = true;
+      }
+    } else if(channel_str_ == "zmm"){
       if(muons.size() == 2){
         lep1 = muons[0];
         lep2 = muons[1];
@@ -552,6 +727,147 @@ namespace ic {
       }
     }
 
+    std::vector<GenJet> gen_tau_jets = BuildTauJets(gen_particles, false,true);
+    std::vector<GenJet *> gen_tau_jets_ptr;
+    for (auto & x : gen_tau_jets) gen_tau_jets_ptr.push_back(&x);
+    ic::erase_if(gen_tau_jets_ptr, !boost::bind(MinPtMaxEta, _1, 15.0, 999.));
+    std::sort(gen_tau_jets_ptr.begin(), gen_tau_jets_ptr.end(), bind(&Candidate::pt, _1) > bind(&Candidate::pt, _2));
+    cp_sign_1_ = 999;
+    cp_sign_2_ = 999;
+    cp_sign_3_ = 999;
+    cp_sign_4_ = 999;
+    aco_angle_1_ = 9999.;
+    aco_angle_2_ = 9999.;
+    aco_angle_3_ = 9999.;
+    aco_angle_4_ = 9999.;
+    cp_channel_=-1;
+
+    std::vector<ic::Vertex*> primary_vtxs = event->GetPtrVec<ic::Vertex>("genVertices"); 
+    
+    std::pair<bool,GenParticle*> pi_1 = std::make_pair(false, new GenParticle());
+    std::pair<bool,std::vector<GenParticle*>> rho_1 = std::make_pair(false, std::vector<GenParticle*>()); 
+    std::pair<bool,std::vector<GenParticle*>> a1_1 = std::make_pair(false, std::vector<GenParticle*>());
+    std::pair<bool,GenParticle*> pi_2 = std::make_pair(false, new GenParticle());
+    std::pair<bool,std::vector<GenParticle*>> rho_2 = std::make_pair(false, std::vector<GenParticle*>()); 
+    std::pair<bool,std::vector<GenParticle*>> a1_2 = std::make_pair(false, std::vector<GenParticle*>());
+    
+    if(gen_tau_jets_ptr.size()>=1){
+      pi_1 = GetTauPiDaughter(gen_particles, gen_tau_jets_ptr[0]->constituents()); 
+      rho_1 = GetTauRhoDaughter(gen_particles, gen_tau_jets_ptr[0]->constituents());  
+      a1_1 = GetTauA1Daughter(gen_particles, gen_tau_jets_ptr[0]->constituents());  
+    } 
+    if(gen_tau_jets_ptr.size()>=2){
+      pi_2 = GetTauPiDaughter(gen_particles, gen_tau_jets_ptr[1]->constituents()); 
+      rho_2 = GetTauRhoDaughter(gen_particles, gen_tau_jets_ptr[1]->constituents());  
+      a1_2 = GetTauA1Daughter(gen_particles, gen_tau_jets_ptr[1]->constituents()); 
+    }
+    /* std::vector<ic::GenParticle> leptons;
+    for (unsigned i=0; i<electrons.size(); ++i) leptons.push_back(electrons[i]);
+    for (unsigned i=0; i<muons.size(); ++i) leptons.push_back(muons[i]);
+    TLorentzVector lvec1;
+    TLorentzVector lvec2;
+    TLorentzVector lvec3;
+    TLorentzVector lvec4;
+    if(leptons.size()>=2){
+      cp_channel_=1;
+      lvec1 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),leptons[0].vtx(), leptons[0].vector()),0);    
+      lvec2 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),leptons[1].vtx(), leptons[1].vector()),0);
+      lvec3 = ConvertToLorentz(leptons[0].vector());
+      lvec4 = ConvertToLorentz(leptons[1].vector());
+    } else if(leptons.size()==1){
+      lvec1 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),leptons[0].vtx(), leptons[0].vector()),0);
+      lvec3 = ConvertToLorentz(leptons[0].vector());
+      if(pi_1.first) {
+        cp_channel_=1; 
+        lvec2 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_1.second->vtx(), pi_1.second->vector()),0); 
+        lvec4 = ConvertToLorentz(pi_1.second->vector());
+      }
+      if(pi_2.first) {
+        cp_channel_=1; 
+        lvec2 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_2.second->vtx(), pi_2.second->vector()),0); 
+        lvec4 = ConvertToLorentz(pi_2.second->vector());
+      }
+      if(rho_1.first) {
+        cp_channel_=2; 
+        lvec2 = ConvertToLorentz(rho_1.second[1]->vector()); 
+        lvec4 = ConvertToLorentz(rho_1.second[0]->vector()); 
+        cp_sign_1_ = YRho(rho_1.second,TVector3());
+      }
+      if(rho_2.first) {
+        cp_channel_=2; 
+        lvec2 = ConvertToLorentz(rho_2.second[1]->vector()); 
+        lvec4 = ConvertToLorentz(rho_2.second[0]->vector()); 
+        cp_sign_1_ = YRho(rho_2.second,TVector3());
+      }
+    } else{
+      if(pi_1.first&&pi_2.first){
+        cp_channel_=1;
+        lvec1 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_1.second->vtx(), pi_1.second->vector()),0);
+        lvec2 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_2.second->vtx(), pi_2.second->vector()),0);
+        lvec3 = ConvertToLorentz(pi_1.second->vector());
+        lvec4 = ConvertToLorentz(pi_2.second->vector());
+      } else if (pi_1.first&&rho_2.first){
+        cp_channel_=2;
+        lvec1 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_1.second->vtx(), pi_1.second->vector()),0);
+        lvec2 = ConvertToLorentz(rho_2.second[1]->vector());
+        lvec3 = ConvertToLorentz(pi_1.second->vector());
+        lvec4 = ConvertToLorentz(rho_2.second[0]->vector());
+        cp_sign_1_ = YRho(rho_2.second,TVector3());
+      } else if(pi_2.first&&rho_1.first){
+        cp_channel_=2;
+        lvec1 = TLorentzVector(GetGenImpactParam(*(primary_vtxs[0]),pi_2.second->vtx(), pi_2.second->vector()),0);
+        lvec2 = ConvertToLorentz(rho_1.second[1]->vector());
+        lvec3 = ConvertToLorentz(pi_2.second->vector());
+        lvec4 = ConvertToLorentz(rho_1.second[0]->vector());
+        cp_sign_1_ = YRho(rho_1.second,TVector3());
+      } else if (rho_1.first&&rho_2.first){
+        cp_channel_=3;  
+        lvec1 = ConvertToLorentz(rho_1.second[1]->vector());   
+        lvec2 = ConvertToLorentz(rho_2.second[1]->vector());
+        lvec3 = ConvertToLorentz(rho_1.second[0]->vector());   
+        lvec4 = ConvertToLorentz(rho_2.second[0]->vector());
+        cp_sign_1_ = YRho(rho_1.second,TVector3())*YRho(rho_2.second,TVector3());
+      }
+    }
+    
+    if(cp_channel_!=-1){
+      aco_angle_1_ = IPAcoAngle(lvec1, lvec2, lvec3, lvec4,false);    
+      aco_angle_2_ = IPAcoAngle(lvec1, lvec2, lvec3, lvec4,true);
+    } */
+    
+    /* if(gen_tau_jets_ptr.size()>=2){
+      if(rho_1.first && rho_2.first) { 
+        std::vector<std::pair<double,int>> angles = AcoplanarityAngles(rho_1.second,rho_2.second,true);
+        aco_angle_2_ = angles[0].first;
+        cp_sign_2_ = angles[0].second;
+      }
+      if(rho_1.first && a1_2.first) {
+        cp_channel_ = 3;
+        std::vector<std::pair<double,int>> angles = AcoplanarityAngles(rho_1.second,a1_2.second,true);
+        aco_angle_1_ = angles[0].first;
+        cp_sign_1_ = angles[0].second;
+        aco_angle_2_ = angles[1].first;
+        cp_sign_2_ = angles[1].second;
+        aco_angle_3_ = angles[2].first;
+        cp_sign_3_ = angles[2].second;
+        aco_angle_4_ = angles[3].first;
+        cp_sign_4_ = angles[3].second;
+      }
+      if(a1_1.first && rho_2.first) {
+        cp_channel_ = 3;
+        std::vector<std::pair<double,int>> angles = AcoplanarityAngles(rho_2.second,a1_1.second,true);
+        aco_angle_1_ = angles[0].first;
+        cp_sign_1_ = angles[0].second;
+        aco_angle_2_ = angles[1].first;
+        cp_sign_2_ = angles[1].second;
+        aco_angle_3_ = angles[2].first;
+        cp_sign_3_ = angles[2].second;
+        aco_angle_4_ = angles[3].first;
+        cp_sign_4_ = angles[3].second;
+      }
+
+    } */
+
     if(passed_){
       pt_1_  = lep1.vector().Pt();
       pt_2_  = lep2.vector().Pt();
@@ -561,9 +877,13 @@ namespace ic {
       phi_2_ = lep2.vector().Phi();
       met_   = met.vector().Pt();
       pt_tt_ = (met.vector()+lep1.vector()+lep2.vector()).Pt();
+      mass_ = (met.vector()+lep1.vector()+lep2.vector()).M();
+      wtzpt_ = z_pt_weights_sm_.GetBinContent(z_pt_weights_sm_.FindBin(mass_,pt_tt_));
       m_vis_ = (lep1.vector()+lep2.vector()).M();
-      mt_1_ = MT(&lep1, &met);
-      mt_2_ = MT(&lep2, &met);
+      if(!(channel_str_ == "zmm")){
+        mt_1_ = MT(&lep1, &met);
+        mt_2_ = MT(&lep2, &met);
+      }
 
       ic::CompositeCandidate *ditau = new ic::CompositeCandidate();
       ditau->AddCandidate("lep1",&lep1);
@@ -578,6 +898,7 @@ namespace ic {
       phi_2_ = -9999;
       met_   = -9999;
       pt_tt_ = -9999;
+      mass_= -9999;
       m_vis_ = -9999;
       mt_1_ = -9999;
       mt_2_ = -9999;
@@ -646,38 +967,6 @@ namespace ic {
       //remove jets that are matched to Higgs decay products
       if(MatchedToPrompt) filtered_jets.erase (filtered_jets.begin()+i);
     }
-    
-    std::string jets_label_ = "ak4PFJetsCHS";
-    std::vector<PFJet*> jets = event->GetPtrVec<PFJet>(jets_label_);
-    std::sort(jets.begin(), jets.end(), bind(&Candidate::pt, _1) > bind(&Candidate::pt, _2));
-    
-    for(unsigned i=0; i<jets.size(); ++i){
-      ic::PFJet *jet = jets[i];
-      bool MatchedToPrompt = false;
-      for(unsigned j=0; j<higgs_products.size(); ++j){
-        if(DRLessThan(std::make_pair(jet, &higgs_products[j]),0.5)) MatchedToPrompt = true;
-      }
-      //remove jets that are matched to Higgs decay products
-      if(MatchedToPrompt) jets.erase (jets.begin()+i);
-    }
-    
-    std::vector<PFJet*> offline_bjets = jets;
-    ic::erase_if(jets,!boost::bind(MinPtMaxEta, _1, 30.0, 4.7));
-    ic::erase_if(offline_bjets,!boost::bind(MinPtMaxEta, _1, 20.0, 2.4));
-    
-    std::string btag_label="pfCombinedInclusiveSecondaryVertexV2BJetTags";
-    double btag_wp =  0.8484;
-    if (event->Exists("retag_result")) {
-      auto const& retag_result = event->Get<std::map<std::size_t,bool>>("retag_result"); 
-      ic::erase_if(offline_bjets, !boost::bind(IsReBTagged, _1, retag_result));
-    }else { 
-      ic::erase_if(offline_bjets, boost::bind(&PFJet::GetBDiscriminator, _1, btag_label) < btag_wp);
-    }
-    
-    
-    n_jets_offline_ = jets.size();
-    n_bjets_offline_ = offline_bjets.size();
-
     n_jets_ = filtered_jets.size();
     jpt_1_       = -9999;
     jeta_1_      = -9999;
@@ -711,7 +1000,8 @@ namespace ic {
     if(n_jets_ > 2){
       jpt_3_  = filtered_jets[2].vector().Pt();      
     }
-    
+
+    n_pjets_=0;    
     if(filtered_jets.size()>=2){
       if(filtered_jets[0].eta() > filtered_jets[1].eta()){
         sjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(filtered_jets[0].vector(), filtered_jets[1].vector());
@@ -719,8 +1009,63 @@ namespace ic {
       else{
         sjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(filtered_jets[1].vector(), filtered_jets[0].vector());
       }
-    } else sjdphi_ = -9999;
+      // sort jets higher and lower than higgs eta_1
+      std::vector<GenJet> jets_high;
+      std::vector<GenJet> jets_low;
+      for (unsigned i=0; i<filtered_jets.size(); ++i){
+        if (filtered_jets[i].eta() > higgs_eta) jets_high.push_back(filtered_jets[i]);
+        else jets_low.push_back(filtered_jets[i]);
+      }
+      if(jets_low.size()>0) n_pjets_++;
+      if(jets_high.size()>0) n_pjets_++;
+      Candidate pseudo_jet_a;
+      Candidate pseudo_jet_b;
+      for (auto j : jets_low) pseudo_jet_a.set_vector(pseudo_jet_a.vector()+j.vector());
+      for (auto j : jets_high) pseudo_jet_b.set_vector(pseudo_jet_b.vector()+j.vector());
+      spjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(pseudo_jet_a.vector(),pseudo_jet_b.vector());
+      for (unsigned i=0; i<filtered_jets.size(); ++i){
+        double dEta = std::fabs(higgs_eta - filtered_jets[i].eta());
+        if(i==0 || dEta<ysep_) ysep_ = dEta;
+      }
+    } else {
+      sjdphi_ = -9999;
+      spjdphi_ = -9999;
+    }
 
+    /* wt_ps_down_ = 1.0; */
+    /* wt_ps_up_ = 1.0; */
+    /* if(n_jets_==0){ */
+    /*   wt_ps_up_ =  ps_0jet_up_  .GetBinContent(ps_0jet_up_  .FindBin(HiggsPt_)); */  
+    /*   wt_ps_down_ =  ps_0jet_down_.GetBinContent(ps_0jet_down_.FindBin(HiggsPt_)); */   
+    /* } */
+    /* if(n_jets_==1){ */ 
+    /*   wt_ps_up_ =  ps_1jet_up_ .GetBinContent(ps_1jet_up_  .FindBin(HiggsPt_)); */  
+    /*   wt_ps_down_ =  ps_1jet_down_.GetBinContent(ps_1jet_down_.FindBin(HiggsPt_)); */   
+    /* } */
+    /* if(n_jets_==2){ */
+    /*   wt_ps_up_ =  ps_2jet_up_  .GetBinContent(ps_2jet_up_  .FindBin(HiggsPt_)); */  
+    /*   wt_ps_down_ =  ps_2jet_down_.GetBinContent(ps_2jet_down_.FindBin(HiggsPt_)); */     
+    /* } */
+    /* if(n_jets_>2){ */
+    /*   wt_ps_up_ =  ps_3jet_up_  .GetBinContent(ps_3jet_up_  .FindBin(HiggsPt_)); */
+    /*   wt_ps_down_ =  ps_3jet_down_.GetBinContent(ps_3jet_down_.FindBin(HiggsPt_)); */
+    /* } */
+    /* wt_ue_up_ = ue_up_  .GetBinContent(ue_up_  .FindBin(n_jets_)); */
+    /* wt_ue_down_ = ue_down_  .GetBinContent(ue_down_  .FindBin(n_jets_)); */
+
+
+    std::vector<PileupInfo *> puInfo;
+    float true_int = -1;
+    
+    if(event->ExistsInTree("pileupInfo")){
+      puInfo = event->GetPtrVec<PileupInfo>("pileupInfo");
+        for (unsigned i = 0; i < puInfo.size(); ++i) {
+          if (puInfo[i]->bunch_crossing() == 0)
+            true_int = puInfo[i]->true_num_interactions();
+        }
+    
+      n_pu_ = true_int;
+    }
     
     auto args = std::vector<double>{pT};
     if(fns_["h_t_ratio"]){

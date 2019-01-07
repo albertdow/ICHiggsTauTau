@@ -9,11 +9,16 @@
 #include "UserCode/ICHiggsTauTau/interface/GenParticle.hh"
 #include "UserCode/ICHiggsTauTau/interface/GenJet.hh"
 #include "UserCode/ICHiggsTauTau/interface/Candidate.hh"
+#include "UserCode/ICHiggsTauTau/interface/Electron.hh"
+#include "UserCode/ICHiggsTauTau/interface/Muon.hh"
 #include "UserCode/ICHiggsTauTau/interface/CompositeCandidate.hh"
+#include "UserCode/ICHiggsTauTau/Analysis/Utilities/interface/FnPredicates.h"
+#include "UserCode/ICHiggsTauTau/Analysis/Utilities/interface/FnPairs.h"
 #include "TRandom3.h"
 #include "RooWorkspace.h"
 #include "RooFunctor.h"
 #include <string>
+#include "Utilities/interface/FnRootTools.h"
 
 namespace ic {
   
@@ -70,9 +75,18 @@ class HTTGenAnalysis : public ModuleBase {
   double jphi_1_;
   double jphi_2_;
   double mjj_;
+  double pmjj_;
+  double mjj2_;
+  double minmjj_;
+  double maxmjj_;
+  double jdR_;
+  double pjdR_;
+  double jdR2_;
   double jdeta_;
   double m_vis_;
   double pt_tt_;
+  double wtzpt_;
+  double mass_;
   double wt_;
   double HiggsPt_;
   std::string decayType;
@@ -92,15 +106,49 @@ class HTTGenAnalysis : public ModuleBase {
   double n_jets_offline_;
   double n_bjets_offline_;
   
+  unsigned partons_lhe_;
   unsigned partons_;
   double parton_pt_;
+  double parton_pt_2_;
+  double parton_pt_3_;
+  double parton_mjj_;
+  double parton_HpT_;
   float D0_;
   float DCP_;
   float D0star_;
   double sjdphi_;
+  double sjdphi2_;
+  double sjdphi3_;
+
+  double spjdphi_;
+  double ysep_;
+  unsigned n_pjets_;
+
+
+  float n_pu_;
   
   double pT_A_;
-  
+ 
+  TH1F topmass_wts_;
+  TH1F topmass_wts_toponly_;
+
+  TH1D ps_0jet_up_;
+  TH1D ps_0jet_down_;
+  TH1D ps_1jet_up_;
+  TH1D ps_1jet_down_;
+  TH1D ps_2jet_up_;
+  TH1D ps_2jet_down_;
+  TH1D ps_3jet_up_;
+  TH1D ps_3jet_down_;
+  TH1D ue_down_;
+  TH1D ue_up_;
+
+  double wt_topmass_;
+  double wt_topmass_2_;
+  double wt_ps_down_;
+  double wt_ps_up_;
+  double wt_ue_down_;
+  double wt_ue_up_;
   double scale1_;
   double scale2_;
   double scale3_;
@@ -226,7 +274,35 @@ class HTTGenAnalysis : public ModuleBase {
   double wt_ggA_t_;
   double wt_ggA_b_;
   double wt_ggA_i_;
+  double wt_stitch_;
+  int npNLO_;
 
+  bool cand_1_;
+  bool cand_2_;
+  bool match_1_;
+  bool match_2_;
+  
+  TH2D z_pt_weights_sm_;
+
+  double aco_angle_1_;
+  double aco_angle_2_;
+  double aco_angle_3_;
+  double aco_angle_4_;
+  int cp_sign_1_;
+  int cp_sign_2_;
+  int cp_sign_3_;
+  int cp_sign_4_;
+  
+  int cp_channel_;
+  
+  double ip_dxy_res_1_; 
+  double ip_dxy_res_2_; 
+  double ip_dx_res_1_; 
+  double ip_dx_res_2_; 
+  double ip_dy_res_1_; 
+  double ip_dy_res_2_;
+  double ip_dz_res_1_;
+  double ip_dz_res_2_;
   
  public:
   HTTGenAnalysis(std::string const& name);

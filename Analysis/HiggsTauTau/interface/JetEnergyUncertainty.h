@@ -9,6 +9,8 @@
 #include <string>
 #include "boost/bind.hpp"
 #include "boost/format.hpp"
+#include "Math/Vector4D.h"
+#include "Math/Vector4Dfwd.h"
 
 namespace ic {
 
@@ -21,6 +23,9 @@ class JetEnergyUncertainty : public ModuleBase {
   CLASS_MEMBER(JetEnergyUncertainty, std::string, uncert_set)
   CLASS_MEMBER(JetEnergyUncertainty, bool, sum_uncerts)
   CLASS_MEMBER(JetEnergyUncertainty, std::vector<std::string>, uncert_sets)
+  CLASS_MEMBER(JetEnergyUncertainty, std::vector<double>, correlations)
+  CLASS_MEMBER(JetEnergyUncertainty, unsigned, jes_corr_mode)
+  CLASS_MEMBER(JetEnergyUncertainty, bool, EENoiseFix)
   JetCorrectionUncertainty *uncert_;
   JetCorrectorParameters *params_;
   std::vector<JetCorrectionUncertainty*> uncerts_;
@@ -39,6 +44,8 @@ template <class T>
 JetEnergyUncertainty<T>::JetEnergyUncertainty(std::string const& name) : ModuleBase(name) {
   input_label_ = "pfJetsPFlow";
   sum_uncerts_ = false;
+  EENoiseFix_ = false;
+  jes_corr_mode_ = 0;
 }
 
 template <class T>
@@ -61,6 +68,7 @@ int JetEnergyUncertainty<T>::PreAnalysis() {
   
   if(sum_uncerts_){
     for (unsigned j=0; j<uncert_sets_.size(); ++j){
+      std::cout << "uncert sets[j]: " << uncert_sets_[j] << std::endl;
       JetCorrectorParameters params = JetCorrectorParameters(uncert_file_, uncert_sets_[j]); 
       uncerts_.push_back(new JetCorrectionUncertainty(params));
     }
@@ -72,9 +80,12 @@ int JetEnergyUncertainty<T>::PreAnalysis() {
 template <class T>
 int JetEnergyUncertainty<T>::Execute(TreeEvent *event) {
   std::vector<T *> & vec = event->GetPtrVec<T>(input_label_);
-  if(!sum_uncerts_){  
+  if(!sum_uncerts_){
+    ROOT::Math::PxPyPzEVector before(0.,0.,0.,0.);
+    ROOT::Math::PxPyPzEVector after(0.,0.,0.,0.);  
     for (unsigned i = 0; i < vec.size(); ++i) {
-      if (fabs(vec[i]->eta()) > 5.0) continue;
+      bool skipJet = (EENoiseFix_ && vec[i]->pt()<50 && fabs(vec[i]->eta())>2.65 && fabs(vec[i]->eta())<3.139);  
+      if(!skipJet) before+=vec[i]->vector();
       uncert_->setJetPt(vec[i]->pt());
       uncert_->setJetEta(vec[i]->eta());
       if (jes_shift_mode_ == 1) {
@@ -85,19 +96,32 @@ int JetEnergyUncertainty<T>::Execute(TreeEvent *event) {
         double shift = uncert_->getUncertainty(true); //up
         vec[i]->set_vector(vec[i]->vector() * (1.0+shift));
       }
+      if(!skipJet) after+=vec[i]->vector();
+
     }
+    event->Add("jes_shift", after-before);
   } else if (sum_uncerts_){
+    ROOT::Math::PxPyPzEVector before(0.,0.,0.,0.);
+    ROOT::Math::PxPyPzEVector after(0.,0.,0.,0.);
     for (unsigned i = 0; i < vec.size(); ++i) {
-      if (fabs(vec[i]->eta()) > 5.0) continue;
+      bool skipJet = (EENoiseFix_ && vec[i]->pt()<50 && fabs(vec[i]->eta())>2.65 && fabs(vec[i]->eta())<3.139); 
+      if(!skipJet) before+=vec[i]->vector();  
       double shift=0;
+      double factor = 1.; //for correlations
       for (unsigned j=0; j<uncerts_.size(); ++j){
         uncerts_[j]->setJetPt(vec[i]->pt());
         uncerts_[j]->setJetEta(vec[i]->eta());
+        if (jes_corr_mode_ == 1) {
+          factor = correlations_[j];
+        } else if (jes_corr_mode_ == 2){
+            factor = 1. - correlations_[j];
+        }
+
         if (jes_shift_mode_ == 1) {
-          shift = sqrt(shift*shift + pow(uncerts_[j]->getUncertainty(false),2)); //down
+          shift = sqrt(shift*shift + factor*pow(uncerts_[j]->getUncertainty(false),2)); //down
         }
         if (jes_shift_mode_ == 2) {
-          shift = sqrt(shift*shift + pow(uncerts_[j]->getUncertainty(true),2)); //up
+          shift = sqrt(shift*shift + factor*pow(uncerts_[j]->getUncertainty(true),2)); //up
         }
       }
       if (jes_shift_mode_ == 1) {
@@ -106,7 +130,9 @@ int JetEnergyUncertainty<T>::Execute(TreeEvent *event) {
       if (jes_shift_mode_ == 2) {
         vec[i]->set_vector(vec[i]->vector() * (1.0+shift));
       }
-    }  
+      if(!skipJet) after+=vec[i]->vector();
+    }
+    event->Add("jes_shift", after-before);
   }
   return 0;
 }

@@ -3,7 +3,7 @@ from multiprocessing import Process
 config = Configuration()
 config.section_('General')
 config.General.transferOutputs = True
-config.General.workArea='Nov20_MC_80X'
+config.General.workArea='Apr02_MC_80X'
 config.section_('JobType')
 config.JobType.psetName = 'higgstautau_cfg_80X_Nov17.py'
 config.JobType.pluginName = 'Analysis'
@@ -17,7 +17,7 @@ config.Data.unitsPerJob = 100000
 config.Data.splitting = 'EventAwareLumiBased'
 config.Data.publication = False
 #config.Data.ignoreLocality= True
-config.Data.outLFNDirBase='/store/user/dwinterb/Nov20_MC_80X/'
+config.Data.outLFNDirBase='/store/user/dwinterb/Apr02_MC_80X/'
 config.section_('User')
 config.section_('Site')
 #config.Site.whitelist = ['T2_UK_London_IC', 'T2_CH_CERN', 'T2_FR_GRIF_LLR', 'T2_UK_SGrid_Bristol', 'T3_US_FNALLPC', 'T2_DE_DESY', 'T2_IT_Bari', 'T2_BE_IIHE', 'T2_IT_Rome','T2_FR_IPHC','T2_UK_London_Brunel']
@@ -76,13 +76,14 @@ if __name__ == '__main__':
     tasks.append(('EWKZ2Jets_ZToNuNu-ext', '/EWKZ2Jets_ZToNuNu_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM'         ))    
     tasks.append(('ZZTo4L-amcat', '/ZZTo4L_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM'))
 
+#/GluGluToPseudoscalarHToTauTau_M125_13TeV_amcatnloFXFX_pythia8_tauola/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
+
     for task in tasks:
         print task[0]
         config.General.requestName = task[0]
         config.Data.inputDataset = task[1]
-        #submit(config)
             
-        if "GluGluToHToTauTau_M-125" in task[0] or "VBFHToTauTau_M-125" in task[0]:
+        if "TT" in task[0]:
             config.JobType.pyCfgParams = CfgParams + ['LHEWeights=True']
         else: config.JobType.pyCfgParams = CfgParams + ['LHEWeights=False']
             

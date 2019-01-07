@@ -219,6 +219,35 @@ namespace ic {
     }
     return result;
   } 
+  
+  bool PFJetID2017(PFJet const* jet) {
+    double eta = fabs(jet->eta());
+    bool result = false;
+    
+    double neutralFrac = jet->neutral_had_energy() / jet->uncorrected_energy();
+    
+    if (eta <= 2.4) {
+      result = neutralFrac   < 0.90
+      && jet->neutral_em_energy_frac()    < 0.90
+      && jet->charged_multiplicity()+jet->neutral_multiplicity() > 1
+      && jet->charged_had_energy_frac()   > 0.0
+      && jet->charged_multiplicity()      > 0;
+    } else if (eta <= 2.7){
+      result = neutralFrac < 0.90
+      && jet->neutral_em_energy_frac()   < 0.90
+      && jet->charged_multiplicity()+jet->neutral_multiplicity() > 1;
+    } else if(eta<=3.0){
+      result = jet->neutral_em_energy_frac()    < 0.99
+      &&jet->neutral_em_energy_frac()    > 0.02
+      && jet->neutral_multiplicity() > 2;
+    }
+    else{
+      result = jet->neutral_em_energy_frac()    < 0.90
+      && neutralFrac>0.02
+      && jet->neutral_multiplicity()>10;
+    }
+    return result;
+  } 
 
   bool PUJetID(PFJet const* jet, bool is_2012) {
     // Pt2030_Loose   = cms.vdouble(-0.80,-0.85,-0.84,-0.85),
@@ -275,7 +304,7 @@ namespace ic {
   }
 
 
-  bool PileupJetID(PFJet const* jet, unsigned training, bool doTight) {
+  bool PileupJetID(PFJet const* jet, unsigned training, bool doTight, bool doLoose) {
     double abs_eta = fabs(jet->eta());
     double pt = jet->pt();
     double pu_id_mva_value = jet->pu_id_mva_value();
@@ -348,29 +377,54 @@ namespace ic {
     } else if (training == 4) {
       //reference: page 16 of https://indico.cern.ch/event/559594/contributions/2257924/attachments/1317046/1973307/PUID_JMAR_2016_07_26_v1.pdf
       if (pt <= 30.) {
-	if (abs_eta < 2.5) {
-	  return (pu_id_mva_value > (doTight?0.69:0.18));
-	} else if (abs_eta < 2.75) {
-	  return (pu_id_mva_value > (doTight?-0.35:-0.55));
-	} else if (abs_eta < 3.0) {
-	  return (pu_id_mva_value > (doTight?-0.26:-0.42));
-	} else if (abs_eta < 5.0) {
-	  return (pu_id_mva_value > (doTight?-0.21:-0.36));
-	} else return true;
-      } else if (pt > 30.) {
-	if (abs_eta < 2.5) {
-	  return (pu_id_mva_value > (doTight?0.86:0.61));
-	} else if (abs_eta < 2.75) {
-	  return (pu_id_mva_value > (doTight?-0.10:-0.35));
-	} else if (abs_eta < 3.0) {
-	  return (pu_id_mva_value > (doTight?-0.05:-0.23));
-	} else if (abs_eta < 5.0) {
-	  return (pu_id_mva_value > (doTight?-0.01:-0.17));
-	} else return true;
-      } else return true;
-    } else {
-      return true;
+        if (abs_eta < 2.5) {
+          if (doTight) return (pu_id_mva_value > 0.69);
+          else if (doLoose) return (pu_id_mva_value > -0.97);
+          else return (pu_id_mva_value > 0.18);
+        } 
+        else if (abs_eta < 2.75) {
+          if (doTight) return (pu_id_mva_value > -0.35);
+          else if (doLoose) return (pu_id_mva_value > -0.68);
+          else return (pu_id_mva_value > -0.55);
+        }
+        else if (abs_eta < 3.0) {
+          if (doTight) return (pu_id_mva_value > -0.26);
+          else if (doLoose) return (pu_id_mva_value > -0.53);
+          else return (pu_id_mva_value > -0.42);
+        }
+        else if (abs_eta < 5.0) {
+          if (doTight) return (pu_id_mva_value > -0.21);
+          else if (doLoose) return (pu_id_mva_value > -0.47);
+          else return (pu_id_mva_value > -0.36);
+        }
+        else return true;
+      }
+      else if (pt > 30.) {
+        if (abs_eta < 2.5) {
+          if (doTight) return (pu_id_mva_value > 0.86);
+          else if (doLoose) return (pu_id_mva_value > -0.89);
+          else return (pu_id_mva_value > 0.61);
+        } 
+        else if (abs_eta < 2.75) {
+          if (doTight) return (pu_id_mva_value > -0.10);
+          else if (doLoose) return (pu_id_mva_value > -0.52);
+          else return (pu_id_mva_value > -0.35);
+        }
+        else if (abs_eta < 3.0) {
+          if (doTight) return (pu_id_mva_value > -0.05);
+          else if (doLoose) return (pu_id_mva_value > -0.38);
+          else return (pu_id_mva_value > -0.23);
+        }
+        else if (abs_eta < 5.0) {
+          if (doTight) return (pu_id_mva_value > -0.01);
+          else if (doLoose) return (pu_id_mva_value > -0.30);
+          else return (pu_id_mva_value > -0.17);
+        }
+        else return true;
+      }
+      else return true;
     }
+    else return true;
   }
 
   bool IsReBTagged(Jet const* jet, std::map<std::size_t, bool> const& tag_map) {
@@ -1024,13 +1078,13 @@ namespace ic {
     double pt = fabs(elec->pt());
     double idmva = elec->GetIdIso("generalPurposeMVASpring16");
     if (!loose_wp) {
-      if (eta <= 0.8 && pt > 10                   && idmva > 0.941 ) pass_mva = true;
-      if (eta > 0.8 && eta <= 1.479 && pt > 10    && idmva > 0.899 ) pass_mva = true;
-      if (eta > 1.479 && pt > 10                  && idmva > 0.758 ) pass_mva = true;
+      if (eta <= 0.8 && pt > 10                   && idmva > 0.940962684155 ) pass_mva = true;
+      if (eta > 0.8 && eta <= 1.479 && pt > 10    && idmva > 0.899208843708 ) pass_mva = true;
+      if (eta > 1.479 && pt > 10                  && idmva > 0.758484721184 ) pass_mva = true;
     } else {
-      if (eta <= 0.8 && pt > 10                   && idmva > 0.837 ) pass_mva = true;
-      if (eta > 0.8 && eta <= 1.479 && pt > 10    && idmva > 0.715 ) pass_mva = true;
-      if (eta > 1.479 && pt > 10                  && idmva > 0.357 ) pass_mva = true;
+      if (eta <= 0.8 && pt > 10                   && idmva > 0.836695742607 ) pass_mva = true;
+      if (eta > 0.8 && eta <= 1.479 && pt > 10    && idmva > 0.715337944031 ) pass_mva = true;
+      if (eta > 1.479 && pt > 10                  && idmva > 0.356799721718 ) pass_mva = true;
     }
     return pass_mva;
   }
@@ -1063,6 +1117,247 @@ namespace ic {
       )
     );
   }
+
+  bool VetoElectronIDFall17(Electron const* elec, double const& rho) {
+    bool in_barrel = true;
+    if (fabs(elec->sc_eta()) > 1.479) in_barrel = false;
+    double dEtaInSeed = elec->deta_sc_tk_at_vtx() - elec->sc_eta() + elec->sc_seed_eta();
+    double ooemoop = fabs((1.0/elec->ecal_energy() - elec->sc_e_over_p()/elec->ecal_energy()));
+    double sc_energy = elec->sc_energy();
+
+    return (!elec->has_matched_conversion()
+       && ( (in_barrel
+       && elec->sigma_IetaIeta()           < 0.0128
+       && fabs(dEtaInSeed)                 < 0.00523
+       && fabs(elec->dphi_sc_tk_at_vtx())  < 0.159
+       && elec->hadronic_over_em()         < 0.05 + 1.12/sc_energy + 0.0368*rho/sc_energy 
+       && ooemoop                          < 0.193
+       && elec->gsf_tk_nhits()             <=2
+       ) ||
+      (!in_barrel
+       && elec->sigma_IetaIeta()           < 0.0445
+       && fabs(dEtaInSeed)                 < 0.00984
+       && fabs(elec->dphi_sc_tk_at_vtx())  < 0.157
+       && elec->hadronic_over_em()         < 0.05 + 0.5/sc_energy + 0.201*rho/sc_energy
+       && ooemoop                          < 0.0962
+       && elec->gsf_tk_nhits()             <=3
+       )
+      )
+    );
+  }
+
+ bool ElectronHTTIdFall17(Electron const* elec, bool loose_wp) {
+   //Do some cut-based pre-selection
+   if (elec->has_matched_conversion()) return false;
+     if (elec->gsf_tk_nhits() > 1) return false;
+     double eta = fabs(elec->sc_eta());
+     double pt = fabs(elec->pt());
+     double idmva = elec->GetIdIso("mvaRun2Fall17");
+     double c=0;
+     double tau=0;
+     double A=0;
+     if (eta <= 0.8) {
+        if (pt > 10.){
+          c = loose_wp ? 0.9616542816132922 : 0.9825268564943458;
+          tau = loose_wp ? 8.757943837889817 : 8.702601455860762;
+          A = loose_wp ? 3.1390200321591206 : 1.1974861596609097;
+        } else {
+          c = loose_wp ? 0.9165112826974601 : 0.9530240956555949;
+          tau = loose_wp ? 2.7381703555094217 : 2.7591425841003647;
+          A = loose_wp ? 1.03549199648109 : 0.4669644718545271; 
+        }
+      } 
+      if (eta > 0.8 && eta <= 1.479) {
+        if (pt > 10.){
+          c = loose_wp ? 0.9319258011430132 : 0.9727509457929913;
+          tau = loose_wp ? 8.846057432565809 : 8.179525631018565;
+          A = loose_wp ? 3.5985063793347787 : 1.7111755094657688;
+        } else {
+          c = loose_wp ? 0.8655738322220173 : 0.9336564763961019;
+          tau = loose_wp ? 2.4027944652597073 : 2.709276284272272;
+          A = loose_wp ? 0.7975615613282494 : 0.33512286599215946;
+        }
+      }
+      if (eta > 1.479){
+        if (pt > 10.){
+          c = loose_wp ? 0.8899260780999244 : 0.9562619539540145;
+          tau = loose_wp ? 10.124234115859881 : 8.109845366281608;
+          A = loose_wp ? 4.352791250718547 : 3.013927699126942;
+        } else {
+          c = loose_wp ? -3016.035055227131 : 0.9313133688365339;
+          tau = loose_wp ? -52140.61856333602 : 1.5821934800715558;
+          A = loose_wp ? -3016.3029387236506 : 3.8889462619659265;
+        }
+      } 
+    double wp = c - A*exp(-pt/tau);
+    bool pass_mva = idmva > wp;
+    return pass_mva;
+  }
+  
+ bool ElectronHTTIsoIdFall17(Electron const* elec, bool loose_wp) {
+   //Do some cut-based pre-selection
+   if (elec->has_matched_conversion()) return false;
+     if (elec->gsf_tk_nhits() > 1) return false;
+     double eta = fabs(elec->sc_eta());
+     double pt = fabs(elec->pt());
+     double idmva = elec->GetIdIso("mvaRun2IsoFall17");
+     double c=0;
+     double tau=0;
+     double A=0;
+     if (eta <= 0.8) {
+          // c = C0, tau = C1,  A = C2 
+        if (pt > 10.){
+          c = loose_wp ?  0.9717674837607253 : 0.9896562087723659;
+          tau = loose_wp ? 8.912850985100356 : 10.342490511998674;
+          A = loose_wp ? 1.9712414940437244 : 0.40204156417414094;
+        } else {
+          c = loose_wp ? 0.9387070396095831 :  0.9725509559754997;
+          tau = loose_wp ? 2.6525585228167636 : 2.976593261509491;
+          A = loose_wp ? 0.8222647164151365 : 0.2653858736397496; 
+        }
+      } 
+      if (eta > 0.8 && eta <= 1.479) {
+        if (pt > 10.){
+          c = loose_wp ? 0.9458745023265976 : 0.9819232656533827;
+          tau = loose_wp ? 8.83104420392795 :  9.05548836482051;
+          A = loose_wp ? 2.40849932040698 : 0.772674931169389;
+        } else {
+          c = loose_wp ? 0.8948802925677235 : 0.9508038141601247;
+          tau = loose_wp ? 2.7645670358783523 : 2.6633500558725713;
+          A = loose_wp ? 0.4123381218697539 : 0.2355820499260076;
+        }
+      }
+      if (eta > 1.479){
+        if (pt > 10.){
+          c = loose_wp ? 0.8979112012086751 : 0.9625098201744635;
+          tau = loose_wp ? 9.814082144168015 : 8.42589315557279;
+          A = loose_wp ? 4.171581694893849 : 2.2916152615134173;
+        } else {
+          c = loose_wp ?  -1830.8583661119892 : 0.9365037167596238;
+          tau = loose_wp ?  -36578.11055382301 : 1.5765442323949856;
+          A = loose_wp ?  -1831.2083578116517 : 3.067015289215309;
+        }
+      } 
+    double wp = c - A*exp(-pt/tau);
+    bool pass_mva = idmva > wp;
+    return pass_mva;
+  }
+
+
+  // Fall v2 electron ID noIso
+  bool ElectronHTTIdFall17V2(Electron const* elec, bool loose_wp) {
+    // loose_wp will correspond to 90% wp
+    // there is a looser one (98% wp) but don't need it
+    // 
+    //Do some cut-based pre-selection
+    if (elec->has_matched_conversion()) return false;
+      if (elec->gsf_tk_nhits() > 1) return false;
+      double eta = fabs(elec->sc_eta());
+      double pt = fabs(elec->pt());
+      double idmva = elec->GetIdIso("mvaRun2Fall17V2");
+      double c=0;
+      double tau=0;
+      double A=0;
+      if (eta <= 0.8) {
+        if (pt > 10.){ //EB1_10
+          c = loose_wp ? 5.9175992258 : 7.1336238874;
+          tau = loose_wp ? 13.4807294538 : 16.5605268797;
+          A = loose_wp ? 9.31966232685 : 8.22531222391;
+        } else { //EB1_5
+          c = loose_wp ? 2.77072387339 : 3.26449620468;
+          tau = loose_wp ? 3.81500912145 : 3.32657149223;
+          A = loose_wp ? 8.16304860178 : 8.84669783568; 
+        }
+      } 
+      if (eta > 0.8 && eta <= 1.479) {
+        if (pt > 10.){ //EB2_10
+          c = loose_wp ? 5.01598837255 : 6.18638275782;
+          tau = loose_wp ? 13.1280451502 : 15.2694634284;
+          A = loose_wp ? 8.79418193765 : 7.49764565324;
+        } else { //EB2_5
+          c = loose_wp ? 1.85602317813 : 2.83557838497;
+          tau = loose_wp ? 2.18697654938 : 2.15150487651;
+          A = loose_wp ? 11.8568936824 : 11.0978016567;
+        }
+      }
+      if (eta > 1.479){
+        if (pt > 10.){ //EE_10
+          c = loose_wp ? 4.16921343208 : 5.43175865738;
+          tau = loose_wp ? 13.2017224621 : 15.4290075949;
+          A = loose_wp ? 9.00720913211 : 7.56899692285;
+        } else { //EE_5
+          c = loose_wp ? 1.73489307814 : 2.91994945177;
+          tau = loose_wp ? 2.0163211971 : 1.69875477522;
+          A = loose_wp ? 17.013880078 : 24.024807824;
+        }
+      } 
+      double wp = c - A*exp(-pt/tau);
+      std::cout << "idmva: " << idmva << "wp: " << wp << std::endl;
+      bool pass_mva = idmva > wp;
+      return pass_mva;
+    }
+
+  // Fall v2 electron IDIso
+  bool ElectronHTTIsoIdFall17V2(Electron const* elec, bool loose_wp) {
+    // loose_wp will correspond to 90% wp
+    // there is a looser one (98% wp) but don't need it
+    // 
+    //Do some cut-based pre-selection
+    if (elec->has_matched_conversion()) return false;
+      if (elec->gsf_tk_nhits() > 1) return false;
+      double eta = fabs(elec->sc_eta());
+      double pt = fabs(elec->pt());
+      double idmva = elec->GetIdIso("mvaRun2IsoFall17V2");
+      double c=0;
+      double tau=0;
+      double A=0;
+      if (eta <= 0.8) {
+        if (pt > 10.){ //EB1_10
+          c = loose_wp ? 6.12931925263 : 7.35752275071;
+          tau = loose_wp ? 13.281753835 : 15.87907864;
+          A = loose_wp ? 8.71138432196 : 7.61288809226;
+        } else { //EB1_5
+          c = loose_wp ? 2.84704783417 : 3.53495358797;
+          tau = loose_wp ? 3.32529515837 : 3.07272325141;
+          A = loose_wp ? 9.38050947827 : 9.94262764352; 
+        }
+      } 
+      if (eta > 0.8 && eta <= 1.479) {
+        if (pt > 10.){ //EB2_10
+          c = loose_wp ? 5.26289004857 : 6.41811074032;
+          tau = loose_wp ? 13.2154971491 : 14.730562874;
+          A = loose_wp ? 8.0997882835 : 6.96387331587;
+        } else { //EB2_5
+          c = loose_wp ? 2.03833922005 : 3.06015605623;
+          tau = loose_wp ? 1.93288758682 : 1.95572234114;
+          A = loose_wp ? 15.364588247 : 14.3091184421;
+        }
+      }
+      if (eta > 1.479){
+        if (pt > 10.){ //EE_10
+          c = loose_wp ? 4.37338792902 : 5.64936312428;
+          tau = loose_wp ? 14.0776094696 : 16.3664949747;
+          A = loose_wp ? 8.48513324496 : 7.19607610311;
+        } else { //EE_5
+          c = loose_wp ? 1.82704158461 : 3.02052519639;
+          tau = loose_wp ? 1.89796754399 : 1.59784164742;
+          A = loose_wp ? 19.1236071158 : 28.719380105;
+        }
+      } 
+      double wp = c - A*exp(-pt/tau);
+      bool pass_mva = idmva > wp;
+      return pass_mva;
+   }
+  
+ bool PF03EAElecIsolation(Electron const* elec, double const rho, double const& cut) {
+    double charged_iso = elec->dr03_pfiso_charged();
+    double eff_area = GetEffectiveArea2017(elec);
+    double iso =  charged_iso 
+                  + std::max(elec->dr03_pfiso_neutral() + elec->dr03_pfiso_gamma() - rho*eff_area, 0.0);
+    iso = iso / elec->pt();
+    return (iso < cut);
+  } 
+
 
   
  double PUW03IsolationVal(Muon const* muon){
@@ -1668,6 +1963,154 @@ namespace ic {
     }
     return taus;
   }
+
+  // CP in tau decays functions
+  ic::Candidate* GetPi0(ic::Tau const* tau, ic::Candidate const* pi) {
+    ic::Candidate* pi0 = new ic::Candidate();
+    pi0->set_vector(tau->vector()-pi->vector());
+    pi0->set_charge(0);
+    return pi0;
+  }
+
+  std::vector<GenParticle*> GetTauDaughters(std::vector<GenParticle *> const& parts, std::vector<std::size_t> id) {
+    std::vector<GenParticle*> tau_daughters;
+    for (unsigned i = 0; i < parts.size(); ++i) {
+      for (unsigned j = 0; j < id.size(); ++j) {
+        if(parts[i]->id() == id[j]){
+          tau_daughters.push_back(parts[i]);
+          continue;
+        }
+      }
+    }
+    return tau_daughters;
+  }
+  
+    std::pair<bool, GenParticle*> GetTauPiDaughter(std::vector<GenParticle *> const& parts, std::vector<std::size_t> id) {
+    std::vector<GenParticle*> tau_daughters;
+    for (unsigned i = 0; i < parts.size(); ++i) {
+      for (unsigned j = 0; j < id.size(); ++j) {
+        if(parts[i]->id() == id[j]){
+          tau_daughters.push_back(parts[i]);
+          continue;
+        }
+      }
+    }
+    GenParticle* pi = new GenParticle();
+    pi->set_pdgid(0);
+    GenParticle* tau_rho_daughter = new GenParticle();
+    int countpi = 0;
+    if(tau_daughters.size()==1){
+      for(unsigned i=0; i<tau_daughters.size(); ++i){
+        if(fabs(tau_daughters[i]->pdgid()) == 211) { pi = tau_daughters[i]; countpi++;}
+      }
+    }
+    bool isPi = countpi == 1;
+    if (isPi) tau_rho_daughter = pi;
+
+    return std::make_pair(isPi, tau_rho_daughter);
+  }
+  
+    std::pair<bool, std::vector<GenParticle*>> GetTauRhoDaughter(std::vector<GenParticle *> const& parts, std::vector<std::size_t> id) {
+    std::vector<GenParticle*> tau_daughters;
+    for (unsigned i = 0; i < parts.size(); ++i) {
+      for (unsigned j = 0; j < id.size(); ++j) {
+        if(parts[i]->id() == id[j]){
+          tau_daughters.push_back(parts[i]);
+          continue;
+        }
+      }
+    }
+    GenParticle* pi0 = new GenParticle();
+    GenParticle* pi = new GenParticle();
+    pi->set_pdgid(0);
+    pi0->set_pdgid(0);
+    std::vector<GenParticle*> tau_rho_daughter;
+    int countpi = 0;
+    int countgamma = 0;
+    if(tau_daughters.size()==3){
+      for(unsigned i=0; i<tau_daughters.size(); ++i){
+        if(fabs(tau_daughters[i]->pdgid()) == 22){ pi0->set_vector(pi0->vector()+tau_daughters[i]->vector()); pi0->set_pdgid(111); countgamma++;}
+        if(fabs(tau_daughters[i]->pdgid()) == 211) { pi = tau_daughters[i]; countpi++;}
+      }
+    }
+    bool isRho = countgamma == 2 && countpi == 1;
+    if (isRho) tau_rho_daughter = {pi,pi0};
+    return std::make_pair(isRho, tau_rho_daughter);
+  }
+  
+    std::pair<bool, std::vector<GenParticle*>> GetTauA1Daughter(std::vector<GenParticle *> const& parts, std::vector<std::size_t> id) {
+    std::vector<GenParticle*> tau_daughters;
+    for (unsigned i = 0; i < parts.size(); ++i) {
+      for (unsigned j = 0; j < id.size(); ++j) {
+        if(parts[i]->id() == id[j]){
+          tau_daughters.push_back(parts[i]);
+          continue;
+        }
+      }
+    }
+    GenParticle* pi1 = new GenParticle();
+    GenParticle* pi2 = new GenParticle();
+    GenParticle* pi3 = new GenParticle();
+    pi1->set_pdgid(0);
+    pi2->set_pdgid(0);
+    pi3->set_pdgid(0);
+    std::vector<GenParticle*> tau_a1_daughters;
+    int countpiplus = 0;
+    int countpiminus = 0;
+    std::vector<GenParticle*> charged_pis;
+    if(tau_daughters.size()==3){
+      for(unsigned i=0; i<tau_daughters.size(); ++i){
+        if(fabs(tau_daughters[i]->pdgid()) == 211) charged_pis.push_back(tau_daughters[i]);
+        if(tau_daughters[i]->pdgid() == -211) countpiplus++;
+        if(tau_daughters[i]->pdgid() == 211)  countpiminus++;
+      }
+    }
+    bool isA1 = ( countpiplus==2 && countpiminus==1 ) || ( countpiplus==1 && countpiminus==2 );
+    if (isA1) tau_a1_daughters = charged_pis;
+    return std::make_pair(isA1, tau_a1_daughters);
+  }
+  
+  TVector3 GetGenImpactParam (ic::Vertex primary_vtx, ic::Vertex secondary_vtx, ROOT::Math::PtEtaPhiEVector part_vec){
+    TVector3 x(secondary_vtx.vx()-primary_vtx.vx(),secondary_vtx.vy()-primary_vtx.vy(),secondary_vtx.vz()-primary_vtx.vz());
+    TVector3 unit_vec = ConvertToTVector3(part_vec).Unit();
+    TVector3 u = -(x - x.Dot(unit_vec)*unit_vec);
+    return u;    
+  }
+  
+  TLorentzVector ConvertToLorentz(ROOT::Math::PtEtaPhiEVector input_vec){
+      TLorentzVector out_vec;
+      out_vec.SetXYZM(input_vec.Px(),input_vec.Py(),input_vec.Pz(),input_vec.M());
+      return out_vec;
+  }
+  TVector3 ConvertToTVector3(ROOT::Math::PtEtaPhiEVector input_vec){
+      TVector3 out_vec;
+      out_vec.SetXYZ(input_vec.Px(),input_vec.Py(),input_vec.Pz());
+      return out_vec;
+  }
+  
+  double IPAcoAngle(TLorentzVector p1, TLorentzVector p2, TLorentzVector p3, TLorentzVector p4, bool ZMF){
+    //p1 = ip+, p2 = pi0-, p3 = pi+, p4 = pi-  
+      
+    TVector3 boost;
+    if(ZMF) boost = (p1+p2+p3+p4).BoostVector();
+    else boost = (p3+p4).BoostVector();
+    p1.Boost(-boost);
+    p2.Boost(-boost);
+    p3.Boost(-boost);
+    p4.Boost(-boost);
+    
+    TVector3 n1 = p1.Vect() - p1.Vect().Dot(p3.Vect().Unit())*p3.Vect().Unit();    
+    TVector3 n2 = p2.Vect() - p2.Vect().Dot(p4.Vect().Unit())*p4.Vect().Unit();
+    n1 = n1.Unit();
+    n2 = n2.Unit();
+    
+    double angle = acos(n1.Dot(n2));
+    double sign = p2.Vect().Unit().Dot(n1.Cross(n2));
+    
+    if(sign<0) angle = 2*M_PI - angle;
+    return angle;
+  }
+  // 
 
   ROOT::Math::PtEtaPhiEVector reconstructWboson(Candidate const*  lepton, Candidate const* met){
 

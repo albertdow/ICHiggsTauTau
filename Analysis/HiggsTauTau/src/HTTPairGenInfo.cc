@@ -10,11 +10,12 @@
 
 namespace ic {
 
-  HTTPairGenInfo::HTTPairGenInfo(std::string const& name) : ModuleBase(name) {
+  HTTPairGenInfo::HTTPairGenInfo(std::string const& name) : ModuleBase(name), channel_(channel::mt) {
     ditau_label_ = "ditau";
     fs_ = NULL;
     write_plots_ = false;
     hists_.resize(1);
+    ngenjets_=false;
   }
 
   HTTPairGenInfo::~HTTPairGenInfo() {
@@ -60,7 +61,8 @@ namespace ic {
       if ( ((abs(particles[i]->pdgid()) == 11 )||(abs(particles[i]->pdgid()) == 13 /*&& particles[i]->status()==1*/)) && particles[i]->pt() > 8. && (status_flags_start[IsPrompt] || status_flags_start[IsDirectPromptTauDecayProduct] /*|| status_flags_start[IsDirectHadronDecayProduct]*/)){
         sel_particles.push_back(particles[i]);
       }
-      if(status_flags_start[IsPrompt] && status_flags_start[IsLastCopy] && abs(particles[i]->pdgid()) == 15) undecayed_taus.push_back(particles[i]);
+      if(channel_!=channel::zmm&&status_flags_start[IsPrompt] && status_flags_start[IsLastCopy] && abs(particles[i]->pdgid()) == 15) undecayed_taus.push_back(particles[i]);
+      if(channel_==channel::zmm&&status_flags_start[IsPrompt] && status_flags_start[IsLastCopy] && abs(particles[i]->pdgid()) == 13) undecayed_taus.push_back(particles[i]);
     }
     
     if(undecayed_taus.size()>0){
@@ -191,6 +193,35 @@ namespace ic {
    event->Add("leading_lepton_match_DR",leading_lepton_match_DR);
    event->Add("subleading_lepton_match_DR",subleading_lepton_match_DR);*/
 
+    if(ngenjets_){
+      //Get gen-jets collection, filter Higgs decay products and add Njets variable to event
+      std::vector<ic::GenJet*> gen_jets = event->GetPtrVec<ic::GenJet>("genJets");
+      ic::erase_if(gen_jets,!boost::bind(MinPtMaxEta, _1, 30.0, 4.7));
+      for(unsigned i=0; i<gen_jets.size(); ++i){
+        ic::GenJet *genjet = gen_jets[i];
+        bool MatchedToPrompt = false;
+        for(unsigned j=0; j<sel_particles.size(); ++j){
+         if(DRLessThan(std::make_pair(genjet, sel_particles[j]),0.5)) MatchedToPrompt = true;
+        } 
+        for(unsigned j=0; j<gen_taus_ptr.size(); ++j){
+         if(DRLessThan(std::make_pair(genjet, gen_taus_ptr[j]),0.5)) MatchedToPrompt = true;
+        }
+        //remove jets that are matched to Higgs decay products
+        if(MatchedToPrompt) gen_jets.erase (gen_jets.begin()+i);
+      }
+      unsigned ngenjets = gen_jets.size();
+      double gen_sjdphi_ = -999;
+      if (ngenjets >= 2) {
+        if(gen_jets[0]->eta() > gen_jets[1]->eta())
+          gen_sjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(gen_jets[0]->vector(), gen_jets[1]->vector());
+        
+        else
+          gen_sjdphi_ =  ROOT::Math::VectorUtil::DeltaPhi(gen_jets[1]->vector(), gen_jets[0]->vector());
+        
+      }
+      event->Add("ngenjets", ngenjets);
+      event->Add("gen_sjdphi", gen_sjdphi_);
+    }
 
     return 0;
   }
