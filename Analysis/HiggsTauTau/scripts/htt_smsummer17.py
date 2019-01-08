@@ -146,27 +146,37 @@ file_persamp = open("./jobs/files_per_sample.txt", "w")
 
 if options.proc_sm or options.proc_all:
     signal_mc += [
-         'GluGluHToTauTau_M-125-ext',
-         'GluGluHToTauTau_M-125',
-        'GluGluToHToTauTauPlusTwoJets_M125_amcatnloFXFX',
-         'GluGluToHToTauTau_M125_amcatnloFXFX',
-        'GluGluToMaxmixHToTauTauPlusTwoJets_M125_amcatnloFXFX',
-         'GluGluToMaxmixHToTauTau_M125_amcatnloFXFX',
-        'GluGluToPseudoscalarHToTauTauPlusTwoJets_M125_amcatnloFXFX',
-         'GluGluToPseudoscalarHToTauTau_M125_amcatnloFXFX',
-         'VBFHToTauTau_M-125',
-         'WminusHToTauTau_M-125',
-         'WplusHToTauTau_M-125',
-         'ZHToTauTau_M-125',
-         'VBFHiggs0Mf05ph0ToTauTau',
-         'VBFHiggs0MToTauTau',
-         'VBFHiggs0PMToTauTau',
-         'WHiggs0Mf05ph0ToTauTau',
-         'WHiggs0MToTauTau',
-         'WHiggs0PMToTauTau',
-         'ZHiggs0Mf05ph0ToTauTau',
-         'ZHiggs0MToTauTau',
-         'ZHiggs0PMToTauTau',
+        # 'VBFHToTauTau_M-125',
+        # 'VBFHToPseudoscalarTauTau_GEN',
+        # 'VBFHToMaxmixTauTau_GEN',
+        # 'SUSYGluGluToHToTauTau_M-120',
+        # 'GluGluToHToTauTauPseudoscalarDecay_M125_amcatnloFXFX',
+
+        'GluGluHToTauTau_M-125',
+        # 'GluGluHToPseudoscalarTauTau_GEN',
+        # 'GluGluHToMaxmixTauTau_GEN',
+
+        # 'GluGluHToTauTau_M-125-ext',
+        # 'GluGluHToTauTau_M-125',
+        # 'GluGluToHToTauTauPlusTwoJets_M125_amcatnloFXFX',
+        # 'GluGluToHToTauTau_M125_amcatnloFXFX',
+        # 'GluGluToMaxmixHToTauTauPlusTwoJets_M125_amcatnloFXFX',
+        # 'GluGluToMaxmixHToTauTau_M125_amcatnloFXFX',
+        # 'GluGluToPseudoscalarHToTauTauPlusTwoJets_M125_amcatnloFXFX',
+        # 'GluGluToPseudoscalarHToTauTau_M125_amcatnloFXFX',
+        # 'VBFHToTauTau_M-125',
+        # 'WminusHToTauTau_M-125',
+        # 'WplusHToTauTau_M-125',
+        # 'ZHToTauTau_M-125',
+        # 'VBFHiggs0Mf05ph0ToTauTau',
+        # 'VBFHiggs0MToTauTau',
+        # 'VBFHiggs0PMToTauTau',
+        # 'WHiggs0Mf05ph0ToTauTau',
+        # 'WHiggs0MToTauTau',
+        # 'WHiggs0PMToTauTau',
+        # 'ZHiggs0Mf05ph0ToTauTau',
+        # 'ZHiggs0MToTauTau',
+        # 'ZHiggs0PMToTauTau',
         ]
    # signal_mc += [
    #     'GluGluToHToTauTau_M125_amcatnloFXFX-UEUp',
@@ -294,46 +304,46 @@ if options.proc_embed or options.proc_all:
 
 if options.proc_bkg or options.proc_all:
   central_samples = [
-     'DYJetsToLL_M-10-50-LO-ext1',
-     'DYJetsToLL_M-10-50-LO',
-     'DY1JetsToLL-LO',
-     'DY2JetsToLL-LO',
-     'DY2JetsToLL-LO-ext',
-     'DY3JetsToLL-LO',
-     'DY3JetsToLL-LO-ext',
-     'DY4JetsToLL-LO',
+     # 'DYJetsToLL_M-10-50-LO-ext1',
+     # 'DYJetsToLL_M-10-50-LO',
+     # 'DY1JetsToLL-LO',
+     # 'DY2JetsToLL-LO',
+     # 'DY2JetsToLL-LO-ext',
+     # 'DY3JetsToLL-LO',
+     # 'DY3JetsToLL-LO-ext',
+     # 'DY4JetsToLL-LO',
      'DYJetsToLL-LO-ext1',
      'DYJetsToLL-LO',
-     'DYJetsToLL',
-     'DYJetsToLL-ext',
-     'EWKZ2Jets',
-     'EWKWPlus2Jets',
-     'EWKWMinus2Jets',
-     'WJetsToLNu-LO',
-     'WJetsToLNu-LO-ext',
-     'W1JetsToLNu-LO',
-     'W2JetsToLNu-LO',
-     'W3JetsToLNu-LO',
-     'W4JetsToLNu-LO',
-     'WGToLNuG',
-     'WWTo2L2Nu',
-     'WWToLNuQQ-ext',
-     'WWToLNuQQ',
-     'WZTo1L1Nu2Q',
-     'WZTo1L3Nu',
-     'WZTo2L2Q',
-     'WZTo3LNu',
-     'ZZTo2L2Nu',
-     'ZZTo2L2Q',
-     'ZZTo4L-ext',
-     'ZZTo4L',
-     'TTToSemiLeptonic',
-     'TTToHadronic',
-     'TTTo2L2Nu',
-     'T-tW',
-     'T-t',
-     'Tbar-tW',
-     'Tbar-t', 
+     # 'DYJetsToLL',
+     # 'DYJetsToLL-ext',
+     # 'EWKZ2Jets',
+     # 'EWKWPlus2Jets',
+     # 'EWKWMinus2Jets',
+     # 'WJetsToLNu-LO',
+     # 'WJetsToLNu-LO-ext',
+     # 'W1JetsToLNu-LO',
+     # 'W2JetsToLNu-LO',
+     # 'W3JetsToLNu-LO',
+     # 'W4JetsToLNu-LO',
+     # 'WGToLNuG',
+     # 'WWTo2L2Nu',
+     # 'WWToLNuQQ-ext',
+     # 'WWToLNuQQ',
+     # 'WZTo1L1Nu2Q',
+     # 'WZTo1L3Nu',
+     # 'WZTo2L2Q',
+     # 'WZTo3LNu',
+     # 'ZZTo2L2Nu',
+     # 'ZZTo2L2Q',
+     # 'ZZTo4L-ext',
+     # 'ZZTo4L',
+     # 'TTToSemiLeptonic',
+     # 'TTToHadronic',
+     # 'TTTo2L2Nu',
+     # 'T-tW',
+     # 'T-t',
+     # 'Tbar-tW',
+     # 'Tbar-t', 
      ]
   
 
@@ -391,6 +401,14 @@ if options.mg_signal or options.proc_sm:
       user='adow'
       SIG_FILELIST = 'filelists/Nov02_MC_94X'
       SIG_DIR = SIG_FILELIST.split('/')[1]
+    # elif 'GEN' in sa:
+    #   user='adow'
+    #   SIG_FILELIST = 'filelists/Dec03_MC_94X'
+    #   SIG_DIR = 'Dec03_GENSIM_94X'
+    elif 'SUSY' in sa or 'GluGluToHToTauTauPseudoscalarDecay' in sa or 'GluGluHToTauTau_M-125' in sa:
+      user='adow'
+      SIG_FILELIST = 'filelists/Dec04_MC_94X'
+      SIG_DIR = SIG_FILELIST.split('/')[1]
     else:
       user='adow'
       SIG_FILELIST = FILELIST
@@ -405,7 +423,7 @@ if options.mg_signal or options.proc_sm:
       if os.path.exists('%(SIG_FILELIST)s_%(sa)s.dat' %vars()):
         nfiles = sum(1 for line in open('%(SIG_FILELIST)s_%(sa)s.dat' % vars()))
         nperjob = 1
-        if 'MG' in sa or 'Maxmix' in sa or 'Pseudoscalar' in sa: nperjob = 10
+        if ('MG' in sa or 'Maxmix' in sa or 'Pseudoscalar' in sa) and 'GEN' not in sa: nperjob = 10
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())

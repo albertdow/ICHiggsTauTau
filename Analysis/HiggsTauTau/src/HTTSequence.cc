@@ -1197,7 +1197,7 @@ BuildModule(jetIDFilter);
       bbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_deepCSV_Winter2017_v2.root","/","btag_eff_b");
       cbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_deepCSV_Winter2017_v2.root","/","btag_eff_c");
       othbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_deepCSV_Winter2017_v2.root","/","btag_eff_oth");
-    } else if (strategy_type == strategy::cpsummer17) {
+    } else if (strategy_type == strategy::cpsummer17 && !use_deep_csv) {
       // update to 2017
       bbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_Winter2017.root","/","btag_eff_b");
       cbtag_eff = GetFromTFile<TH2F>("input/btag_sf/tagging_efficiencies_Winter2017.root","/","btag_eff_c");

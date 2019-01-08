@@ -1,5 +1,6 @@
 import ROOT as R
 import math
+import numpy as np
 from array import array
 import re
 import json
@@ -2121,9 +2122,9 @@ def HTTPlot(nodename,
         'ff_comp':[backgroundComp("t#bar{t} jet#rightarrow#tau_{h}",["TTJ"],R.TColor.GetColor(155,152,204)),backgroundComp("QCD", ["QCD"], R.TColor.GetColor(250,202,255)),backgroundComp("Electroweak jet#rightarrow#tau_{h}",["VVJ","W"],R.TColor.GetColor(222,90,106)),backgroundComp("Z#rightarrow ll jet#rightarrow#tau_{h}",["ZJ"],R.TColor.GetColor(100,192,232))]
         }
 
-    if vbf_background:
-        for key in background_schemes: 
-            background_schemes[key].append(backgroundComp("qqH#rightarrow#tau#tau + VH#rightarrow#tau#tau",["qqH_htt125","ZH_htt125", "WplusH_htt125","WminusH_htt125"],R.TColor.GetColor(51,51,230)))
+    # if vbf_background:
+    #     for key in background_schemes: 
+    #         background_schemes[key].append(backgroundComp("qqH#rightarrow#tau#tau + VH#rightarrow#tau#tau",["qqH_htt125","ZH_htt125", "WplusH_htt125","WminusH_htt125"],R.TColor.GetColor(51,51,230)))
     if embedding:
       background_schemes['zmm'] = [backgroundComp("#mu#rightarrow#mu embedding",["EmbedZL"],R.TColor.GetColor(100,192,232))]
       for chan in ['em','et','mt','tt','zmm','zee']:
@@ -2182,6 +2183,7 @@ def HTTPlot(nodename,
     stack = R.THStack("hs","")
     bkghist = R.TH1F()
     for hists in bkg_histos:
+      print hists
       stack.Add(hists.Clone())
       if bkghist.GetEntries()==0:
           bkghist = hists.Clone()
@@ -2530,13 +2532,13 @@ def HTTPlot(nodename,
         blind_ratio.DrawCopy("e0same")
         
         ## lines below will show seperate lines indicating systematic up and down bands
-        #if do_custom_uncerts:
-        #  bkg_uncert_up.SetLineColor(R.kBlue)
-        #  bkg_uncert_down.SetLineColor(R.kRed)
-        #  bkg_uncert_up = MakeRatioHist(bkg_uncert_up,bkghist.Clone(),True,False)
-        #  bkg_uncert_down = MakeRatioHist(bkg_uncert_down,bkghist.Clone(),True,False)
-        #  bkg_uncert_up.Draw('histsame')
-        #  bkg_uncert_down.Draw('histsame')
+        if do_custom_uncerts:
+            bkg_uncert_up.SetLineColor(R.TColor.GetColor("#1f78b4"))
+            bkg_uncert_down.SetLineColor(R.TColor.GetColor("#ff7f00"))
+            bkg_uncert_up = MakeRatioHist(bkg_uncert_up,bkghist.Clone(),True,False)
+            bkg_uncert_down = MakeRatioHist(bkg_uncert_down,bkghist.Clone(),True,False)
+            bkg_uncert_up.Draw('histsame')
+            bkg_uncert_down.Draw('histsame')
 
         pads[1].RedrawAxis("G")
 
@@ -2752,6 +2754,10 @@ def CompareHists(hists=[],
       if norm_bins and uncert_hist is not None: uncert_hist.Scale(1.0,"width")
 
     for hist in hists:
+        # print hist.GetName()
+        # for bin_ in range(1,hist.GetNbinsX()):
+        #     print hist.GetBinContent(bin_)
+        #     print np.sqrt(hist.GetBinContent(bin_))
         if norm_hists: hist.Scale(1.0/hist.Integral(0, hist.GetNbinsX()+1))
         if norm_bins: hist.Scale(1.0,"width")
         h = hist.Clone()
@@ -2868,8 +2874,8 @@ def CompareHists(hists=[],
     
     #CMS label and title
     #FixTopRange(pads[0], axish[0].GetMaximum(), extra_pad if extra_pad>0 else 0.30)
-    DrawCMSLogo(pads[0], 'CMS', 'Preliminary', 11, 0.045, 0.05, 1.0, '', 1.0)
-    #DrawCMSLogo(pads[0], 'CMS', 'Simulation', 11, 0.045, 0.05, 1.0, '', 1.0)
+    # DrawCMSLogo(pads[0], 'CMS', 'Preliminary', 11, 0.045, 0.05, 1.0, '', 1.0)
+    DrawCMSLogo(pads[0], 'CMS', 'Simulation', 11, 0.045, 0.05, 1.0, '', 1.0)
     DrawTitle(pads[0], title, 3)
     
     latex2 = R.TLatex()
