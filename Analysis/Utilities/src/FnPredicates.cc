@@ -2200,8 +2200,8 @@ namespace ic {
 
     if (indexToSmear == 0) {
       out_vec.SetPtEtaPhiE(input_vec.Pt()+(input_vec.P()*((1/std::cosh(input_vec.Eta() * smearVal_Eta))-(1/std::cosh(input_vec.Eta())))), input_vec.Eta() * smearVal_Eta, input_vec.Phi(), input_vec.E());
-      out_vec.SetPtEtaPhiE(input_vec.Pt(), input_vec.Eta(), input_vec.Phi() * smearVal_Phi, input_vec.E());
-      out_vec.SetPtEtaPhiE(input_vec.Pt() * smearVal_E, input_vec.Eta(), input_vec.Phi(), input_vec.E() * smearVal_E);
+      out_vec.SetPtEtaPhiE(out_vec.Pt(), out_vec.Eta(), out_vec.Phi() * smearVal_Phi, out_vec.E());
+      out_vec.SetPtEtaPhiE(out_vec.Pt() * smearVal_E, out_vec.Eta(), out_vec.Phi(), out_vec.E() * smearVal_E);
     }
     return out_vec;
   }
@@ -2249,7 +2249,35 @@ namespace ic {
     return sig_charged;
   }
 
-  // need to fix
+  std::vector<ic::PFCandidate*> GetTauIsoGammaCands(ic::Tau const* tau, 
+      std::map<std::size_t, ic::PFCandidate*> pfcands) {
+    std::vector<ic::PFCandidate*> iso_gammas = {};
+    auto const& iso_gammas_id = tau->iso_gamma_cands();
+    for (auto id : iso_gammas_id) iso_gammas.push_back(pfcands[id]);
+    std::sort(iso_gammas.begin(), iso_gammas.end(), 
+        bind(&PFCandidate::pt, _1) > bind(&PFCandidate::pt, _2));
+    return iso_gammas;
+  }
+
+  ic::Candidate* GetPiFromCands(ic::Tau const* tau, 
+          std::map<std::size_t, ic::PFCandidate*> pfcands) {
+    ic::Candidate* pi = new ic::Candidate();
+    double pt = 0.; 
+    double E = 0.; 
+    double eta = 0.; 
+    double phi = 0.; 
+    std::vector<ic::PFCandidate*> hadrons = GetTauChargedHadrCands(tau, pfcands);
+    for (auto hadron : hadrons){
+      pt  += hadron->pt();
+      E   += hadron->energy();
+      eta += hadron->vector().Eta();
+      phi += hadron->vector().Phi();
+    }
+    ROOT::Math::PtEtaPhiEVector vector(pt, eta, phi, E);
+    pi->set_vector(vector);
+    return pi;
+  }
+
   ic::Candidate* GetPi0FromCands(ic::Tau const* tau, 
           std::map<std::size_t, ic::PFCandidate*> pfcands) {
     ic::Candidate* pi0 = new ic::Candidate();
@@ -2275,7 +2303,6 @@ namespace ic {
     pi0->set_vector(vector);
     return pi0;
   }
-  // 
 
   ROOT::Math::PtEtaPhiEVector reconstructWboson(Candidate const*  lepton, Candidate const* met){
 

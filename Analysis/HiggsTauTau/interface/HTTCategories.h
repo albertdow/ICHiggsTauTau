@@ -245,7 +245,7 @@ class HTTCategories : public ModuleBase {
   double z_1_;
   double z_2_;
   float m_1_;
-  branch_var m_2_;
+  float m_2_;
   branch_var mva_1_;
   branch_var mva_2_;
   branch_var pfmet_;
@@ -520,6 +520,19 @@ class HTTCategories : public ModuleBase {
   double pi0_phi_2_;
   double pi0_E_1_;
   double pi0_E_2_;
+  double pi0_m_1_;
+  double pi0_m_2_;
+
+  double pi_pt_1_;
+  double pi_pt_2_;
+  double pi_eta_1_;
+  double pi_eta_2_;
+  double pi_phi_1_;
+  double pi_phi_2_;
+  double pi_E_1_;
+  double pi_E_2_;
+  double pi_m_1_;
+  double pi_m_2_;
   //gen 
   double gen_pi0_pt_1_;
   double gen_pi0_pt_2_;
@@ -539,26 +552,36 @@ class HTTCategories : public ModuleBase {
   double gen_pi_E_1_;
   double gen_pi_E_2_;
 
-  double pi0_cands_pt_1_;
-  double pi0_cands_pt_2_;
-  double pi0_cands_eta_1_;
-  double pi0_cands_eta_2_;
-  double pi0_cands_phi_1_;
-  double pi0_cands_phi_2_;
-  double pi0_cands_E_1_;
-  double pi0_cands_E_2_;
-
-  double pi_cands_pt_1_;
-  double pi_cands_pt_2_;
-  double pi_cands_eta_1_;
-  double pi_cands_eta_2_;
-  double pi_cands_phi_1_;
-  double pi_cands_phi_2_;
-  double pi_cands_E_1_;
-  double pi_cands_E_2_;
-
   double rho_m_1_;
   double rho_m_2_;
+  double rho_dphi_1_;
+  double rho_dphi_2_;
+  double rho_deta_1_;
+  double rho_deta_2_;
+  double gamma1_E_1_;
+  double gamma2_E_1_;
+  double gamma3_E_1_;
+  double gamma4_E_1_;
+  double gamma1_E_2_;
+  double gamma2_E_2_;
+  double gamma3_E_2_;
+  double gamma4_E_2_;
+  double gammas_deta_1_;
+  double gammas_deta_2_;
+  double gammas_dphi_1_;
+  double gammas_dphi_2_;
+
+  int Ngamma_1_;
+  int Ngamma_2_;
+
+  double aco_angle_;
+  double aco_angle_mod_;
+  int cp_channel_;
+  int cp_sign_;
+
+  double wt_cp_sm_;
+  double wt_cp_ps_;
+  double wt_cp_mm_;
   
   double pi0_E_1_res_;
   double pi0_E_2_res_;
@@ -1479,6 +1502,58 @@ class HTTCategories : public ModuleBase {
   double wt_prefire_;
   double wt_prefire_up_;
   double wt_prefire_down_;
+
+  // NN tau Ids
+  double dpfTauV0_iso_1_;
+  double dpfTauV0_iso_2_;
+  double dpfTauV1_iso_1_;
+  double dpfTauV1_iso_2_;
+  double deepTauVsJets_iso_1_;
+  double deepTauVsJets_iso_2_;
+  double deepTauVsEle_iso_1_;
+  double deepTauVsEle_iso_2_;
+
+  bool dpfTauV0_tight_1_;
+  bool dpfTauV0_tight_2_;
+  bool dpfTauV1_tight_1_;
+  bool dpfTauV1_tight_2_;
+
+  bool deepTauVsJets_vvvloose_1_;
+  bool deepTauVsJets_vvvloose_2_;
+  bool deepTauVsJets_vvloose_1_;
+  bool deepTauVsJets_vvloose_2_;
+  bool deepTauVsJets_vloose_1_;
+  bool deepTauVsJets_vloose_2_;
+  bool deepTauVsJets_loose_1_;
+  bool deepTauVsJets_loose_2_;
+  bool deepTauVsJets_medium_1_;
+  bool deepTauVsJets_medium_2_;
+  bool deepTauVsJets_tight_1_;
+  bool deepTauVsJets_tight_2_;
+  bool deepTauVsJets_vtight_1_;
+  bool deepTauVsJets_vtight_2_;
+  bool deepTauVsJets_vvtight_1_;
+  bool deepTauVsJets_vvtight_2_;
+
+  bool deepTauVsEle_vvvloose_1_;
+  bool deepTauVsEle_vvvloose_2_;
+  bool deepTauVsEle_vvloose_1_;
+  bool deepTauVsEle_vvloose_2_;
+  bool deepTauVsEle_vloose_1_;
+  bool deepTauVsEle_vloose_2_;
+  bool deepTauVsEle_loose_1_;
+  bool deepTauVsEle_loose_2_;
+  bool deepTauVsEle_medium_1_;
+  bool deepTauVsEle_medium_2_;
+  bool deepTauVsEle_tight_1_;
+  bool deepTauVsEle_tight_2_;
+  bool deepTauVsEle_vtight_1_;
+  bool deepTauVsEle_vtight_2_;
+  bool deepTauVsEle_vvtight_1_;
+  bool deepTauVsEle_vvtight_2_;
+  //
+
+
 
  public:
   HTTCategories(std::string const& name);

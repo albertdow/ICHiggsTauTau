@@ -98,7 +98,8 @@ parser.add_option("--config", dest="config", type='string', default='',
                   help="Config file")
 parser.add_option("--mg_signal", dest="mg_signal", action='store_true', default=False,
                   help="Process the MG signal samples")
-
+parser.add_option("--cp_decay", dest="cp_decay", action='store_true', default=False,
+                  help="Process the sample for CP in decay measurments")
 
 (options, args) = parser.parse_args()
 if options.wrapper: JOBWRAPPER=options.wrapper
@@ -178,8 +179,7 @@ for i in range(0,scale):
    temp='job:sequences:all:'+temp
    flatjsons.append(temp)
  
-# FILELIST='filelists/Apr02_MC_80X'
-FILELIST='filelists/Jan21_MC_80X'
+FILELIST='filelists/Jan31_MC_80X'
 
 signal_mc = [ ]
 signal_vh = [ ] 
@@ -192,15 +192,20 @@ file_persamp = open("./jobs/files_per_sample.txt", "w")
 
 if options.mg_signal:
   signal_mc += [
-  # 'GluGluToPseudoscalarHToTauTau_M125_amcatnloFXFX',
-  # 'GluGluToMaxmixHToTauTau_M125_amcatnloFXFX',
-  # 'GluGluToHToTauTau_M125_amcatnloFXFX',
-  # 'GluGluToPseudoscalarHToTauTauPlusTwoJets_M125_amcatnloFXFX',
-  # 'GluGluToMaxmixHToTauTauPlusTwoJets_M125_amcatnloFXFX',
+  'GluGluToPseudoscalarHToTauTau_M125_amcatnloFXFX',
+  'GluGluToMaxmixHToTauTau_M125_amcatnloFXFX',
+  'GluGluToHToTauTau_M125_amcatnloFXFX',
+  'GluGluToPseudoscalarHToTauTauPlusTwoJets_M125_amcatnloFXFX',
+  'GluGluToMaxmixHToTauTauPlusTwoJets_M125_amcatnloFXFX',
   'GluGluToHToTauTauPlusTwoJets_M125_amcatnloFXFX',
 
   ]
 
+if options.cp_decay:
+  signal_mc += [
+  'GluGluToHToTauTau_M-125-nospinner',
+  'VBFHToTauTau_M-125-nospinner'
+  ]
 
 if options.proc_sm or options.proc_all or options.proc_smbkg:
   if options.analysis == 'sm': masses = ['125']
@@ -208,36 +213,34 @@ if options.proc_sm or options.proc_all or options.proc_smbkg:
   if options.short_signal or options.proc_smbkg: masses = ['125']
   for mass in masses :
     signal_mc += [
-      # 'GluGluToHToTauTau_M-'+mass,
-      # 'VBFHToTauTau_M-'+mass,
-      # 'ZHToTauTau_M-'+mass,
-      # 'WplusHToTauTau_M-'+mass,
-      # 'WminusHToTauTau_M-'+mass#,
+      'GluGluToHToTauTau_M-'+mass,
+      'VBFHToTauTau_M-'+mass,
+      #'ZHToTauTau_M-'+mass,
+      #'WplusHToTauTau_M-'+mass,
+      #'WminusHToTauTau_M-'+mass#,
     ]
   if options.proc_sm:  
     signal_mc += [
-        # 'GluGluHToWWTo2L2Nu_M-125',
-        # 'VBFHToWWTo2L2Nu_M-125'
+        #'GluGluHToWWTo2L2Nu_M-125',
+        #'VBFHToWWTo2L2Nu_M-125'
         ]
   # add cp samples
   if options.cp_signal:
     signal_mc += [
-        'GluGluToHToTauTau_M-125-nospinner',
-        # 'VBFHToTauTau_M-125-nospinner',
-        #'GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar',
-        #'GluGluH2JetsToTauTau_M125_CPmixing_maxmix',
-        #'GluGluH2JetsToTauTau_M125_CPmixing_sm',
-        #'VBFHiggs0M_M-125',
-        #'VBFHiggs0Mf05ph0_M-125',
-        #'VBFHiggs0PM_M-125',
-        #'ZHiggs0M_M-125',
-        #'ZHiggs0Mf05ph0_M-125',
-        #'ZHiggs0PM_M-125',
-        #'WHiggs0M_M-125',
-        #'WHiggs0Mf05ph0_M-125',
-        #'WHiggs0PM_M-125'
-        ##'GluGluToHToTauTau_amcNLO_M-125',
-        ##'VBFHToTauTau_amcNLO_M-125'
+        'GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar',
+        'GluGluH2JetsToTauTau_M125_CPmixing_maxmix',
+        'GluGluH2JetsToTauTau_M125_CPmixing_sm',
+        'VBFHiggs0M_M-125',
+        'VBFHiggs0Mf05ph0_M-125',
+        'VBFHiggs0PM_M-125',
+        'ZHiggs0M_M-125',
+        'ZHiggs0Mf05ph0_M-125',
+        'ZHiggs0PM_M-125',
+        'WHiggs0M_M-125',
+        'WHiggs0Mf05ph0_M-125',
+        'WHiggs0PM_M-125'
+        #'GluGluToHToTauTau_amcNLO_M-125',
+        #'VBFHToTauTau_amcNLO_M-125'
     ]  
     
 if options.proc_mssm or options.proc_all:
@@ -338,12 +341,12 @@ if options.proc_data or options.proc_all or options.calc_lumi:
         
 
 
-  DATAFILELIST="./filelists/Apr02_Data_80X"
+  DATAFILELIST="./filelists/Jan31_Data_80X"
 
   if options.calc_lumi:
     for sa in data_samples:
         JOB='%s_2016' % (sa)
-        JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Apr02_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true,\"lumi_mask_only\":true}}' "%vars());
+        JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jan31_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true,\"lumi_mask_only\":true}}' "%vars());
         nfiles = sum(1 for line in open('%(DATAFILELIST)s_%(sa)s.dat' % vars()))
         nperjob = 500 
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
@@ -358,7 +361,7 @@ if options.proc_data or options.proc_all or options.calc_lumi:
   else:
     for sa in data_samples:
         JOB='%s_2016' % (sa)
-        JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Apr02_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true}}' "%vars());
+        JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(DATAFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jan31_Data_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_data\":true}}' "%vars());
         nfiles = sum(1 for line in open('%(DATAFILELIST)s_%(sa)s.dat' % vars()))
         nperjob = 40
         
@@ -392,16 +395,16 @@ if options.proc_embed or options.proc_all:
 
 
         
-  EMBEDFILELISTZMM="./filelists/Apr02_MC_80X"
+  EMBEDFILELISTZMM="./filelists/Jan31_MC_80X"
 
-  EMBEDFILELIST="./filelists/Apr02_MC_80X"
+  EMBEDFILELIST="./filelists/Jan31_MC_80X"
   
   for sa in embed_samples:
     job_num=0  
     JOB='%s_2016' % (sa)
-    JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(EMBEDFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Apr02_MC_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_embedded\":true}}' "%vars());
+    JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(EMBEDFILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jan31_MC_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_embedded\":true}}' "%vars());
     if 'EmbeddingMuMu' in sa:
-      JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(EMBEDFILELISTZMM)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Apr02_MC_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_embedded\":true}}' "%vars());
+      JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(EMBEDFILELISTZMM)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jan31_MC_80X/\",\"sequences\":{\"em\":[],\"et\":[],\"mt\":[],\"tt\":[],\"zmm\":[],\"zee\":[]}}, \"sequence\":{\"output_name\":\"%(JOB)s\",\"is_embedded\":true}}' "%vars());
     for FLATJSONPATCH in flatjsons: 
       nperjob = 10
       FLATJSONPATCH = FLATJSONPATCH.replace('^scale_j_hi^scale_j_lo','').replace('^scale_j_hf_hi^scale_j_hf_lo','').replace('^scale_j_cent_hi^scale_j_cent_lo','').replace('^scale_j_full_hi^scale_j_full_lo','').replace('^scale_j_relbal_hi^scale_j_relbal_lo','')
@@ -451,6 +454,7 @@ if options.proc_embed or options.proc_all:
 
 if options.proc_bkg or options.proc_all or options.qcd_study:
   central_samples = [
+    #'DYJetsToLL',
     'TT',
     'VVTo2L2Nu',
     'VVTo2L2Nu-ext1',
@@ -485,32 +489,24 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
     'WGToLNuG',
     'WGToLNuG-ext',
     'WGstarToLNuEE',
-    'WGstarToLNuMuMu',
-    'EWKWMinus2Jets_WToLNu-ext1',
-    'EWKWMinus2Jets_WToLNu-ext2',
-    'EWKWMinus2Jets_WToLNu',
-    'EWKWPlus2Jets_WToLNu-ext1',
-    'EWKWPlus2Jets_WToLNu-ext2',
-    'EWKWPlus2Jets_WToLNu',
-    'EWKZ2Jets_ZToLL-ext',
-    'EWKZ2Jets_ZToLL'
+    'WGstarToLNuMuMu'
      ]
   
   if options.analysis == 'sm':
     extra_samples = [
-      'EWKWMinus2Jets_WToLNu-ext1',
-      'EWKWMinus2Jets_WToLNu-ext2',
-      'EWKWMinus2Jets_WToLNu',
-      'EWKWPlus2Jets_WToLNu-ext1',
-      'EWKWPlus2Jets_WToLNu-ext2',
-      'EWKWPlus2Jets_WToLNu',
-      'EWKZ2Jets_ZToLL-ext',
-      'EWKZ2Jets_ZToLL'
+     'EWKWMinus2Jets_WToLNu-ext1',
+     'EWKWMinus2Jets_WToLNu-ext2',
+     'EWKWMinus2Jets_WToLNu',
+     'EWKWPlus2Jets_WToLNu-ext1',
+     'EWKWPlus2Jets_WToLNu-ext2',
+     'EWKWPlus2Jets_WToLNu',
+     'EWKZ2Jets_ZToLL-ext',
+     'EWKZ2Jets_ZToLL'
     ]
     central_samples.extend(extra_samples)
 
   if options.qcd_study:
-    FILELIST='filelists/Apr02_MC_80X'
+    FILELIST='filelists/Jan31_MC_80X'
     central_samples = [
       #'QCDEM_Pt120to170',
       #'QCDEM_Pt170to300',
@@ -541,10 +537,10 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
         nperjob = 20
         if 'scale' in FLATJSONPATCH:
           nperjob = 15
-        #if 'DY' in sa and 'JetsToLL' in sa:
-          #nperjob = 30
+        if 'DY' in sa and 'JetsToLL' in sa:
+          nperjob = 10
         if 'TT' in sa:
-          nperjob = 20
+          nperjob = 10
           if 'scale' in FLATJSONPATCH:
             nperjob = 15
 #        if 'WJetsToLNu' in sa or 'W1JetsToLNu' in sa or 'W2JetsToLNu' in sa or 'W3JetsToLNu' in sa or 'W4JetsToLNu' in sa:
@@ -576,11 +572,13 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
         os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
 #if float(n_scales*n_channels)/100 > 1: nperjob = int(math.ceil(nperjob/(float(n_scales*n_channels)/100)))  
 
-if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hhh or options.proc_all:
-  # if options.analysis == 'sm': SIG_FILELIST='filelists/Apr02_MC_80X' 
-  if options.analysis == 'sm': SIG_FILELIST='filelists/Jan21_MC_80X' 
+if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hhh or options.proc_all or options.cp_decay:
+  if options.analysis == 'sm': SIG_FILELIST='filelists/Jan31_MC_80X'
   else: SIG_FILELIST = FILELIST
   for sa in signal_mc:
+    SIG_FILELIST='filelists/Jan31_MC_80X'
+    if 'nospinner' in sa: SIG_FILELIST='filelists/Jan31_MC_80X'
+    if 'Higgs0' in sa or 'GluGluH2JetsToTauTau' in sa: SIG_FILELIST='filelists/Apr02_MC_80X'
     JOB='%s_2016' % (sa)
     SIG_DIR = SIG_FILELIST.split('/')[1]
     JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(SIG_FILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/%(SIG_DIR)s/\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
@@ -591,7 +589,7 @@ if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hh
       FLATJSONPATCH = FLATJSONPATCH.replace('^scale_mu_hi^scale_mu_lo','')
       if os.path.exists('%(SIG_FILELIST)s_%(sa)s.dat' %vars()):
         nfiles = sum(1 for line in open('%(SIG_FILELIST)s_%(sa)s.dat' % vars()))
-        nperjob = 1
+        nperjob = 10
         for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
           os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
           if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
@@ -602,52 +600,11 @@ if options.proc_sm or options.proc_smbkg or options.proc_mssm or options.proc_Hh
       PARAJOBSUBMIT = getParaJobSubmit(job_num)
       os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
       
-NLO_FILELIST='filelists/Jul22_MC_80X'
-      
-if options.proc_mssm_nlo or options.proc_mssm_nlo_qsh:
-  for sa in nlo_signal_mc:
-    JOB='%s_2016' % (sa)
-    JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(NLO_FILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/Jul22_MC_80X/\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
-    job_num=0
-    for FLATJSONPATCH in flatjsons:
-      if os.path.exists('%(NLO_FILELIST)s_%(sa)s.dat' %vars()):
-        nfiles = sum(1 for line in open('%(NLO_FILELIST)s_%(sa)s.dat' % vars()))
-        nperjob = 50
-        for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
-          os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
-          if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
-          job_num+=1   
-        file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-    if parajobs: 
-      os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
-      PARAJOBSUBMIT = getParaJobSubmit(job_num)
-      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
-      
-NLO_QSH_FILELIST='filelists/May23_MC_80X'
-
-if options.proc_mssm_nlo_qsh:
-  for sa in nlo_qsh_signal_mc:
-    JOB='%s_2016' % (sa)
-    JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(NLO_QSH_FILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/May23_MC_80X/\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
-    job_num=0
-    for FLATJSONPATCH in flatjsons:
-      if os.path.exists('%(NLO_QSH_FILELIST)s_%(sa)s.dat' %vars()):
-        nfiles = sum(1 for line in open('%(NLO_QSH_FILELIST)s_%(sa)s.dat' % vars()))
-        nperjob = 50
-        for i in range (0,int(math.ceil(float(nfiles)/float(nperjob)))) :
-          os.system('%(JOBWRAPPER)s "./bin/HTT --cfg=%(CONFIG)s --json=%(JSONPATCH)s --flatjson=%(FLATJSONPATCH)s --offset=%(i)d --nlines=%(nperjob)d &> jobs/%(JOB)s-%(job_num)d.log" jobs/%(JOB)s-%(job_num)s.sh' %vars())
-          if not parajobs: os.system('%(JOBSUBMIT)s jobs/%(JOB)s-%(job_num)d.sh' % vars())
-          job_num+=1 
-        file_persamp.write("%s %d\n" %(JOB, int(math.ceil(float(nfiles)/float(nperjob)))))
-    if parajobs: 
-      os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
-      PARAJOBSUBMIT = getParaJobSubmit(job_num)
-      os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars()) 
 
 if options.mg_signal:
   for sa in signal_mc:
-    if 'amcatnloFXFX' in sa: SIG_FILELIST='filelists/Oct24_MC_80X'
-    else: SIG_FILELIST='filelists/Aug14_MC_80X'
+    if 'amcatnloFXFX' in sa: SIG_FILELIST='filelists/Jan31_MC_80X'
+    else: SIG_FILELIST='filelists/Jan31_MC_80X'
     JOB='%s_2016' % (sa)
     SIG_DIR = SIG_FILELIST.split('/')[1]
     JSONPATCH= (r"'{\"job\":{\"filelist\":\"%(SIG_FILELIST)s_%(sa)s.dat\",\"file_prefix\":\"root://gfe02.grid.hep.ph.ic.ac.uk:1097//store/user/dwinterb/%(SIG_DIR)s/\"}, \"sequence\":{\"output_name\":\"%(JOB)s\"}}' "%vars());
@@ -669,4 +626,6 @@ if options.mg_signal:
       os.system('%(JOBWRAPPER)s ./jobs/%(JOB)s-\$\(\(SGE_TASK_ID-1\)\).sh  jobs/parajob_%(JOB)s.sh' %vars())
       PARAJOBSUBMIT = getParaJobSubmit(job_num)
       os.system('%(PARAJOBSUBMIT)s jobs/parajob_%(JOB)s.sh' % vars())
+
+
 
