@@ -61,7 +61,11 @@ def main(args):
     extras = ""
     if args.channel == "tt":
         plot_vars = [
-                "IC_Feb13_noSVFit_fix_max_score[0.0,0.4,0.5,0.6,0.7,0.8,0.9,1.0]",
+                # "rho_id_1(10,0,1)",
+                # "rho_id_2(10,0,1)",
+                "IC_Feb13_fix1_max_score[0.,0.4,0.5,0.6,0.7,0.8,1.0]",
+                # "IC_Feb13_fix1_max_score,aco_angle_mod[0.0,0.5,0.6,0.7,0.8],(14,0,6.3)",
+                # "aco_angle_mod(14,0,6.3)",
                 # "m_1(20,0,2)",
                 # "iso_1(20,0,1)",
                 # "deep_iso_1(40,-1,1)",
@@ -104,10 +108,10 @@ def main(args):
                 # "m_sv(30,0,300)",
                 # "n_jets(5,0,5)",
                 # "genM(30,0,300)",
-                
+
                 # "pt_tt,m_sv[0,100,170,300],[50,70,80,90,100,110,120,130,150,200,250]",
                 # "pt_tt(60,0,300)",
-                
+
                 # "m_vis[0,1000]",
                 # "IC_highMjj_Oct05_max_score[0.0,0.4,0.5,0.6,0.7,0.8,0.9,1.0]",
                 # "IC_binary_Oct11_score(20,0.,1.)",
@@ -117,15 +121,35 @@ def main(args):
                 # "jpt_1(17,30,200)","jpt_2(17,40,200)",
                 # "jeta_1(12,-4.7,4.7)","jeta_2(12,-4.7,4.7)",
                 # "met(20,0,200)","n_jets(5,0,5)",
+
+
+                # for FF checks
+
+                # "m_vis(25,20,250)",
+                # "m_sv(30,0,300)",
+                # "pt_tt(60,0,300)",
+                # "pt_1(20,40,140)","pt_2(12,40,100)",
+                # "met(20,0,200)",
+
+                # "n_jets(5,0,5)",
+                # "mjj(15,0,1500)",
+                # "jeta_1(12,-4.7,4.7)",
+                # "jeta_2(12,-4.7,4.7)",
+                # "jpt_1(17,30,200)","jpt_2(17,40,200)",
+
                 ]
         method = "8" if args.ff == False else "17"
 
         extras += " --cat {} ".format(args.cat)
         # extras += " --cat {}_highMjj ".format(args.cat)
-        extras += " --split_sm_scheme  "
+        # extras += " --split_sm_scheme  "
         # extras += ' --set_alias "inclusive:(n_jets>=2 && mjj>300 && fabs(jeta_2)>2.65 && fabs(jeta_2)<3.139)" '
         # extras += ' --ratio_range 0,2 '
         # extras += ' --ratio_range 0.3,1.7 '
+        # extras += '  --ff_ss_closure --custom_y_range --y_axis_min 0.2 --y_axis_max 2.4 '
+        extras += '  --ff_ss_closure '
+        extras += " --threePads "
+        extras += " --extra_pad 0.55 "
 
     elif args.channel in ["mt","et"]:
         # plot_vars = [
@@ -135,11 +159,11 @@ def main(args):
         #         "jeta_1(12,-4.7,4.7)","jeta_2(12,-4.7,4.7)","mjj(40,0,800)",
         #         "met(20,0,200)","n_jets(5,0,5)"]
         plot_vars = [
-                "m_1(20,0,2)",
-                # "deepTauVsJets_iso_2(20,0,1)",
-                # "deepTauVsEle_iso_2(20,0,1)",
-                # "dpfTauV0_iso_2(40,-1,1)",
-                # "iso_2(20,0,1)",
+                # "m_1(20,0,2)",
+                "deepTauVsJets_iso_2(20,0,1)",
+                "deepTauVsEle_iso_2(20,0,1)",
+                "dpfTauV0_iso_2(20,0,1)",
+                "iso_2(20,0,1)",
                 # "m_sv(30,0,300)",
                 # "jpt_1(16,0,400)",
                 # "jpt_2(30,0,300)",
@@ -313,9 +337,9 @@ def main(args):
             if "sjdphi" in var or "jeta" in var:
                 extras += " --extra_pad 0.55 "
             run_command(' python scripts/HiggsTauTauPlot.py --cfg ' 
-                    + ' scripts/new_plot_sm_2016_NewPlotting.cfg --ratio '
+                    + ' scripts/plot_cpdecays_2016.cfg --ratio '
                     + ' --var "{}" --channel {} '.format(var,args.channel)
-                    + ' --method {}  {} '.format(method,extras))
+                    + ' --method {} --norm_bins {} '.format(method,extras))
         # elif args.channel in ["mt","tt"]:
         #     if "sjdphi" in var or "jeta" in var:
         #         extras += " --extra_pad 0.55 "

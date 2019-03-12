@@ -482,8 +482,8 @@ class HTTCategories : public ModuleBase {
   double gen_sjdphi_;
   double gen_m_;
   double gen_pt_;
-  int tauDecayFlag_1_;
-  int tauDecayFlag_2_;
+  int tauFlag_1_;
+  int tauFlag_2_;
   /*double leading_lepton_match_pt_;
   double subleading_lepton_match_pt_;
   double leading_lepton_match_DR_;
@@ -582,6 +582,9 @@ class HTTCategories : public ModuleBase {
   double wt_cp_sm_;
   double wt_cp_ps_;
   double wt_cp_mm_;
+
+  double rho_id_1_;
+  double rho_id_2_;
   
   double pi0_E_1_res_;
   double pi0_E_2_res_;

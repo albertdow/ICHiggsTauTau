@@ -102,8 +102,8 @@ namespace ic {
       outtree_->Branch("parton_pt_3"     , &parton_pt_3_);
       outtree_->Branch("parton_mjj",    &parton_mjj_);
       outtree_->Branch("npNLO", &npNLO_);
-      outtree_->Branch("tauDecayFlag_1", &tauDecayFlag_1_);
-      outtree_->Branch("tauDecayFlag_2", &tauDecayFlag_2_);
+      outtree_->Branch("tauFlag_1", &tauFlag_1_);
+      outtree_->Branch("tauFlag_2", &tauFlag_2_);
       //end of temp gen stuff
       if(do_sm_ps_wts_ && !systematic_shift_){
         outtree_->Branch("wt_ps_up", & wt_ps_up_);
@@ -926,9 +926,12 @@ namespace ic {
 
       outtree_->Branch("aco_angle", &aco_angle_);
       outtree_->Branch("aco_angle_mod", &aco_angle_mod_);
+      outtree_->Branch("cp_sign", &cp_sign_);
       outtree_->Branch("wt_cp_sm", &wt_cp_sm_);
       outtree_->Branch("wt_cp_ps", &wt_cp_ps_);
       outtree_->Branch("wt_cp_mm", &wt_cp_mm_);
+      outtree_->Branch("rho_id_1", &rho_id_1_);
+      outtree_->Branch("rho_id_2", &rho_id_2_);
 
       outtree_->Branch("E_1", & E_1_);
       outtree_->Branch("E_2", & E_2_);
@@ -2767,8 +2770,8 @@ namespace ic {
 
     if(event->Exists("gen_sjdphi")) gen_sjdphi_ = event->Get<double>("gen_sjdphi");
 
-    if(event->Exists("tauDecayFlag_1")) tauDecayFlag_1_ = event->Get<int>("tauDecayFlag_1");
-    if(event->Exists("tauDecayFlag_2")) tauDecayFlag_2_ = event->Get<int>("tauDecayFlag_2");
+    if(event->Exists("tauFlag_1")) tauFlag_1_ = event->Get<int>("tauFlag1");
+    if(event->Exists("tauFlag_2")) tauFlag_2_ = event->Get<int>("tauFlag2");
    
     wt_ggh_pt_up_ = 1.0;
     wt_ggh_pt_down_ = 1.0;
@@ -4940,6 +4943,9 @@ namespace ic {
       wt_cp_ps_ = tauspinner->weight("wt_cp_0p5");
       wt_cp_mm_ = tauspinner->weight("wt_cp_0p25");
     }
+    rho_id_1_ = event->Exists("rho_id_1") ? event->Get<double>("rho_id_1") : 1.0;
+    rho_id_2_ = event->Exists("rho_id_2") ? event->Get<double>("rho_id_2") : 1.0;
+
     if (channel_ == channel::tt && event->ExistsInTree("pfCandidates")) {
       Tau const* tau1 = dynamic_cast<Tau const*>(lep1);
       Tau const* tau2 = dynamic_cast<Tau const*>(lep2);
@@ -4998,7 +5004,24 @@ namespace ic {
       TLorentzVector lvec3;
       TLorentzVector lvec4;
 
-      if(tau_decay_mode_1_==1&&tau_decay_mode_2_==1){
+      if(tau_decay_mode_1_==1&&tau_decay_mode_2_==0){
+        cp_channel_=2;
+        lvec1 = ConvertToLorentz(pi0_tau1->vector());
+        lvec2 = ConvertToLorentz(tau2->vector());
+        lvec3 = ConvertToLorentz(pi_tau1->vector());
+        lvec4 = ConvertToLorentz(pi_tau2->vector());
+
+        cp_sign_ = YRho(std::vector<Candidate*>({pi0_tau1, pi_tau1}),TVector3());
+      }
+      else if(tau_decay_mode_1_==0&&tau_decay_mode_2_==1){
+        cp_channel_=2;
+        lvec1 = ConvertToLorentz(pi0_tau2->vector());
+        lvec2 = ConvertToLorentz(tau1->vector());
+        lvec3 = ConvertToLorentz(pi_tau2->vector());
+        lvec4 = ConvertToLorentz(pi_tau1->vector());
+        cp_sign_ = YRho(std::vector<Candidate*>({pi0_tau2, pi_tau2}),TVector3());
+      }
+      else if(tau_decay_mode_1_==1&&tau_decay_mode_2_==1){
         cp_channel_=3;
         lvec1 = ConvertToLorentz(pi0_tau1->vector());
         lvec2 = ConvertToLorentz(pi0_tau2->vector());
@@ -5022,10 +5045,6 @@ namespace ic {
       } else {
         aco_angle_mod_ = aco_angle_;
         }
-      }
-      else {
-        aco_angle_ = -9999;
-        aco_angle_mod_ = -9999;
       }
 
       if(tau_decay_mode_1_==1) {

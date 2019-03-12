@@ -140,7 +140,7 @@ for scale in scale_list:
     flatjsonlistdysig.append("^%(scale)s_hi^%(scale)s_lo"%vars()) 
  
 if analysis == 'sm':
-  CONFIG='scripts/configsm2016.json'
+  CONFIG='scripts/configsm2016cpdecay.json'
 else:
   CONFIG='scripts/config2016.json'
 if options.config != '': CONFIG = options.config
@@ -215,14 +215,14 @@ if options.proc_sm or options.proc_all or options.proc_smbkg:
     signal_mc += [
       'GluGluToHToTauTau_M-'+mass,
       'VBFHToTauTau_M-'+mass,
-      #'ZHToTauTau_M-'+mass,
-      #'WplusHToTauTau_M-'+mass,
-      #'WminusHToTauTau_M-'+mass#,
+      'ZHToTauTau_M-'+mass,
+      'WplusHToTauTau_M-'+mass,
+      'WminusHToTauTau_M-'+mass#,
     ]
   if options.proc_sm:  
     signal_mc += [
-        #'GluGluHToWWTo2L2Nu_M-125',
-        #'VBFHToWWTo2L2Nu_M-125'
+        'GluGluHToWWTo2L2Nu_M-125',
+        'VBFHToWWTo2L2Nu_M-125'
         ]
   # add cp samples
   if options.cp_signal:
@@ -340,7 +340,6 @@ if options.proc_data or options.proc_all or options.calc_lumi:
                 'Tau'+era+'v3'] 
         
 
-
   DATAFILELIST="./filelists/Jan31_Data_80X"
 
   if options.calc_lumi:
@@ -454,19 +453,19 @@ if options.proc_embed or options.proc_all:
 
 if options.proc_bkg or options.proc_all or options.qcd_study:
   central_samples = [
-    #'DYJetsToLL',
-    'TT',
+    # 'DYJetsToLL',
+    # 'TT',
     'VVTo2L2Nu',
     'VVTo2L2Nu-ext1',
     'ZZTo2L2Q',
     'ZZTo4L-amcat',
-    'WWTo1L1Nu2Q',
+    # 'WWTo1L1Nu2Q',
     'WZJToLLLNu',
-    'WZTo1L3Nu',
+    # 'WZTo1L3Nu',
     'WZTo2L2Q',
     'WZTo1L1Nu2Q',
-    'T-t',
-    'Tbar-t',
+    # 'T-t',
+    # 'Tbar-t',
     'T-tW',
     'Tbar-tW',
     'DYJetsToLL-LO-ext1',
@@ -494,14 +493,14 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
   
   if options.analysis == 'sm':
     extra_samples = [
-     'EWKWMinus2Jets_WToLNu-ext1',
-     'EWKWMinus2Jets_WToLNu-ext2',
-     'EWKWMinus2Jets_WToLNu',
-     'EWKWPlus2Jets_WToLNu-ext1',
-     'EWKWPlus2Jets_WToLNu-ext2',
-     'EWKWPlus2Jets_WToLNu',
-     'EWKZ2Jets_ZToLL-ext',
-     'EWKZ2Jets_ZToLL'
+      'EWKWMinus2Jets_WToLNu-ext1',
+      'EWKWMinus2Jets_WToLNu-ext2',
+      'EWKWMinus2Jets_WToLNu',
+      'EWKWPlus2Jets_WToLNu-ext1',
+      'EWKWPlus2Jets_WToLNu-ext2',
+      'EWKWPlus2Jets_WToLNu',
+      'EWKZ2Jets_ZToLL-ext',
+      'EWKZ2Jets_ZToLL'
     ]
     central_samples.extend(extra_samples)
 
@@ -536,13 +535,13 @@ if options.proc_bkg or options.proc_all or options.qcd_study:
       for FLATJSONPATCH in flatjsons: 
         nperjob = 20
         if 'scale' in FLATJSONPATCH:
-          nperjob = 15
+          nperjob = 5
         if 'DY' in sa and 'JetsToLL' in sa:
-          nperjob = 10
+          nperjob = 5
         if 'TT' in sa:
           nperjob = 10
           if 'scale' in FLATJSONPATCH:
-            nperjob = 15
+            nperjob = 2
 #        if 'WJetsToLNu' in sa or 'W1JetsToLNu' in sa or 'W2JetsToLNu' in sa or 'W3JetsToLNu' in sa or 'W4JetsToLNu' in sa:
 #          nperjob = 30
         if 'QCD' in sa:
