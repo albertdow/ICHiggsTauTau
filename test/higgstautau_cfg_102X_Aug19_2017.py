@@ -11,9 +11,9 @@ opts = parser.VarParsing ('analysis')
 opts.register('file',
 # 'root://xrootd.unl.edu//store/user/jbechtel/gc_storage/TauTau_data_2017_CMSSW944/TauEmbedding_TauTau_data_2017_CMSSW944_Run2017B/1/merged_0.root_'
 #'root://xrootd.unl.edu//store/user/sbrommer/gc_storage/ElTau_data_2017_CMSSW944/TauEmbedding_ElTau_data_2017_CMSSW944_Run2017B/25/merged_1524.root_'
-  'root://xrootd.unl.edu//store/mc/RunIIFall17MiniAODv2/VBFHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/280000/E2C688CA-1F1C-E911-9847-0CC47AD98BC2.root',
+  # 'root://xrootd.unl.edu//store/mc/RunIIFall17MiniAODv2/VBFHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/280000/E2C688CA-1F1C-E911-9847-0CC47AD98BC2.root',
 # 'root://xrootd.unl.edu//store/mc/RunIIFall17MiniAODv2/SUSYGluGluToHToTauTau_M-120_TuneCP5_13TeV-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/C4C4D050-DE41-E811-A2A6-0025905B85B6.root'
-#'root://xrootd.unl.edu///store/data/Run2017B/SingleMuon/MINIAOD/31Mar2018-v1/80000/248C8431-B838-E811-B418-0025905B85D2.root'
+'root://xrootd.unl.edu///store/data/Run2017B/SingleMuon/MINIAOD/31Mar2018-v1/80000/248C8431-B838-E811-B418-0025905B85D2.root',
 parser.VarParsing.multiplicity.singleton,
 parser.VarParsing.varType.string, "input file")
 opts.register('globalTag', '102X_dataRun2_v8', parser.VarParsing.multiplicity.singleton,
@@ -756,7 +756,7 @@ process.icPFJetSequence += cms.Sequence(
     process.selectedSlimmedJetsAK4+
     #process.unpackedTracksAndVertices+  # this line causes an exception, commenting it out means some jet variables aren't filled - i can't see these variabled being used anywhere at the moment but if this changes then this needs to be fixed
    # process.icPFJetProducerFromPat +
-   process.icPFJetProducerFromPatNew
+    process.icPFJetProducerFromPatNew
     )
 
 ################################################################
@@ -770,8 +770,8 @@ from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMet
 runMetCorAndUncFromMiniAOD (
         process,
         isData = (bool(isData) or bool(isEmbed)),
-        fixEE2017 = True,
-        fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} ,
+        # fixEE2017 = True,
+        # fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} ,
         postfix = "ModifiedMET"
 )
 
@@ -1408,6 +1408,7 @@ process.p = cms.Path(
     process.icMetSequence+
     process.icPFJetSequence+
     process.icPFSequence+
+    process.icPhotonSequence+
     process.icGenSequence+
     process.icL1EGammaProducer+
     process.icL1TauProducer+
@@ -1416,8 +1417,7 @@ process.p = cms.Path(
     process.icTriggerObjectSequence+
     process.icTauSpinnerSequence+
     process.icEventInfoSequence+
-    process.icEventProducer+
-    process.icPhotonSequence
+    process.icEventProducer
 )
 
 

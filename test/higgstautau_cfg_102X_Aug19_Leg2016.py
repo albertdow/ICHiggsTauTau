@@ -70,14 +70,10 @@ process.TFileService = cms.Service("TFileService",
 # Message Logging, summary, and number of events
 ################################################################
 process.maxEvents = cms.untracked.PSet(
-  input = cms.untracked.int32(1000)
+  input = cms.untracked.int32(10)
 )
 
 process.MessageLogger.cerr.FwkReport.reportEvery = 50
-
-process.options   = cms.untracked.PSet(
-  wantSummary = cms.untracked.bool(True)
-)
 
 
 ################################################################
@@ -93,7 +89,8 @@ infile
 process.GlobalTag.globaltag = cms.string(tag)
 
 process.options   = cms.untracked.PSet(
-  FailPath=cms.untracked.vstring("FileReadError")
+  FailPath=cms.untracked.vstring("FileReadError"),
+  wantSummary = cms.untracked.bool(True)
 )
 
 import UserCode.ICHiggsTauTau.default_producers_cfi as producers
