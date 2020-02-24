@@ -220,6 +220,12 @@ class HTTCategories : public ModuleBase {
   double dR_;
   double met_dphi_1_;
   double met_dphi_2_;
+
+  double newmet_dphi_1_;
+  double newmet_dphi_2_;
+  double newmet_;
+  double qcd_frac_score_, w_frac_score_;
+
   double emu_csv_;
   double emu_dxy_1_;
   double emu_dxy_2_;
@@ -241,6 +247,8 @@ class HTTCategories : public ModuleBase {
   int jet_flav_1_;
   int jet_flav_2_;
   int jet_flav_3_;
+  double jet_pt_1_;
+  double jet_pt_2_;
   bool tag_trigger_match_1_;
   bool tag_trigger_match_2_;
   bool probe_trigger_match_1_;
@@ -605,10 +613,10 @@ class HTTCategories : public ModuleBase {
   double wt_ff_1_;
   double wt_ff_2_;
 
-  double wt_ff_dmbins_qcd_stat_l_pt_down_1_;
-  double wt_ff_dmbins_qcd_stat_l_pt_up_1_;
-  double wt_ff_dmbins_qcd_stat_met_down_1_;
-  double wt_ff_dmbins_qcd_stat_met_up_1_;
+  double wt_ff_dmbins_qcd_l_pt_down_1_;
+  double wt_ff_dmbins_qcd_l_pt_up_1_;
+  double wt_ff_dmbins_qcd_met_down_1_;
+  double wt_ff_dmbins_qcd_met_up_1_;
   double wt_ff_dmbins_qcd_stat_njet0_dm0_down_1_;
   double wt_ff_dmbins_qcd_stat_njet0_dm0_down_2_;
   double wt_ff_dmbins_qcd_stat_njet0_dm0_up_1_;
@@ -659,10 +667,10 @@ class HTTCategories : public ModuleBase {
   double wt_ff_dmbins_qcd_stat_njet2_dm1_up_2_;
   double wt_ff_dmbins_qcd_syst_down_1_;
   double wt_ff_dmbins_qcd_syst_up_1_;
-  double wt_ff_dmbins_wjets_stat_l_pt_down_1_;
-  double wt_ff_dmbins_wjets_stat_l_pt_up_1_;
-  double wt_ff_dmbins_wjets_stat_met_down_1_;
-  double wt_ff_dmbins_wjets_stat_met_up_1_;
+  double wt_ff_dmbins_wjets_l_pt_down_1_;
+  double wt_ff_dmbins_wjets_l_pt_up_1_;
+  double wt_ff_dmbins_wjets_met_down_1_;
+  double wt_ff_dmbins_wjets_met_up_1_;
   double wt_ff_dmbins_wjets_stat_njet0_dm0_down_1_;
   double wt_ff_dmbins_wjets_stat_njet0_dm0_up_1_;
   double wt_ff_dmbins_wjets_stat_njet0_dm10_down_1_;
@@ -689,12 +697,12 @@ class HTTCategories : public ModuleBase {
   double wt_ff_dmbins_wjets_stat_njet2_dm1_up_1_;
   double wt_ff_dmbins_wjets_syst_down_1_;
   double wt_ff_dmbins_wjets_syst_up_1_;
-  double wt_ff_qcd_stat_l_pt_down_1_;
-  double wt_ff_qcd_stat_l_pt_up_1_;
-  double wt_ff_qcd_stat_met_down_1_;
-  double wt_ff_qcd_stat_met_down_2_;
-  double wt_ff_qcd_stat_met_up_1_;
-  double wt_ff_qcd_stat_met_up_2_;
+  double wt_ff_qcd_l_pt_down_1_;
+  double wt_ff_qcd_l_pt_up_1_;
+  double wt_ff_qcd_met_down_1_;
+  double wt_ff_qcd_met_down_2_;
+  double wt_ff_qcd_met_up_1_;
+  double wt_ff_qcd_met_up_2_;
   double wt_ff_qcd_stat_njet0_mvadm0_sig_gt3_down_1_;
   double wt_ff_qcd_stat_njet0_mvadm0_sig_gt3_down_2_;
   double wt_ff_qcd_stat_njet0_mvadm0_sig_gt3_up_1_;
@@ -771,10 +779,10 @@ class HTTCategories : public ModuleBase {
   double wt_ff_qcd_syst_down_2_;
   double wt_ff_qcd_syst_up_1_;
   double wt_ff_qcd_syst_up_2_;
-  double wt_ff_wjets_stat_l_pt_down_1_;
-  double wt_ff_wjets_stat_l_pt_up_1_;
-  double wt_ff_wjets_stat_met_down_1_;
-  double wt_ff_wjets_stat_met_up_1_;
+  double wt_ff_wjets_l_pt_down_1_;
+  double wt_ff_wjets_l_pt_up_1_;
+  double wt_ff_wjets_met_down_1_;
+  double wt_ff_wjets_met_up_1_;
   double wt_ff_wjets_stat_njet0_mvadm0_sig_gt3_down_1_;
   double wt_ff_wjets_stat_njet0_mvadm0_sig_gt3_up_1_;
   double wt_ff_wjets_stat_njet0_mvadm0_sig_lt3_down_1_;
