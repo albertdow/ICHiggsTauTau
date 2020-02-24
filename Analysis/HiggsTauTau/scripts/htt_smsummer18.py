@@ -164,6 +164,9 @@ signal_mc = [ ]
 signal_vh = [ ]
 signal_mc_ww = [ ]
 
+if not os.path.isdir("./jobs/"):
+    os.system("mkdir ./jobs/")
+
 if os.path.isfile("./jobs/files_per_sample.txt"):
     os.system("mv ./jobs/files_per_sample.txt ./jobs/files_per_sample-%(BACKUPNAME)s.txt"%vars())
 
