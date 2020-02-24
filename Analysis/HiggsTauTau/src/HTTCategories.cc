@@ -581,6 +581,8 @@ namespace ic {
       outtree_->Branch("jdeta",             &jdeta_.var_double);
       outtree_->Branch("jdphi",             &jdphi_);
       outtree_->Branch("dphi_jtt",          &dphi_jtt_);
+      outtree_->Branch("residual_pt",       &residual_pt_);
+      outtree_->Branch("residual_phi",      &residual_phi_);
       outtree_->Branch("dijetpt",           &dijetpt_);
       outtree_->Branch("centrality",        &centrality_);
       outtree_->Branch("mt_1_nomu"    , &mt_1_nomu_     );
@@ -614,6 +616,11 @@ namespace ic {
       outtree_->Branch("gen_sjdphi", &gen_sjdphi_);
       outtree_->Branch("gen_mjj", &gen_mjj_);
       outtree_->Branch("ngenjets" , &ngenjets_);
+      outtree_->Branch("gen_jpt_1" ,      & gen_jpt_1_);
+      outtree_->Branch("gen_jphi_1" ,     & gen_jphi_1_);
+      outtree_->Branch("jdphi_gen_reco" , & jdphi_gen_reco_);
+      outtree_->Branch("jpt20_sum" ,     & jpt20_sum_);
+      outtree_->Branch("jphi20_sum" ,    & jphi20_sum_);
       outtree_->Branch("genM", &gen_m_);
       outtree_->Branch("genpT", &gen_pt_);
       outtree_->Branch("m_1", &m_1_, "m_1/F");
@@ -2216,6 +2223,9 @@ namespace ic {
     if(event->Exists("ngenjets")) ngenjets_ = event->Get<unsigned>("ngenjets");
     if(event->Exists("gen_sjdphi")) gen_sjdphi_ = event->Get<double>("gen_sjdphi");
     if(event->Exists("gen_mjj")) gen_mjj_ = event->Get<double>("gen_mjj");
+    if(event->Exists("gen_jpt_1")) gen_jpt_1_ = event->Get<double>("gen_jpt_1");
+    if(event->Exists("gen_jphi_1")) gen_jphi_1_ = event->Get<double>("gen_jphi_1");
+    if(event->Exists("jdphi_gen_reco")) jdphi_gen_reco_ = event->Get<double>("jdphi_gen_reco");
     if(event->Exists("tauFlag1")) tauFlag_1_ = event->Get<int>("tauFlag1");
     if(event->Exists("tauFlag2")) tauFlag_2_ = event->Get<int>("tauFlag2");
    
@@ -3701,6 +3711,9 @@ namespace ic {
         j1_dm_ = -1;
       }
       dphi_jtt_ =  ROOT::Math::VectorUtil::DeltaPhi(lowpt_jets[0]->vector(), ditau->vector());
+      residual_pt_ =  (mets->vector() + lowpt_jets[0]->vector() + ditau->vector()).pt();
+      residual_phi_ =  (mets->vector() + lowpt_jets[0]->vector() + ditau->vector()).phi();
+      
     } else {
       jpt_1_ = -9999;
       jeta_1_ = -9999;
@@ -3718,6 +3731,8 @@ namespace ic {
       jnemf_1_  = -9999.;
       jchhf_1_ = -9999.;
       jnhf_1_  = -9999.;
+      residual_pt_ =  -9999.;
+      residual_phi_ = -9999.;
     }
 
     if (n_lowpt_jets_ >= 2) {
@@ -3855,6 +3870,19 @@ namespace ic {
       mjj_lowpt_ = -9999;
       jdeta_lowpt_ = -9999;
       n_jetsingap_lowpt_ = 9999;
+    }
+
+    ROOT::Math::PtEtaPhiEVector lowpt_jets_vecsum;
+    if (n_lowpt_jets_ > 0) {
+      for (auto lowpt_jet: lowpt_jets) {
+        lowpt_jets_vecsum += lowpt_jet->vector();
+      }
+      jpt20_sum_  = lowpt_jets_vecsum.pt();
+      jphi20_sum_ = lowpt_jets_vecsum.phi();
+    }
+    else {
+      jpt20_sum_ = -9999.;
+      jphi20_sum_ = -9999.;
     }
     
     if((strategy_ == strategy::smsummer16 || strategy_ == strategy::cpsummer16 || strategy_ == strategy::legacy16 ||  strategy_ == strategy::cpdecays16) && do_sm_scale_wts_ && !systematic_shift_){

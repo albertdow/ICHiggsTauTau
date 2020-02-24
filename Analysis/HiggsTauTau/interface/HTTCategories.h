@@ -209,6 +209,13 @@ class HTTCategories : public ModuleBase {
   double dphi_;
 
   double dphi_jtt_;
+  double residual_pt_;
+  double residual_phi_;
+  double jpt20_sum_;
+  double jphi20_sum_;
+  double gen_jpt_1_;
+  double gen_jphi_1_;
+  double jdphi_gen_reco_;
 
   double dR_;
   double met_dphi_1_;

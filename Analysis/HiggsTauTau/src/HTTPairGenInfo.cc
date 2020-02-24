@@ -238,7 +238,36 @@ namespace ic {
       event->Add("ngenjets", ngenjets);
       event->Add("gen_sjdphi", gen_sjdphi_);
       event->Add("gen_mjj", gen_mjj_);
+
+
+      std::vector<ic::PFJet*> jets = event->GetPtrVec<ic::PFJet>("ak4PFJetsCHS");
+      std::sort(jets.begin(), jets.end(), bind(&Candidate::pt, _1) > bind(&Candidate::pt, _2));
+      ic::erase_if(jets,!boost::bind(MinPtMaxEta, _1, 30.0, 4.7));
+      double gen_jpt_1      = -9999.;
+      double gen_jphi_1     = -9999.;
+      double jdphi_gen_reco = -9999.;
+      double smallest_dr    = 9999.;
+      double test_dr        = 9999.;
+      unsigned index        = 0;
+      if (jets.size() > 0) {
+        for (unsigned gjet = 0; gjet < ngenjets; gjet++) {
+          test_dr = ROOT::Math::VectorUtil::DeltaR(jets[0]->vector(), gen_jets[gjet]->vector());
+          if (test_dr < smallest_dr) {
+            smallest_dr = test_dr;
+            index = gjet;
+          }
+        }
+        if (smallest_dr < 0.4) {
+          gen_jpt_1      = gen_jets[index]->vector().pt();
+          gen_jphi_1     = gen_jets[index]->vector().phi();
+          jdphi_gen_reco = ROOT::Math::VectorUtil::DeltaPhi(jets[0]->vector(), gen_jets[index]->vector());
+        }
+        event->Add("gen_jpt_1",      gen_jpt_1);
+        event->Add("gen_jphi_1",     gen_jphi_1);
+        event->Add("jdphi_gen_reco", jdphi_gen_reco);
+      }
     }
+
 
     return 0;
   }
