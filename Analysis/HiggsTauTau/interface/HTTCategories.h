@@ -520,6 +520,7 @@ class HTTCategories : public ModuleBase {
   branch_var jdeta_;     // Defined if n_jets >= 2
   float jdphi_;
   float sjdphi_;
+  float sjdphi_smear_;
   float D0_;
   float DCP_;
   unsigned opp_sides_;
