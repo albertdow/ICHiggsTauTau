@@ -7,6 +7,7 @@
 #include "UserCode/ICHiggsTauTau/Analysis/HiggsTauTau/interface/HTTConfig.h"
 #include "UserCode/ICHiggsTauTau/Analysis/Utilities/interface/HistoSet.h"
 #include "TRandom3.h"
+#include "TF1.h"
 
 #include <string>
 
@@ -55,6 +56,8 @@ class HTTCategories : public ModuleBase {
   TFile *lOFile;
 
   TRandom3  *rand;
+
+  std::map<std::string, TF1*> fns_;
 
   struct branch_var {
       double var_double;  
@@ -209,10 +212,16 @@ class HTTCategories : public ModuleBase {
   double dphi_;
 
   double dphi_jtt_;
+  double shifted_dphi_jtt_;
+  double dphi_jtt_smear_;
+  double smear_jet_delta_;
+  double shifted_dphi_jtt_smear_;
   double residual_pt_;
   double residual_phi_;
+  double dphi_residual_tt_;
   double jpt20_sum_;
   double jphi20_sum_;
+  double dphi_j20_tt_;
   double gen_jpt_1_;
   double gen_jphi_1_;
   double jdphi_gen_reco_;

@@ -71,6 +71,34 @@ namespace ic {
 
 
     rand = new TRandom3(0);
+
+    TFile f_smear("smear_file_2018_zmm_formula_locnotfixed.root");
+    fns_["smear_func_ptlow30_etalow0p0"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow30_etalow0p0"
+    );
+    fns_["smear_func_ptlow30_etalow1p1"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow30_etalow1p1"
+    );
+    fns_["smear_func_ptlow30_etalow2p1"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow30_etalow2p1"
+    );
+    fns_["smear_func_ptlow30_etalow3p0"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow30_etalow3p0"
+    );
+    fns_["smear_func_ptlow60_etalow0p0"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow60_etalow0p0"
+    );
+    fns_["smear_func_ptlow60_etalow1p1"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow60_etalow1p1"
+    );
+    fns_["smear_func_ptlow60_etalow2p1"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow60_etalow2p1"
+    );
+    fns_["smear_func_ptlow60_etalow3p0"] = (TF1*)f_smear.Get(
+      "smear_func_ptlow60_etalow3p0"
+    );
+    f_smear.Close();
+
     if (fs_ && write_tree_) {
       outtree_ = fs_->make<TTree>("ntuple","ntuple");
       
@@ -581,8 +609,13 @@ namespace ic {
       outtree_->Branch("jdeta",             &jdeta_.var_double);
       outtree_->Branch("jdphi",             &jdphi_);
       outtree_->Branch("dphi_jtt",          &dphi_jtt_);
+      outtree_->Branch("shifted_dphi_jtt",  &shifted_dphi_jtt_);
+      outtree_->Branch("dphi_jtt_smear",    &dphi_jtt_smear_);
+      outtree_->Branch("shifted_dphi_jtt_smear",    &shifted_dphi_jtt_smear_);
+      outtree_->Branch("smear_jet_delta",   &smear_jet_delta_);
       outtree_->Branch("residual_pt",       &residual_pt_);
       outtree_->Branch("residual_phi",      &residual_phi_);
+      outtree_->Branch("dphi_residual_tt",  &dphi_residual_tt_);
       outtree_->Branch("dijetpt",           &dijetpt_);
       outtree_->Branch("centrality",        &centrality_);
       outtree_->Branch("mt_1_nomu"    , &mt_1_nomu_     );
@@ -621,6 +654,7 @@ namespace ic {
       outtree_->Branch("jdphi_gen_reco" , & jdphi_gen_reco_);
       outtree_->Branch("jpt20_sum" ,     & jpt20_sum_);
       outtree_->Branch("jphi20_sum" ,    & jphi20_sum_);
+      outtree_->Branch("dphi_j20_tt" ,   & dphi_j20_tt_);
       outtree_->Branch("genM", &gen_m_);
       outtree_->Branch("genpT", &gen_pt_);
       outtree_->Branch("m_1", &m_1_, "m_1/F");
@@ -2237,9 +2271,12 @@ namespace ic {
     if(event->Exists("gen_mjj")) gen_mjj_ = event->Get<double>("gen_mjj");
     if(event->Exists("gen_jpt_1")) gen_jpt_1_ = event->Get<double>("gen_jpt_1");
     if(event->Exists("gen_jphi_1")) gen_jphi_1_ = event->Get<double>("gen_jphi_1");
-    if(event->Exists("jdphi_gen_reco")) jdphi_gen_reco_ = event->Get<double>("jdphi_gen_reco");
     if(event->Exists("tauFlag1")) tauFlag_1_ = event->Get<int>("tauFlag1");
     if(event->Exists("tauFlag2")) tauFlag_2_ = event->Get<int>("tauFlag2");
+
+    if(event->Exists("jdphi_gen_reco")) 
+      jdphi_gen_reco_ = event->Get<double>("jdphi_gen_reco");
+    else jdphi_gen_reco_ = -9999.;
    
     wt_ggh_pt_up_ = 1.0;
     wt_ggh_pt_down_ = 1.0;
@@ -3721,6 +3758,7 @@ namespace ic {
           jet_flav_3_ = jets[0]->parton_flavour();
       } else jet_flav_3_ = -9999;
     }
+
     
     if (n_lowpt_jets_ >= 1) {
       jpt_1_ = lowpt_jets[0]->pt();
@@ -3749,8 +3787,13 @@ namespace ic {
         j1_dm_ = -1;
       }
       dphi_jtt_ =  ROOT::Math::VectorUtil::DeltaPhi(lowpt_jets[0]->vector(), ditau->vector());
+      // Make the following two respect to Z/mumu
       residual_pt_ =  (mets->vector() + lowpt_jets[0]->vector() + ditau->vector()).pt();
       residual_phi_ =  (mets->vector() + lowpt_jets[0]->vector() + ditau->vector()).phi();
+      dphi_residual_tt_ =  ROOT::Math::VectorUtil::DeltaPhi(
+        (mets->vector() + lowpt_jets[0]->vector() + ditau->vector()), 
+        ditau->vector()
+      );
       
     } else {
       jpt_1_ = -9999;
@@ -3771,8 +3814,9 @@ namespace ic {
       jnhf_1_  = -9999.;
       residual_pt_ =  -9999.;
       residual_phi_ = -9999.;
+      dphi_residual_tt_ = -9999.;
     }
-
+    
     if (n_lowpt_jets_ >= 2) {
       jpt_2_ = lowpt_jets[1]->pt();
       jeta_2_ = lowpt_jets[1]->eta();
@@ -3915,12 +3959,16 @@ namespace ic {
       for (auto lowpt_jet: lowpt_jets) {
         lowpt_jets_vecsum += lowpt_jet->vector();
       }
-      jpt20_sum_  = lowpt_jets_vecsum.pt();
-      jphi20_sum_ = lowpt_jets_vecsum.phi();
+      jpt20_sum_   = lowpt_jets_vecsum.pt();
+      jphi20_sum_  = lowpt_jets_vecsum.phi();
+      dphi_j20_tt_ = ROOT::Math::VectorUtil::DeltaPhi(
+        lowpt_jets_vecsum, ditau->vector()
+      );
     }
     else {
       jpt20_sum_ = -9999.;
       jphi20_sum_ = -9999.;
+      dphi_j20_tt_ = -9999.;
     }
     
     if((strategy_ == strategy::smsummer16 || strategy_ == strategy::cpsummer16 || strategy_ == strategy::legacy16 ||  strategy_ == strategy::cpdecays16) && do_sm_scale_wts_ && !systematic_shift_){
@@ -5047,7 +5095,60 @@ namespace ic {
     // signal background event classification
     IC_BDT_max_score_ = event->Exists("IC_BDT_max_score") ? event->Get<float>("IC_BDT_max_score") : -999.0;
     IC_BDT_max_index_ = event->Exists("IC_BDT_max_index") ? event->Get<int>("IC_BDT_max_index") : -999;
-    
+
+    // smear JERphi things
+    gRandom->SetSeed((int)((lep1->eta()+2.5)*100000 + (lep1->phi()+4)*1000));
+    double smear_jphi_1 = 0.;
+    // double smear_jphi_2 = 0.;
+    shifted_dphi_jtt_ = -9999.;
+    shifted_dphi_jtt_smear_ = -9999.;
+    dphi_jtt_smear_ = -9999.;
+
+    // set dphi_jtt_smear_ equal to dphi_jtt_ for data, shift for MC.
+    if (n_lowpt_jets_ >= 1) {
+      dphi_jtt_smear_ =  ROOT::Math::VectorUtil::DeltaPhi(lowpt_jets[0]->vector(), ditau->vector());
+      if(!is_data_) {
+        // do jer shifts for dphi here
+        if (lowpt_jets[0]->vector().pt() > 60) {
+          if (fabs(lowpt_jets[0]->vector().eta()) > 0. && fabs(lowpt_jets[0]->vector().eta()) < 1.1) {
+            smear_jphi_1 = fns_["smear_func_ptlow60_etalow0p0"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 1.1 && fabs(lowpt_jets[0]->vector().eta()) < 2.1){
+            smear_jphi_1 = fns_["smear_func_ptlow60_etalow1p1"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 2.1 && fabs(lowpt_jets[0]->vector().eta()) < 3.0){
+            smear_jphi_1 = fns_["smear_func_ptlow60_etalow2p1"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 3. && fabs(lowpt_jets[0]->vector().eta()) < 5.){
+            smear_jphi_1 = fns_["smear_func_ptlow60_etalow3p0"]->GetRandom();
+          }
+        }
+        else if (lowpt_jets[0]->vector().pt() > 30) {
+          if (fabs(lowpt_jets[0]->vector().eta()) > 0. && fabs(lowpt_jets[0]->vector().eta()) < 1.1) {
+            smear_jphi_1 = fns_["smear_func_ptlow30_etalow0p0"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 1.1 && fabs(lowpt_jets[0]->vector().eta()) < 2.1){
+            smear_jphi_1 = fns_["smear_func_ptlow30_etalow1p1"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 2.1 && fabs(lowpt_jets[0]->vector().eta()) < 3.0){
+            smear_jphi_1 = fns_["smear_func_ptlow30_etalow2p1"]->GetRandom();
+          }
+          else if (fabs(lowpt_jets[0]->vector().eta()) > 3. && fabs(lowpt_jets[0]->vector().eta()) < 5.){
+            smear_jphi_1 = fns_["smear_func_ptlow30_etalow3p0"]->GetRandom();
+          }
+        }
+      }
+      // only change dphi_jtt_smear_ for MC. data should be same as dphi_jtt_
+      shifted_dphi_jtt_ = (dphi_jtt_ < 0.) * (dphi_jtt_ + M_PI)
+        + (dphi_jtt_ > 0.) * (dphi_jtt_ - M_PI);
+      // shifted dphi_jtt_ is already wrapped correctly so can just subtract
+      // smear_phi_1 i think
+      shifted_dphi_jtt_smear_ = boundPhi(shifted_dphi_jtt_ - smear_jphi_1);
+      dphi_jtt_smear_ = (shifted_dphi_jtt_smear_ > 0.) * (shifted_dphi_jtt_smear_ - M_PI)
+        + (shifted_dphi_jtt_smear_ < 0.) * (shifted_dphi_jtt_smear_ + M_PI);
+      smear_jet_delta_ = smear_jphi_1;
+    }
+
     if (write_tree_ && fs_) outtree_->Fill();
     if (make_sync_ntuple_) synctree_->Fill();
 

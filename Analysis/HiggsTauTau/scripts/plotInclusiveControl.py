@@ -238,6 +238,11 @@ def main(args):
         #     ' && n_jets==1'
         #     ' && fabs(jeta_1>{}) && fabs(jeta_1<{}) '.format(args.eta_lo, args.eta_hi)
         #     ')" ')
+        extras += ('--set_alias "inclusive:('
+            'm_vis>70 && m_vis<110 && pt_tt>50'
+            ' && (jpt_1/pt_tt)>0.8 && (jpt_1/pt_tt)<1.2'
+            ' && n_jets==1'
+            ')" ')
         method = "8"
 
 
